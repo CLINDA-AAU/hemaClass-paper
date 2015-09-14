@@ -10,8 +10,17 @@
 \usepackage[numbers,sort]{natbib}
 \usepackage{cite} % Make references as [1-4], not [1,2,3,4]
 
+% To do notes
+\usepackage[
+%  disable, %turn off todonotes
+  colorinlistoftodos, %enable a coloured square in the list of todos
+  textwidth=2cm, %set the width of the todonotes
+  textsize=scriptsize, %size of the text in the todonotes
+  ]{todonotes}
+
 % Macros
 \newcommand{\hemaClass}{\href{http://hemaClass.org}{\texttt{hemaClass.org}}}
+\newcommand{\R}{\textsf{R}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -49,7 +58,7 @@
 \begin{abstract}
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they are often based on complex algorithms only applicable on whole cohorts of patients, making them difficult to validate and apply.
-This prompted us to create \hemaClass{} which is an online tool that provides an easy interface to one-by-one microarray based state-of-the-art risk classification of diffuse large B-cell lymphoma (DLBCL).
+The lack of availability prompted us to create \hemaClass{} which is an online tool that provides an easy interface to one-by-one microarray based state-of-the-art risk classification of diffuse large B-cell lymphoma (DLBCL).
 Focus has been put into pre-processing the array in a one-by-one manner compared to the usual normalisation in whole cohorts.
 Such single sample normalisation is essential for establishing a clinically useful tool.
 However, laboratory specific effects cannot be accounted for in one-by-one normalisation.
@@ -85,7 +94,7 @@ However, easily accessible molecular classification methods are lacking behind a
 A few methods exist for cancer types other than lymphoma, see e.g.\ \citep{Huang2009} for an AML application.
 But to our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
 A single accessible Windows based application has recently been published for ABC/GCB classification \citep{Care2013}.
-Although this method develops a new ABC/GCB classifier which is stable across a number of microarray technologies and trial centres it is biased for prognostic biomarkers.
+Although this method develops a new ABC/GCB classifier which is stable across a number of microarray technologies and trial centres it is biased for prognostic biomarkers.\todo{Check/verify that this is indeed the case.}
 
 This prompted us to develop an easy accessible and flexible web-based tool for ABC/GCB, BAGS, and REGS classification which is capable of computing our recently developed classifiers.
 The classifications made by the web-based tool \hemaClass{} are compared to the existing state-of-the-art and approved ABC/GCB classifications of DLBCL.
@@ -112,7 +121,7 @@ The interactive web application available at \url{http://hemaclass.org} was crea
 The Shiny server handles the interaction between the front end web application and the back end R processing.
 
 The RMA pre-processing was carried out with the Bioconductor package \texttt{affy} \citep{Gautier2004}.
-%The code is open source and freely available for sharing, modification, and redistribution at GitHub (xxx).
+The code is open source and freely available for sharing, modification, and redistribution at GitHub.com (\url{https://github.com/oncoclass/hemaclass}).
 
 \subsection{Data overview}
 The seven gene expression datasets used in this article are summarised in Table \ref{table:01}.
@@ -127,7 +136,7 @@ To establish the classifiers the following datasets are used:
   \item The REGS classifiers are based on a panel of 12 Multiple Myeloma (MM) and 14 DLBCL cell lines this panel will be referred to as BCELL26.
   The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2013c}.
 \end{enumerate}
-For validation the following DLBCL cohorts are used:
+For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
   \item[4] The Aalborg OCT (CHEPRETRO) cohort of 89 Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg.cite{Dybkaer2013}.
   The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO www.lymphoma.dk) \citep{Gang2012}.
@@ -190,9 +199,8 @@ However, in GEP experiments, the number of probe-sets present on the microarray 
 Collinearity present among the features further aggravates the problem of identifying genes responsible for the underlying biological mechanism.
 Regression under these ill-posed circumstances is typically handled by so-called regularisation.
 Here the elastic net penalty \citep{Friedman2010, Zou2005} is used which is a combination of the lasso \citep{Tibshirani1996} and ridge regression \citep{Hoerl1970}.
-Similar to the lasso this penalty ensures simultaneous variable selection and model estimation.
+Similar to the lasso this penalty ensures simultaneous variable selection and model estimation by forcing small coefficients to be zero and thus ensuring sparse solutions.
 In contrast to the lasso the elastic net penalty is capable of selecting more variables than samples.
-Regression with elastic net ensures sparse solutions by forcing small coefficients to be zero.
 
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
 The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of 0 and 1, respectively.
@@ -208,14 +216,14 @@ To avoid over-fitting and limit the number of noise contributing genes, the elas
 The parameter $\alpha$ was varied between 0.1 and 1 with step size $0.025$ and $\lambda$ was varied between -10 and 2 with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
 The results of the cross validation are shown in Supplementary Figure \ref{fig:crossval}.
-The minimum 0.13 was attained at $\alpha$ equal to 0.15 and log($\lambda$) equal to -7.41 resulting in a gene expression classifier consisting of 381 probe-sets.
+The minimum 0.13 was attained in $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of 381 probe-sets.
 
 When a tumour sample is classified according to the ABC/GCB classifier using reference based normalisation the associated gene expressions are probe-set wise rescaled by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
 In contrast, the one-by-one normalised data is used directly.
 
 \subsubsection{REGS classification}
 In the paper by \citet{Falgreen2013c} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
-The classifiers were established on BCELL26 using regularised logistic regression analogous to the procedure described for the abovementioned ABC/GCB classifier.
+The classifiers were established on BCELL26 using regularised logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
 The probability of resistance to the combination therapy CHO is estimated based on the probabilities of drug resistance toward the three drugs C, H, and O.
 This probability is calculated by a formula derived as the posterior probability of being resistant given resistance towards each of the individual drugs under the assumption of drug independence.
@@ -236,16 +244,16 @@ The rescaling is performed to make the data comparable to the tonsil dataset.
 
 
 \subsection{Inter method reproducibility assessments}
-To evaluate the reproducibility of the class probabilities obtained through cohort based normalisation and hemaclas.com normalisation Pearson's correlation coefficient for the logit-transformed probabilities and 95\% confidence interval (CI) were calculated for each classifier and dataset.
+To evaluate the reproducibility of the class probabilities obtained through cohort based normalisation and \hemaClass{} normalisation Pearson's correlation coefficient for the logit-transformed probabilities and 95\% confidence interval (CI) were calculated for each classifier and dataset.
 The identity and orthogonal least square regression lines were compared to assess bias in estimated probabilities \citep{CHEN1989}.
 Orthogonal regression was used because errors in both classification probabilities are present.
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
-The ABC/GCB classifier was thresholded by 0.1 and 0.9, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds 0.9, GCB when it is beneath 0.1, and unclassified otherwise.
+The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath 0.1, and unclassified otherwise.
 For the BAGS classifier a tumour was classified as N, CB, CC, M, or PB if the associated probability exceeded 0.5 and unclassified when this threshold was not met for any subtype.
 For the REGS classifier, C, H, O, and CHO combined the 33\% and 66\% percentile of the estimated probabilities were $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$.
 After thresholding the class probabilities confusion matrices were created.
-From these accuracy or rate of agrement, Cohen's $\kappa$, and corresponding 95\% CIs were computed to assess the agreement between the determined classes.
+From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding 95\% CIs were computed to assess the agreement between the determined classes.
 
 
 \section{Results}
@@ -279,7 +287,7 @@ The second column shows the Cohen's $\kappa$ with 95\% CI.\label{tab:ABCGCBclass
 \begin{center}
 \begin{tabular}{lll}
 \hline\hline
-\multicolumn{1}{l}{Cohort}&\multicolumn{1}{c}{Rate of agrement}&\multicolumn{1}{c}{Cohen's $\kappa$}\tabularnewline
+\multicolumn{1}{l}{Cohort}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}\tabularnewline
 \hline
 CHEPRETRO&0.93 (0.86,0.97)&0.84 (0.76,0.92)\tabularnewline
 MDFCI&0.89 (0.81,0.95)&0.81 (0.69,0.94)\tabularnewline
@@ -433,11 +441,23 @@ Although \hemaClass{} is still separated from the clinic we believe a web based 
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
 
 \phantomsection
+\addcontentsline{toc}{section}{Availability and technical details}
+\section*{Availability and technical details}
+All of the \hemaClass{} functionality is available through the \R{}-package \textbf{hemaClass} freely available at
+\url{https://github.com/oncoclass/hemaclass}.
+First, the package can be used as a programatical interface the functionality of the website.
+However, it also features a local version of the website should users wishes to avoid uploading large files to our server.
+Material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
+\todo[inline]{Expand this section? Any other details?}
+
+\phantomsection
 \addcontentsline{toc}{section}{Acknowledgements}
 \section*{Acknowledgements}
+\todo{Remember to thank Mads and the hosting people?}
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
 The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, and CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
+
 
 
 \noindent\textit{Conflict of interest statement}: None declared.
@@ -455,7 +475,7 @@ The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and H
 \caption{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ for logistic regression regularised by elastic net.
 In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularisation parameter $\lambda$, respectively.
 In Panel C the regularisation curves are shown.
-Black and grey curves represent selected and nonselected probe-sets.
+Black and grey curves represent selected and non-selected probe-sets, respectively.
 Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
 The red line indicates the model chosen through 10 fold cross validation.
 The gene symbols for the 20 probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed.}
@@ -611,6 +631,9 @@ Reference based normalisation shown in the rows and cohort normalisation in the 
 \end{tabular}
 \end{center}
 \end{table*}
+
+
+\listoftodos
 
 \end{document}
 
