@@ -147,34 +147,7 @@ For validation the following four DLBCL cohorts are used:
   \item[7] The Mayo-Dana-Farber Cancer Institute (MDFCI) cohort of 90 DLBCL patients treated with R-CHOP first-line therapy \citep{Monti2012a}.
 \end{enumerate}
 
-
-\begin{table}%[htb]
-\small
-\caption{Overview of the GEO accession numbers for the used datasets.}
-\label{table:01}%
-\begin{center}
-\begin{tabular}{lllll}
-\hline\hline
-Dataset & $n$ & Usage & GEO number & Ref.
-\\
-\hline
-LLMPP CHOP & 181 & Reference & GSE10846 & \citep{Lenz2008a}
-\\
-Tonsil & 33 & Reference & - & \citep{Dybkaer2013}
-\\
-DLBCL14 & 14 & Reference & - & \citep{Falgreen2013c}
-\\
-CHEPRETRO & 89 & Validation & - & \citep{Dybkaer2013}
-\\
-IDRC & 470 & Validation & GSE31312 & \citep{Visco2012}
-\\
-LLMPP R-CHOP & 233 & Validation & GSE10846 & \citep{Lenz2008a}
-\\
-MDFCI & 90 & Validation & GSE34171 & \citep{Monti2012a}\\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+\input{tables/table1.tex}
 
 \subsection{One-by-one RMA normalization}
 Recall that RMA pre-processing consists of three steps: 1) Background correction, 2) quantile normalisation, and 3) summarisation of probes to probe-sets \citep{Irizarry2003}.
