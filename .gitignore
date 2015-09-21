@@ -8,9 +8,9 @@
 *.pdf
 *.out
 *.synctex.gz
+*.synctex
 *.tdo
 *.gz
-
 *.cel
 
 *.history
