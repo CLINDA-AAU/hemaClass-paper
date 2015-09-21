@@ -252,28 +252,7 @@ For both methods patients are classified as ABC when the estimated probability e
 In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and weighted Cohen's $\kappa$ for the four cohorts: CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP showing good agreement, even considering that misclassifications involving unclassified samples count as errors, albeit weighted by 0.5 in Cohen's $\kappa$.
 The accompanying confusion matrices are shown in Supplementary Table \ref{tab:confusionABCGCBHEMA}.
 
-\begin{table}
-\small
-\caption{Comparison of ABC/GCB classification performed using Wright's method and the established classifier based on cohort normalisation for both.
-The first column shows the rate of agreement between the classifiers with 95\% CI.
-The second column shows the Cohen's $\kappa$ with 95\% CI.\label{tab:ABCGCBclassifier}}
-\begin{center}
-\begin{tabular}{lll}
-\hline\hline
-\multicolumn{1}{l}{Cohort}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}\tabularnewline
-\hline
-CHEPRETRO&0.93 (0.86,0.97)&0.84 (0.76,0.92)\tabularnewline
-MDFCI&0.89 (0.81,0.95)&0.81 (0.69,0.94)\tabularnewline
-IDRC&0.82 (0.78,0.85)&0.67 (0.63,0.71)\tabularnewline
-LLMPP R-CHOP&0.9 (0.86,0.94)&0.8 (0.74,0.86)\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
-
-
-%
+\input{tables/table2.tex}
 
 \begin{figure}
 \begin{center}
@@ -324,42 +303,7 @@ Based on the probabilities estimated by means of each of the three normalisation
 The rate of agreement between the cohort based and \hemaClass{} classifications is shown in Table \ref{tab:classALL} along with the weighted Cohen's $\kappa$.
 The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGShemaclass}.
 
-
-
-\begin{table}[!tbp]
-\scriptsize
-\tabcolsep=0.11cm
-\caption{Comparison of classifications obtained using cohort based normalisation and \hemaClass{}.
-The classifications are compared in terms of accuracy, Cohen's $\kappa$, and Pearson's correlation coefficient $\rho$ all supplied with 95\% CIs.
-The comparisons in the first and last three columns are based on the one-by-one normalisation method and the reference based normalisation method, respectively.\label{tab:classALL}}
-\begin{center}
-\begin{tabular}{llllclll}
-\hline\hline
-\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries One-by-one normalisation}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries Reference based normalisation}\tabularnewline
-\cline{2-4} \cline{6-8}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohens's $\kappa$}&\multicolumn{1}{c}{Pearson's $\rho$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $\rho$}\tabularnewline
-\hline
-{\bfseries ABC/GCB}&&&&&&&\tabularnewline
-~~CHEPRETRO&0.87 (0.78,0.93)&0.71 (0.64,0.77)&0.999 (0.998,0.999)&&0.92 (0.81,0.97)&0.82 (0.72,0.92)&1 (0.999,1)\tabularnewline
-~~MDFCI&0.68 (0.57,0.77)&0.47 (0.37,0.57)&0.998 (0.998,0.999)&&0.9 (0.79,0.96)&0.86 (0.7,1)&0.974 (0.957,0.984)\tabularnewline
-~~IDRC&0.64 (0.59,0.68)&0.27 (0.22,0.31)&0.985 (0.982,0.987)&&0.76 (0.72,0.8)&0.59 (0.55,0.64)&0.987 (0.984,0.989)\tabularnewline
-~~LLMPP R-CHOP&0.83 (0.77,0.87)&0.62 (0.58,0.67)&0.999 (0.999,0.999)&&0.94 (0.9,0.97)&0.88 (0.81,0.95)&1 (0.999,1)\tabularnewline
-\hline
-{\bfseries BAGS}&&&&&&&\tabularnewline
-~~CHEPRETRO&0.55 (0.44,0.66)&0.5 (0.24,0.77)&-&&0.9 (0.79,0.96)&0.88 (0.54,1)&-\tabularnewline
-~~MDFCI&0.5 (0.39,0.61)&0.45 (0.14,0.76)&-&&0.82 (0.7,0.9)&0.81 (0.33,1)&-\tabularnewline
-~~IDRC&0.48 (0.43,0.52)&0.39 (0.3,0.48)&-&&0.77 (0.73,0.81)&0.77 (0.64,0.89)&-\tabularnewline
-~~LLMPP R-CHOP&0.57 (0.5,0.64)&0.54 (0.37,0.71)&-&&0.69 (0.62,0.75)&0.67 (0.46,0.87)&-\tabularnewline
-\hline
-{\bfseries REGS}&&&&&&&\tabularnewline
-~~CHEPRETRO&0.62 (0.51,0.72)&0.58 (0.46,0.71)&0.99 (0.99,1)&&0.93 (0.84,0.98)&0.92 (0.77,1)&1 (1,1)\tabularnewline
-~~MDFCI&0.43 (0.33,0.54)&0.35 (0.23,0.46)&0.99 (0.99,0.99)&&0.78 (0.66,0.88)&0.76 (0.61,0.91)&1 (1,1)\tabularnewline
-~~IDRC&0.64 (0.6,0.68)&0.57 (0.52,0.62)&0.94 (0.93,0.95)&&0.91 (0.88,0.93)&0.89 (0.84,0.95)&0.98 (0.98,0.99)\tabularnewline
-~~LLMPP R-CHOP&0.42 (0.36,0.49)&0.32 (0.25,0.38)&0.99 (0.98,0.99)&&0.87 (0.81,0.91)&0.85 (0.77,0.93)&1 (1,1)\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+\input{tables/table3.tex}
 
 
 \section{Discussion}
@@ -455,155 +399,11 @@ The gene symbols for the 20 probe-sets associated with the largest absolute coef
 \label{fig:crossval}
 \end{figure*}
 
-\begin{table*}[!tbp]
-\footnotesize
-\caption{Confusion tables for the ABC/GCB classifiers.
-The columns represent cohort based normalisation using the ABC/GCB classifier based on elastic net.
-The first part of the table compares Wright's method for ABC/GCB classification with the elastic net based.
-In the second and third part one-by-one and reference based normalisation is compared to cohort based normalisation using the ABC/GCB classifier based on elastic net.\label{tab:confusionABCGCBHEMA}}
-\begin{center}
-\begin{tabular}{lrrrcrrrcrrrcrrr}
-\hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP RCHOP}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}\tabularnewline
-\cline{2-4} \cline{6-8} \cline{10-12} \cline{14-16}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}\tabularnewline
-\hline
-{\bfseries Wright's method}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$28$&$ 2$&$ 0$&&$176$&$23$&$  0$&&$89$&$ 4$&$  0$&&$38$&$2$&$ 0$\tabularnewline
-~~NC&$ 2$&$19$&$ 1$&&$  6$&$26$&$ 12$&&$ 6$&$19$&$  8$&&$ 1$&$4$&$ 0$\tabularnewline
-~~GCB&$ 0$&$ 5$&$33$&&$  6$&$38$&$183$&&$ 0$&$ 5$&$102$&&$ 0$&$3$&$41$\tabularnewline
-\hline
-{\bfseries One-by-one}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$23$&$ 0$&$ 0$&&$ 89$&$ 0$&$  0$&&$76$&$ 0$&$  0$&&$34$&$0$&$ 0$\tabularnewline
-~~NC&$ 7$&$ 4$&$ 0$&&$ 95$&$15$&$  0$&&$19$&$ 7$&$  0$&&$ 5$&$2$&$ 0$\tabularnewline
-~~GCB&$ 0$&$22$&$34$&&$  4$&$72$&$195$&&$ 0$&$21$&$110$&&$ 0$&$7$&$41$\tabularnewline
-\hline
-{\bfseries Reference based}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$17$&$ 0$&$ 0$&&$177$&$43$&$  0$&&$85$&$ 6$&$  0$&&$26$&$2$&$ 0$\tabularnewline
-~~NC&$ 1$&$13$&$ 0$&&$  1$&$38$&$ 58$&&$ 0$&$20$&$  6$&&$ 0$&$3$&$ 3$\tabularnewline
-~~GCB&$ 0$&$ 5$&$24$&&$  0$&$ 2$&$121$&&$ 0$&$ 0$&$ 86$&&$ 0$&$0$&$25$\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table*}
 
-
-\begin{table*}[!tbp]
-\small
-\caption{\textbf{Confusion tables for the BAGS classifier.} One-by-one and reference based normalisation are shown in the columns and cohort normalisation in the rows.\label{tab:BAGShemaclass}}
-\begin{center}
-\begin{tabular}{lrrrrrrcrrrrrr}
-\hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{6}{c}{\bfseries One-by-one normalisation}&\multicolumn{1}{c}{\bfseries }&\multicolumn{6}{c}{\bfseries Reference based normalisation}\tabularnewline
-\cline{2-7} \cline{9-14}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{NC}\tabularnewline
-\hline
-{\bfseries MDFCI}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$1$&$ 0$&$  0$&$1$&$ 5$&$0$&&$6$&$ 1$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centroblast&$0$&$16$&$  0$&$0$&$ 0$&$0$&&$1$&$12$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centrocyte&$0$&$ 6$&$  9$&$2$&$11$&$3$&&$0$&$ 1$&$ 15$&$ 0$&$ 1$&$ 1$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$5$&$ 0$&$0$&&$0$&$ 0$&$  0$&$ 2$&$ 0$&$ 1$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$11$&$0$&&$0$&$ 0$&$  0$&$ 0$&$ 7$&$ 0$\tabularnewline
-~~Non classified&$0$&$ 5$&$  0$&$2$&$10$&$3$&&$0$&$ 3$&$  1$&$ 0$&$ 1$&$ 7$\tabularnewline
-\hline
-{\bfseries IDRC}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$0$&$ 0$&$  3$&$0$&$ 3$&$2$&&$5$&$ 0$&$  1$&$ 0$&$ 0$&$ 1$\tabularnewline
-~~Centroblast&$0$&$17$&$ 32$&$0$&$27$&$1$&&$0$&$39$&$ 12$&$ 0$&$ 0$&$19$\tabularnewline
-~~Centrocyte&$0$&$ 0$&$137$&$0$&$28$&$0$&&$0$&$ 0$&$149$&$ 0$&$ 1$&$ 6$\tabularnewline
-~~Memory&$0$&$ 0$&$  1$&$9$&$15$&$1$&&$0$&$ 0$&$  0$&$22$&$ 1$&$ 2$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  3$&$0$&$59$&$0$&&$0$&$ 0$&$  0$&$ 0$&$58$&$ 0$\tabularnewline
-~~Non classified&$0$&$ 0$&$ 37$&$1$&$92$&$2$&&$0$&$ 0$&$ 16$&$ 4$&$37$&$67$\tabularnewline
-\hline
-{\bfseries LLMPP R-CHOP}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$1$&$ 1$&$  0$&$0$&$ 5$&$3$&&$6$&$ 0$&$  1$&$ 0$&$ 0$&$ 2$\tabularnewline
-~~Centroblast&$0$&$34$&$  0$&$0$&$ 4$&$1$&&$0$&$14$&$ 11$&$ 0$&$ 0$&$ 9$\tabularnewline
-~~Centrocyte&$0$&$ 5$&$ 56$&$1$&$18$&$3$&&$0$&$ 0$&$ 74$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$7$&$ 9$&$1$&&$0$&$ 0$&$  1$&$11$&$ 0$&$ 5$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$26$&$0$&&$0$&$ 0$&$  1$&$ 0$&$20$&$ 2$\tabularnewline
-~~Non classified&$0$&$ 5$&$  0$&$0$&$44$&$9$&&$0$&$ 0$&$ 24$&$ 0$&$ 7$&$15$\tabularnewline
-\hline
-{\bfseries CHEPRETRO}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$0$&$ 0$&$  0$&$0$&$ 1$&$0$&&$0$&$ 0$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centroblast&$0$&$16$&$  0$&$0$&$ 0$&$0$&&$0$&$13$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centrocyte&$0$&$13$&$ 14$&$0$&$ 6$&$2$&&$0$&$ 1$&$ 19$&$ 0$&$ 1$&$ 2$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$3$&$ 0$&$1$&&$0$&$ 0$&$  0$&$ 1$&$ 0$&$ 0$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$14$&$0$&&$0$&$ 0$&$  0$&$ 0$&$10$&$ 0$\tabularnewline
-~~Non classified&$1$&$ 9$&$  0$&$1$&$ 6$&$2$&&$2$&$ 0$&$  0$&$ 0$&$ 0$&$10$\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table*}
-
-
-\begin{table*}[!tbp]
-\small
-\caption{\textbf{Confusion tables for the REGS classifiers.} One-by-one normalisation are shown in the rows and cohort normalisation in the columns.\label{tab:confusiondrugonebyone}}
-\begin{center}
-\begin{tabular}{lrrrcrrrcrrrcrrr}
-\hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP R-CHOP}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}\tabularnewline
-\cline{2-4} \cline{6-8} \cline{10-12} \cline{14-16}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}\tabularnewline
-\hline
-{\bfseries Cyclophosphamide}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$23$&$ 4$&$ 0$&&$111$&$189$&$170$&&$76$&$16$&$ 0$&&$26$&$ 2$&$ 0$\tabularnewline
-~~Intermediate&$ 4$&$31$&$ 2$&&$  0$&$  0$&$  0$&&$ 1$&$62$&$31$&&$ 1$&$37$&$ 4$\tabularnewline
-~~Resistant&$ 0$&$ 3$&$23$&&$  0$&$  0$&$  0$&&$ 0$&$ 0$&$47$&&$ 0$&$ 0$&$19$\tabularnewline
-\hline
-{\bfseries Doxorubicin}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$28$&$33$&$ 6$&&$ 23$&$  0$&$  0$&&$78$&$77$&$14$&&$30$&$21$&$ 0$\tabularnewline
-~~Intermediate&$ 0$&$ 0$&$12$&&$ 80$&$ 12$&$  0$&&$ 0$&$ 0$&$45$&&$ 0$&$ 6$&$15$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$11$&&$ 36$&$164$&$155$&&$ 0$&$ 0$&$19$&&$ 0$&$ 0$&$17$\tabularnewline
-\hline
-{\bfseries Vincristine}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$32$&$26$&$ 1$&&$ 40$&$  1$&$  1$&&$78$&$59$&$11$&&$36$&$ 8$&$ 1$\tabularnewline
-~~Intermediate&$ 0$&$ 1$&$15$&&$ 89$&$ 14$&$  3$&&$ 0$&$15$&$36$&&$ 0$&$ 8$&$ 9$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$15$&&$ 33$&$134$&$155$&&$ 0$&$ 0$&$34$&&$ 0$&$ 0$&$27$\tabularnewline
-\hline
-{\bfseries Combined}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$29$&$30$&$ 5$&&$ 63$&$  0$&$  0$&&$78$&$77$&$14$&&$31$&$21$&$ 0$\tabularnewline
-~~Intermediate&$ 0$&$ 0$&$16$&&$ 64$&$ 84$&$  2$&&$ 0$&$ 0$&$44$&&$ 0$&$ 8$&$13$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$10$&&$  4$&$ 99$&$154$&&$ 0$&$ 0$&$20$&&$ 0$&$ 0$&$16$\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table*}
-
-
-\begin{table*}[!tbp]
-\small
-\caption{Confusion tables for the REGS classifiers.
-Reference based normalisation shown in the rows and cohort normalisation in the columns.\label{tab:confusiondrugreference}}
-\begin{center}
-\begin{tabular}{lrrrcrrrcrrrcrrr}
-\hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP RCHOP}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}\tabularnewline
-\cline{2-4} \cline{6-8} \cline{10-12} \cline{14-16}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}\tabularnewline
-\hline
-{\bfseries Cyclophosphamide}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$15$&$ 0$&$ 0$&&$ 82$&$  3$&$  0$&&$68$&$25$&$ 0$&&$18$&$ 5$&$ 0$\tabularnewline
-~~Intermediate&$ 2$&$19$&$ 0$&&$ 20$&$137$&$  0$&&$ 0$&$43$&$21$&&$ 0$&$20$&$ 5$\tabularnewline
-~~Resistant&$ 0$&$ 7$&$17$&&$  0$&$ 37$&$161$&&$ 0$&$ 0$&$46$&&$ 0$&$ 0$&$11$\tabularnewline
-\hline
-{\bfseries Doxorubicin}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$12$&$ 0$&$ 0$&&$120$&$ 21$&$  0$&&$70$&$10$&$ 0$&&$14$&$ 0$&$ 0$\tabularnewline
-~~Intermediate&$ 6$&$15$&$ 0$&&$ 11$&$126$&$  5$&&$ 0$&$57$&$11$&&$ 2$&$15$&$ 0$\tabularnewline
-~~Resistant&$ 0$&$ 4$&$23$&&$  0$&$ 16$&$141$&&$ 0$&$ 0$&$55$&&$ 0$&$ 6$&$22$\tabularnewline
-\hline
-{\bfseries Vincristine}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$12$&$ 0$&$ 0$&&$152$&$ 49$&$  3$&&$60$&$ 3$&$ 0$&&$17$&$ 0$&$ 0$\tabularnewline
-~~Intermediate&$ 8$&$ 9$&$ 0$&&$  0$&$ 86$&$ 40$&&$ 9$&$49$&$ 2$&&$ 2$&$11$&$ 0$\tabularnewline
-~~Resistant&$ 0$&$ 8$&$23$&&$  0$&$  6$&$104$&&$ 0$&$10$&$70$&&$ 0$&$ 4$&$25$\tabularnewline
-\hline
-{\bfseries Combined}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$13$&$ 0$&$ 0$&&$117$&$ 12$&$  0$&&$70$&$14$&$ 0$&&$16$&$ 0$&$ 0$\tabularnewline
-~~Intermediate&$ 7$&$10$&$ 0$&&$  5$&$146$&$  8$&&$ 0$&$54$&$13$&&$ 0$&$18$&$ 0$\tabularnewline
-~~Resistant&$ 0$&$ 6$&$24$&&$  0$&$ 15$&$137$&&$ 0$&$ 0$&$52$&&$ 0$&$ 4$&$21$\tabularnewline
-\hline
-\end{tabular}
-\end{center}
-\end{table*}
+\input{tables/tableS1.tex}
+\input{tables/tableS2.tex}
+\input{tables/tableS3.tex}
+\input{tables/tableS4.tex}
 
 
 \listoftodos
