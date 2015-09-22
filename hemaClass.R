@@ -53,13 +53,13 @@ source_url(
 )
 
 # Function for doing the one-by-one and study based reference normalization
-normalizer <-function(study, gse,  nsamples = 30, global = FALSE){
+normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
 
   files <- file.path("data", gse, colnames(rma$cohort[[study]]))
 
   affy.batch <- readCelfiles(files)
 
-  if(global){
+  if (global) {
     rma[["reference"]]$global  <- rmaPreprocessing(affy.batch)
   }else{
     rma[["onebyone"]][[study]] <-
@@ -95,23 +95,25 @@ data("DLBCL_overview")
 
 studies <- DLBCL_overview[c(1, 5, 6, 7), 1:4]
 rownames(studies) <- studies$GSE
-for (gse in as.character(studies$GSE)) {
-  downloadAndProcessGEO(geo_nbr = gse, destdir = "data", cdf = "affy", verbose = verbose)
-}
-
-
 dat <- list()
 for (gse in as.character(studies$GSE)) {
- dat[[gse]] <- readRDS(paste0("data/", gse, "/", gse,"_affy.Rds"))
-}
+  gse.file <- paste0("data/", gse, "/", gse,"_affy.Rds")
 
+  if (!file.exists(gse.file)) {
+    downloadAndProcessGEO(geo_nbr = gse, destdir = "data", verbose = verbose)
+  }
+
+  dat[[gse]] <- readRDS(gse.file)
+
+  gc()  # Garbage collect (clear up some memory)
+}
 
 rma <- list()
 rma[["cohort"]][["LLMPPCHOP"]]  <- microarrayScale(exprs(dat$GSE10846$es$CHOP))
 rma[["cohort"]][["LLMPPRCHOP"]] <- microarrayScale(exprs(dat$GSE10846$es$'R-CHOP'))
 rma[["cohort"]][["MDFCI"]]      <- microarrayScale(exprs(dat$GSE34171$es$GPL570))
 rma[["cohort"]][["IDRC"]]       <- microarrayScale(exprs(dat$GSE31312$es$Batch1))
-rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$Batch1))
+rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 
 ################################################################################
 # RMA normalization
@@ -119,7 +121,6 @@ rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$Batch1)
 ################################################################################
 
 # First the overall reference is made using the LLMPP CHOP data
-
 normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE)
 
 # Next the other datasets are nomalized according to LLMPPCHOP
@@ -135,9 +136,9 @@ normalizer(study = "CHEPRETRO",  gse = "GSE56315")
 ################################################################################
 results <- list()
 
-for(study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")){
+for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
 
-  if(study != "LLMPPCHOP"){
+  if (study != "LLMPPCHOP") {
     results[["ABCGCB"]][[study]]$cohort <- ABCGCB(rma$cohort[[study]])
     results[["BAGS"]][[study]]$cohort   <- BAGS(rma$cohort[[study]])
     results[["REGS"]][[study]]$cohort   <- ResistanceClassifier(rma$cohort[[study]])
