@@ -4,6 +4,8 @@
 #
 ################################################################################
 
+# NOTE: Needs more approx 50 GBs of free disk space
+
 # Initalization
 
 rm(list = ls()) # Clear globral enviroment
@@ -99,13 +101,13 @@ dat <- list()
 for (gse in as.character(studies$GSE)) {
   gse.file <- paste0("data/", gse, "/", gse,"_affy.Rds")
 
-  if (!file.exists(gse.file)) {
+  if (!file.exists(gse.file)) { # Download and preprocess data
     downloadAndProcessGEO(geo_nbr = gse, destdir = "data", verbose = verbose)
+    gc()  # Garbage collect (clear up some memory)
   }
 
+  # Read data into list
   dat[[gse]] <- readRDS(gse.file)
-
-  gc()  # Garbage collect (clear up some memory)
 }
 
 rma <- list()
