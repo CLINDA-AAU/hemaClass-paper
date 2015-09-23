@@ -4,12 +4,11 @@
 #
 ################################################################################
 
-# NOTE: Needs more approx 50 GBs of free disk space
+# NOTE: Running this script needs more approx 50 GBs of free disk space
 
 # Initalization
-
 rm(list = ls()) # Clear global enviroment
-memory.limit(size = 60000) 
+memory.limit(size = 60000)
 
 # If any of the used packages are missing they will be installed.
 pkgs <- c("devtools", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
@@ -51,9 +50,9 @@ if (file.exists(saved.file)) { load(saved.file) }
 ################################################################################
 
 # # Load the resave function
-# source_url(
-#   "https://raw.githubusercontent.com/AEBilgrau/Bmisc/master/R/resave.R"
-# )
+source_url(
+  "https://raw.githubusercontent.com/AEBilgrau/Bmisc/master/R/resave.R"
+)
 
 # Function for doing the one-by-one and study based reference normalization
 normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
@@ -111,10 +110,10 @@ for (gse in as.character(studies$GSE)) {
   dat[[gse]] <- readRDS(gse.file)
 }
 
+# Organize data
 if (!exists("rma", inherits = FALSE) || recompute) {
   rma <- list()
 }
-
 rma[["cohort"]][["LLMPPCHOP"]]  <- microarrayScale(exprs(dat$GSE10846$es$CHOP))
 rma[["cohort"]][["LLMPPRCHOP"]] <- microarrayScale(exprs(dat$GSE10846$es$'R-CHOP'))
 rma[["cohort"]][["MDFCI"]]      <- microarrayScale(exprs(dat$GSE34171$es$GPL570))
@@ -149,9 +148,11 @@ results <- list()
 for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
 
   if (study != "LLMPPCHOP") {
+
     results[["ABCGCB"]][[study]]$cohort <- ABCGCB(rma$cohort[[study]])
     results[["BAGS"]][[study]]$cohort   <- BAGS(rma$cohort[[study]])
     results[["REGS"]][[study]]$cohort   <- ResistanceClassifier(rma$cohort[[study]])
+
   }
 
   # ABC/GCB
@@ -166,6 +167,7 @@ for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
   # The classifier for Cyclophosphamide, Doxorubicin, and Vincristine:
   results[["REGS"]][[study]]$refbased <- ResistanceClassifier(rma$refbased[[study]])
   results[["REGS"]][[study]]$onebyone <- ResistanceClassifier(rma$onebyone[[study]])
+
 }
 
 ################################################################################
@@ -175,4 +177,7 @@ for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
 
 
 
-sessionInfo()
+
+sink(file = "sessionInfo.txt")
+print(sessionInfo())
+sink()
