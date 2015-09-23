@@ -8,7 +8,8 @@
 
 # Initalization
 
-rm(list = ls()) # Clear globral enviroment
+rm(list = ls()) # Clear global enviroment
+memory.limit(size = 60000) 
 
 # If any of the used packages are missing they will be installed.
 pkgs <- c("devtools", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
@@ -49,23 +50,23 @@ if (file.exists(saved.file)) { load(saved.file) }
 # Auxiliary functions
 ################################################################################
 
-# Load the resave function
-source_url(
-  "https://raw.githubusercontent.com/AEBilgrau/Bmisc/master/R/resave.R"
-)
+# # Load the resave function
+# source_url(
+#   "https://raw.githubusercontent.com/AEBilgrau/Bmisc/master/R/resave.R"
+# )
 
 # Function for doing the one-by-one and study based reference normalization
 normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
 
+  # Read files used in cohort
   files <- file.path("data", gse, colnames(rma$cohort[[study]]))
-
   affy.batch <- readCelfiles(files)
 
   if (global) {
-    rma[["reference"]]$global  <- rmaPreprocessing(affy.batch)
-  }else{
+    rma[["reference"]][["global"]] <- rmaPreprocessing(affy.batch)
+  } else {
     rma[["onebyone"]][[study]] <-
-      rmaReference(affy.batch, rma[["reference"]]$global)$exprs.sc
+      rmaReference(affy.batch, rma[["reference"]][["global"]])$exprs.sc
   }
 
   rma[["ref.samples"]][[study]] <- sample(colnames(affy.batch$exprs), nsamples)
@@ -110,7 +111,10 @@ for (gse in as.character(studies$GSE)) {
   dat[[gse]] <- readRDS(gse.file)
 }
 
-rma <- list()
+if (!exists("rma", inherits = FALSE) || recompute) {
+  rma <- list()
+}
+
 rma[["cohort"]][["LLMPPCHOP"]]  <- microarrayScale(exprs(dat$GSE10846$es$CHOP))
 rma[["cohort"]][["LLMPPRCHOP"]] <- microarrayScale(exprs(dat$GSE10846$es$'R-CHOP'))
 rma[["cohort"]][["MDFCI"]]      <- microarrayScale(exprs(dat$GSE34171$es$GPL570))
@@ -122,22 +126,26 @@ rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 # one-by-one (with and without study-based reference)
 ################################################################################
 
-# First the overall reference is made using the LLMPP CHOP data
-normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE)
+if (is.null(rma$reference) || recompute) {
 
-# Next the other datasets are nomalized according to LLMPPCHOP
-# and a 30 sample study based reference
-normalizer(study = "LLMPPRCHOP", gse = "GSE10846")
-normalizer(study = "MDFCI",      gse = "GSE34171")
-normalizer(study = "IDRC",       gse = "GSE31312")
-normalizer(study = "CHEPRETRO",  gse = "GSE56315")
+  # First the overall reference is made using the LLMPP CHOP data
+  normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE); gc()
 
+  # Next the other datasets are nomalized according to LLMPPCHOP
+  # and a 30 sample study based reference
+  normalizer(study = "LLMPPRCHOP", gse = "GSE10846"); gc()
+  normalizer(study = "MDFCI",      gse = "GSE34171"); gc()
+  normalizer(study = "IDRC",       gse = "GSE31312"); gc()
+  normalizer(study = "CHEPRETRO",  gse = "GSE56315"); gc()
+
+  resave(rma, file = saved.file)
+}
 
 ################################################################################
 # Establish the results
 ################################################################################
-results <- list()
 
+results <- list()
 for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
 
   if (study != "LLMPPCHOP") {
@@ -163,3 +171,8 @@ for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
 ################################################################################
 # Comparisons of the results
 ################################################################################
+
+
+
+
+sessionInfo()
