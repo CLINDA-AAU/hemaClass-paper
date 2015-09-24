@@ -226,11 +226,20 @@ testfun <- function(x, y, dec = 2, weight = NULL){
   acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
   acc <- formatCI(acc$estimate, acc$conf.int, dec)
 
-  kap <- cohen.kappa(data.frame(x,y), w = weight)
-  conf <- pmin(kap$confid[2, ], 1)
+  kap <- cohen.kappa(data.frame(x, y), w = weight)
+  conf <- pmin(kap$confid[2, c("lower", "upper")], 1)
   kappa <- formatCI(kap$weighted.kappa, conf)
 
   return(c("accuracy" = acc, "kappa" = kappa))
+}
+
+summclasses <- function(xc, yc, x, y, weight = NULL, dec = 3) {
+  ans <- testfun(xc, yc, weight = weight)
+  if (!missing(x) & !missing(y)) {
+    rho <- cor.test(x, y)
+    ans <- c(ans, rho = formatCI(rho$estimate, rho$conf.int, dec))
+  }
+  return(ans)
 }
 
 plotline <- function(x, y, ...) {
@@ -247,11 +256,7 @@ plotline <- function(x, y, ...) {
 }
 
 addLegend <- function(xc, yc, x, y, weight = NULL, dec = 3) {
-  tmp <- testfun(xc, yc, weight = weight)
-  if (!missing(x) & !missing(y)) {
-    rho <- cor.test(x, y)
-    tmp <- c(rho = formatCI(rho$estimate, rho$conf.int, dec), tmp)
-  }
+  tmp <- summclasses(xc, yc, x, y, weight = weight, dec = dec)
   legend("topleft", legend = paste(names(tmp), "=", tmp))
 }
 
@@ -383,8 +388,7 @@ w <- latex(tableS1,
 
 # Figure 1 and overview ########################################################
 
-
-# Overview
+# ABCGCB Overview
 pdf("figures/results_overview_ABCGCB.pdf", width = 7, height = 14)
 par(mfrow = c(4,2))
 for (study in studies.vec[-5]) {
@@ -410,6 +414,86 @@ for (study in studies.vec[-5]) {
   })
 }
 dev.off()
+
+# TABLE 3 ######################################################################
+
+
+comp.matrix <-   # To be filled
+  matrix("-", 4, 3, dimnames = list(studies.vec[-5], c("acc", "kappa", "rho")))
+drugs <- c("Cyclophosphamide", "Doxorubicin", "Vincristine", "Combined")
+
+# Add the weights for Cohens Kappa
+weights <- list()
+weights[["ABCGCB"]] <- ABCGCB.weights
+weights[["BAGS"]]   <- weightFun(6)
+weights[["REGS"]]   <- matrix(c(0,1,2,1,0,1,2,1,0), 3)/2
+
+subtab <- list()
+subtab[["ABCGCB"]][["onebyone"]] <- comp.matrix
+subtab[["ABCGCB"]][["refbased"]] <- comp.matrix
+subtab[["BAGS"]][["onebyone"]] <- comp.matrix
+subtab[["BAGS"]][["refbased"]] <- comp.matrix
+subtab[["REGS"]][["onebyone"]] <- comp.matrix
+subtab[["REGS"]][["refbased"]] <- comp.matrix
+
+for (study in studies.vec[-5]) {
+  # ABC/GCB
+  res <- results[["ABCGCB"]][[study]]
+
+  subtab[["ABCGCB"]][["onebyone"]][study, ] <-
+    with(res, summclasses(cohort.class, onebyone.class,
+                          logit(cohort.prob), logit(onebyone.prob),
+                          weight = weights$ABCGCB))
+  subtab[["ABCGCB"]][["refbased"]][study, ] <-
+    with(res, summclasses(cohort.class, refbased.class,
+                          logit(cohort.prob), logit(refbased.prob),
+                          weight = weights$ABCGCB))
+
+
+  # BAGS
+  res <- results[["BAGS"]][[study]]
+
+  subtab[["BAGS"]][["onebyone"]][study, -3] <-
+    testfun(res$cohort$class, res$onebyone$class, weight = weights$BAGS)
+  subtab[["BAGS"]][["refbased"]][study, -3] <-
+    testfun(res$cohort$class[names(res$refbased$class)], res$refbased$class,
+            weight = weights$BAGS)
+
+  # REGS
+  res <- results[["REGS"]][[study]]
+
+  subtab[["REGS"]][["onebyone"]][study, ] <-
+    summclasses(unlist(res$cohort$class), unlist(res$onebyone$class),
+                unlist(logit(res$cohort$prob)),unlist(logit(res$onebyone$prob)),
+                weight = weights$REGS)
+  coclass <- res$cohort$class[rownames(res$refbased$class), ]
+  coprob  <- res$cohort$prob[rownames(res$refbased$prob), ]
+  subtab[["REGS"]][["refbased"]][study, ] <-
+    summclasses(unlist(coclass), unlist(res$refbased$class),
+                unlist(logit(coprob)),unlist(logit(res$refbased$prob)),
+                weight = weights$REGS)
+}
+
+table3 <- do.call(rbind, lapply(subtab, function(x) do.call(cbind, x)))
+colnames(table3) <- rep(c(colnames(table2), "Pearson's $r$"), 2)
+rownames(table3) <- rep(names(studies.vec[-5]), 3)
+
+caption <- "Comparison of classifications obtained using cohort based
+normalisation and \\hemaClass{}.
+The classifications are compared in terms of accuracy, Cohen's weighted
+$\\kappa$, and Pearson's correlation coefficient $r$ all supplied with $95\\%$
+CIs. The comparisons in the first and last three columns are based on the
+one-by-one normalisation method and the reference based normalisation method,
+respectively."
+
+w <- latex(table3,
+           file = "tables/table3.tex",
+           title = "",
+           cgroup = gsub("ABCGCB", "ABC/GCB", names(results)),
+           rgroup = c("One-by-one normalisation", "Reference based"),
+           size = "scriptsize",
+           label = "tab:classALL",
+           caption = caption)
 
 
 
