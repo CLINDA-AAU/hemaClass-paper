@@ -140,7 +140,7 @@ To establish the classifiers the following datasets are used:
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
   \item[4] The Aalborg OCT (CHEPRETRO) cohort of 89 Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{Dybkaer2013}.
-  The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO www.lymphoma.dk) \citep{Gang2012}.
+  The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
   \item[5] The International DLBCL Rituximab-CHOP Consortium MD Anderson (IDRC) cohort of 470 DLBCL patients treated with R-CHOP first-line therapy.
   Detailed information about the cohort can be found in \citep{Visco2012}.
   \item[6] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (LLMPP R-CHOP) cohort of 233 DLBCL patients treated with R-CHOP first-line therapy.
@@ -163,7 +163,7 @@ This ensures identical classification probabilities whether data is supplied as 
 To accommodate laboratory and sample preparation specific effects different from the LLMPP CHOP reference data, \hemaClass{} allows the user to upload an alternative dataset which is to be used in place of LLMPP CHOP as reference.
 In this article the reference datasets have consisted of 30 samples.
 
-The three pre-processing methods will be referred to as cohort, one-by-one, and reference based normalisation.
+The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalisation.
 
 \subsection{Classification methods}
 
@@ -237,8 +237,7 @@ The classifications made by \hemaClass{} using the one-by-one and reference base
 
 \subsection{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalisation method a classifier based on regularised logistic regression was established.
-
-The classifications made by this classifier were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to Wright's method \citep{Wright2003,Lenz2008a}.
+The classifications by this classifier were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to Wright's method \citep{Wright2003,Lenz2008a} \todo{Call it something else that "Wright's method"?}.
 The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes weighted Cohen's $\kappa$ estimates.
