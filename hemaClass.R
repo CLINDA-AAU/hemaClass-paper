@@ -10,7 +10,7 @@
 
 # Initalization
 rm(list = ls()) # Clear global enviroment
-memory.limit(size = 60000)
+# memory.limit(size = 60000)  # If using a Windows machine
 
 # If any of the used packages are missing they will be installed.
 pkgs <- c("devtools", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
@@ -38,6 +38,8 @@ if (length(missing)) {
 library("hemaClass")  # Load the hemaclass package
 library("DLBCLdata")  # Package for data handling and download
 library("devtools")   # For source_url
+library("psych")
+library("Hmisc")      # For latex
 
 # Global variables
 recompute <- FALSE
@@ -78,18 +80,23 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
   rma[["ref.samples"]][[study]] <- ref.samples
 
   affy.batch.ref       <- affy.batch
-  affy.batch.ref$exprs <- affy.batch.ref$exprs[, rma$ref.samples[[study]]]
+  affy.batch.ref$exprs <- affy.batch.ref$exprs[,  ref.samples]
 
-  affy.batch.refbased  <- affy.batch
+  affy.batch.refbased       <- affy.batch
   affy.batch.refbased$exprs <-
     affy.batch.refbased$exprs[, setdiff(colnames(affy.batch$exprs),ref.samples)]
 
+  # Build reference
   rma[["reference"]][[study]] <- rmaPreprocessing(affy.batch.ref)
+
+  # RMA normalize using reference
   rma[["refbased"]][[study]]  <-
     rmaReference(affy.batch.refbased, rma[["reference"]][[study]])$exprs.sc
+  # rmaReference(affy.batch, rma[["reference"]][[study]])$exprs.sc
 
   rma <<- rma
 }
+
 
 
 ################################################################################
@@ -132,7 +139,7 @@ rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 # one-by-one (with and without study-based reference)
 ################################################################################
 
-if (is.null(rma$reference) || recompute || TRUE) {
+if (is.null(rma$reference) || recompute) {
 
   # First the overall reference is made using the LLMPP CHOP data
   normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE); gc()
@@ -152,23 +159,50 @@ if (is.null(rma$reference) || recompute || TRUE) {
 # Establish the results
 ################################################################################
 
+pp <- function(x) {  # Prepend variable name to colnames
+  colnames(x) <- paste0(deparse(substitute(x)), ".", colnames(x))
+  return(x)
+}
+
+merge.by.rownames <- function(x, y) {
+  ans <- merge(x, y, by = "row.names", all = TRUE)
+  rownames(ans) <- ans$Row.names
+  return(subset(ans, select = -Row.names))
+}
+
+studies.vec <- c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP", "LLMPPCHOP")
+names(studies.vec) <-  c(studies.vec[1:3], "LLMPP R-CHOP", "LLMPP CHOP")
+
 results <- list()
-for (study in c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP", "LLMPPCHOP")) {
-  message("Creating results for", study)
+for (study in studies.vec) {
+  message("Creating results for ", study)
 
   b <- (study != "LLMPPCHOP")
 
+  #
   # ABC/GCB
-  results[["ABCGCB"]][[study]]$cohort   <- ABCGCB(rma$cohort[[study]])
-  results[["ABCGCB"]][[study]]$refbased <- ABCGCB(rma$refbased[[study]])
-  if (b) results[["ABCGCB"]][[study]]$onebyone <- ABCGCB(rma$onebyone[[study]])
+  #
 
+  cohort          <- data.frame(ABCGCB(rma$cohort[[study]]))
+  refbased        <- data.frame(ABCGCB(rma$refbased[[study]]))
+  if (b) onebyone <- data.frame(ABCGCB(rma$onebyone[[study]]))
+
+  abcgcb <- merge.by.rownames(pp(cohort), pp(refbased))
+  if (b) abcgcb <- merge.by.rownames(abcgcb, pp(onebyone))
+  results[["ABCGCB"]][[study]] <- abcgcb
+
+  #
   # BAGS
+  #
+
   results[["BAGS"]][[study]]$cohort   <- BAGS(rma$cohort[[study]])
   results[["BAGS"]][[study]]$refbased <- BAGS(rma$refbased[[study]])
   if (b) results[["BAGS"]][[study]]$onebyone <- BAGS(rma$onebyone[[study]])
 
+  #
   # REGS, the classifier for Cyclophosphamide, Doxorubicin, and Vincristine:
+  #
+
   RC <- ResistanceClassifier
   results[["REGS"]][[study]]$cohort   <- RC(rma$cohort[[study]])
   results[["REGS"]][[study]]$refbased <- RC(rma$refbased[[study]])
@@ -177,48 +211,32 @@ for (study in c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP", "LLMPPCHOP")) {
 rm(RC)
 
 
+
 ################################################################################
 # Comparisons of the results
 ################################################################################
 
-library("psych")
-weight <- matrix(c(0, 1, 2, 1, 0, 1, 2, 1, 0), 3)/2
+# Aux functions
+formatCI <- function(est, ci, dec = 2) {
+  paste0(round(est, dec), " (", paste(round(ci, dec), collapse = ", "), ")")
+}
 
 testfun <- function(x, y, dec = 2, weight = NULL){
   tab <- table(x, y)
   acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
-  acc <- paste0(round(acc$estimate, dec),
-                " (", paste(round(acc$conf.int, dec), collapse = ","), ")")
+  acc <- formatCI(acc$estimate, acc$conf.int, dec)
+
   kap <- cohen.kappa(data.frame(x,y), w = weight)
-  conf.1 <- kap$confid[2,1]
-  conf.2 <- min(kap$confid[2,3],1)
-  kappa <- paste0(round(kap$weighted.kappa, dec),
-                  " (", round(conf.1, dec), ",", round(conf.2, dec), ")")
+  conf <- pmin(kap$confid[2, ], 1)
+  kappa <- formatCI(kap$weighted.kappa, conf)
 
   return(c("accuracy" = acc, "kappa" = kappa))
 }
 
-getLogit <- function(r, type.y, type.x = "cohort") {
-  y <- logit(r[[type.y]]$prob)
-  x <- logit(r[[type.x]]$prob)
-  x <- x[rownames(y), , drop = FALSE]
-  ans <- cbind(x, y)
-  colnames(ans) <- c(type.x, type.y)
-  return(as.data.frame(ans))
-}
-
-getClass <- function(r, type.y, type.x = "cohort") {
-  y <- r[[type.y]]$class
-  names(y) <- rownames(r[[type.y]]$prob)
-  x <- r[[type.x]]$class
-  names(x) <- rownames(r[[type.x]]$prob)
-  x <- x[names(y)]
-  ans <- data.frame(x, y)
-  colnames(ans) <- c(type.x, type.y)
-  return(ans)
-}
-
 plotline <- function(x, y, ...) {
+  isna <- is.na(x) | is.na(y)
+  x <- x[!isna]
+  y <- y[!isna]
   x[x == Inf | y == Inf] <- NaN
   y[y == Inf | x == Inf] <- NaN
 
@@ -228,50 +246,168 @@ plotline <- function(x, y, ...) {
   abline(intercept, slope, ...)
 }
 
-
-addLegend <- function(r, type, cor.test = NULL, dec = 3) {
-  tmp1 <- getClass(r, type)
-  tmp2 <- testfun(tmp1[,1], tmp1[,2], weight = weight)
-  if (!is.null(cor.test)) {
-    tmp3 <- paste0(round(cor.test$estimate, dec), " (",
-                   paste(round(cor.test$conf.int, dec), collapse = ", "), ")")
-    tmp2 <- c("correlation" = tmp3, tmp2)
+addLegend <- function(xc, yc, x, y, weight = NULL, dec = 3) {
+  tmp <- testfun(xc, yc, weight = weight)
+  if (!missing(x) & !missing(y)) {
+    rho <- cor.test(x, y)
+    tmp <- c(rho = formatCI(rho$estimate, rho$conf.int, dec), tmp)
   }
-  legend("topleft", legend = paste(names(tmp2), "=", tmp2))
+  legend("topleft", legend = paste(names(tmp), "=", tmp))
 }
 
+weightFun <- function(n){
+  weight <- matrix(1, n, n)
+  weight[ncol(weight), ] <- 0.5
+  weight[, nrow(weight)] <- 0.5
+  diag(weight) <- 0
+  return(weight)
+}
+
+reFactor <- function(x) {
+  x <- as.character(x)
+  x[x == "Unclassified"]  <- "NC"
+  factor(x, levels = c("ABC", "NC", "GCB"))
+}
 
 #
+# Load classifications by Wright's method
+#  and add to results-object
+#
+
+load("data/metadataCHEPRETRO.RData")
+load("data/metadataMDFCI.RData")
+load("data/metadataIDRC.RData")
+load("data/metadataLLMPPRCHOP.RData")
+
+metadataCHEPRETRO$WrightClass  <- reFactor(metadataCHEPRETRO$WrightClass)
+metadataMDFCI$WrightClass      <- reFactor(metadataMDFCI$WrightClass)
+metadataIDRC$WrightClass       <- reFactor(metadataIDRC$WrightClass)
+metadataLLMPPRCHOP$WrightClass <- reFactor(metadataLLMPPRCHOP$WrightClass)
+
+# Add these results to the results-object!
+# Add wright to CHEPRETRO
+tmp <- metadataCHEPRETRO[, c("WrightClass", "WrightProb")]
+colnames(tmp) <- c("wright.class", "wright.prob")
+# check order
+tmp1 <- gsub("GSM[0-9]+|_|-|\\(|\\)| ", "", metadataCHEPRETRO$file)
+tmp2 <- gsub("GSM[0-9]+|_|-|\\(|\\)| ", "", rownames(results$ABCGCB$CHEPRETRO))
+stopifnot(all(tmp1 == tmp2))
+rownames(tmp) <- rownames(results$ABCGCB$CHEPRETRO)
+results$ABCGCB$CHEPRETRO <- merge.by.rownames(results$ABCGCB$CHEPRETRO, tmp)
+
+# Add wright to MDFCI
+tmp <- metadataMDFCI[, "WrightClass", drop = FALSE]
+rownames(tmp)[!is.na(metadataMDFCI$HGU133Plus2)] <-
+  paste0(na.omit(metadataMDFCI$HGU133Plus2), ".CEL")
+colnames(tmp) <- "wright.class"
+results$ABCGCB$MDFCI <- merge.by.rownames(results$ABCGCB$MDFCI, tmp)
+
+# Add wright to IDRC
+tmp <- metadataIDRC[, "WrightClass", drop = FALSE]
+rownames(tmp) <- metadataIDRC$Array.Data.File
+colnames(tmp) <- "wright.class"
+results$ABCGCB$IDRC <- merge.by.rownames(results$ABCGCB$IDRC, tmp)
+
+# Add wright to LLMPP R-CHOP
+tmp <- metadataLLMPPRCHOP[, "WrightClass", drop = FALSE]
+rownames(tmp) <- paste0(metadataLLMPPRCHOP$GEO.ID, ".cel")
+colnames(tmp) <- "wright.class"
+results$ABCGCB$LLMPPRCHOP <- merge.by.rownames(results$ABCGCB$LLMPPRCHOP, tmp)
+
+
+
+################################################################################
 # ABC/GCB
-#
+################################################################################
 
-pdf("figures/results_overview_ABCGCB.pdf", width = 14)
-for (study in c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP")) {
+# TABLE 2 ######################################################################
+
+ABCGCB.weights <- matrix(c(0,1,2,1,0,1,2,1,0), 3)/2
+
+table2 <- matrix(nrow = 4, ncol = 2)
+rownames(table2) <- names(studies.vec[-5])
+colnames(table2) <- c("Rate of agreement", "Cohen's $\\kappa$")
+
+for (i in seq_len(nrow(table2))) {
+  table2[i, ] <-
+    with(results[["ABCGCB"]][[studies.vec[i]]],
+         testfun(cohort.class, wright.class, weight = ABCGCB.weights))
+}
+
+caption <- "Comparison of ABC/GCB classification performed using Wright's
+method and the established elastic net classifier based on cohort normalisation
+for both. The first column shows the rate of agreement between the classifiers
+with $95\\%$ CI. The second column shows the Cohen's $\\kappa$ and $95\\%$ CI."
+
+# Create latex table
+w <- latex(table2, file = "tables/table2.tex",
+           title = "",
+           caption = caption,
+           label = "tab:ABCGCBclassifier",
+           size = "small")
+
+
+
+# TABLE S1 #####################################################################
+
+confuseABCGCB <- list();
+for (study in studies.vec[-5]) {
+  tmp <- results$ABCGCB[[study]]
+  confuseABCGCB[[study]][["wright"]]   <- table(wright = tmp$wright.class,
+                                                cohort = tmp$cohort.class)
+  confuseABCGCB[[study]][["onebyone"]] <- table(wright = tmp$onebyone.class,
+                                                cohort = tmp$cohort.class)
+  confuseABCGCB[[study]][["refbased"]] <- table(wright = tmp$refbased.class,
+                                                cohort = tmp$cohort.class)
+}
+
+tableS1 <- do.call(cbind, lapply(confuseABCGCB, function(l) do.call(rbind, l)))
+
+caption <- "Confusion tables for the ABC/GCB classifiers.
+The columns represent cohort based normalisation using the ABC/GCB classifier
+based on elastic net.
+The first part of the table compares Wright's method for ABC/GCB classification
+with the elastic net based.
+In the second and third part one-by-one and reference based normalisation is
+compared to cohort based normalisation using the ABC/GCB classifier based on
+elastic net."
+
+w <- latex(tableS1,
+           file = "tables/tableS1.tex",
+           title = "",
+           cgroup = names(studies.vec[-5]),
+           rgroup = c("Wright's method", "One-by-one", "Reference based"),
+           size = "footnotesize",
+           label = "tab:confusionABCGCBHEMA",
+           caption = caption)
+
+# Figure 1 and overview ########################################################
+
+
+# Overview
+pdf("figures/results_overview_ABCGCB.pdf", width = 7, height = 14)
+par(mfrow = c(4,2))
+for (study in studies.vec[-5]) {
   res <- results[["ABCGCB"]][[study]]
-
-  par(mfrow = c(1,2))
-
-  # ONE BY ONE
-  with(as.data.frame(getLogit(res, "onebyone")), {
-    plot(cohort, onebyone)
+  with(res, {
+    # ONE BY ONE
+    plot(logit(cohort.prob), logit(onebyone.prob), main = study)
     abline(0, 1, lty = 2, lwd = 2)
     abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
            lwd = 2, lty = 2)
-    addLegend(res, "onebyone", cor.test(cohort, onebyone))
-    plotline(cohort, onebyone, col = "red")
-  })
+    addLegend(cohort.class, onebyone.class,
+              logit(cohort.prob), logit(onebyone.prob), weight = ABCGCB.weights)
+    plotline(logit(cohort.prob), logit(onebyone.prob), col = "red")
 
-  # REF BASED
-  with(A <- as.data.frame(getLogit(res, "refbased")), {
-    plot(cohort, refbased)
+    # REF BASED
+    plot(logit(cohort.prob), logit(refbased.prob), main = study)
     abline(0, 1, lty = 2, lwd = 2)
     abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
            lwd = 2, lty = 2)
-    addLegend(res, "refbased", cor.test(cohort, refbased))
-    plotline(cohort, refbased, col = "red")
+    addLegend(cohort.class, refbased.class,
+              logit(cohort.prob), logit(refbased.prob), weight = ABCGCB.weights)
+    plotline(logit(cohort.prob), logit(refbased.prob), col = "red")
   })
-
-  title(main = study, sub = "ABC/GCB classification", outer = TRUE, line = -1)
 }
 dev.off()
 

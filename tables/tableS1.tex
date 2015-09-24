@@ -1,31 +1,36 @@
-\begin{table*}[!tbp]
-\footnotesize
+%latex.default(tableS1, file = "tables/tableS1.tex", title = "",     cgroup = names(studies.vec[-5]), rgroup = c("Wright's method",         "One-by-one", "Reference based"), size = "footnotesize",     label = "tab:confusionABCGCBHEMA", caption = caption)%
+\begin{table}[!tbp]
+{\footnotesize
 \caption{Confusion tables for the ABC/GCB classifiers.
-The columns represent cohort based normalisation using the ABC/GCB classifier based on elastic net.
-The first part of the table compares Wright's method for ABC/GCB classification with the elastic net based.
-In the second and third part one-by-one and reference based normalisation is compared to cohort based normalisation using the ABC/GCB classifier based on elastic net.\label{tab:confusionABCGCBHEMA}}
+The columns represent cohort based normalisation using the ABC/GCB classifier
+based on elastic net.
+The first part of the table compares Wright's method for ABC/GCB classification
+with the elastic net based.
+In the second and third part one-by-one and reference based normalisation is
+compared to cohort based normalisation using the ABC/GCB classifier based on
+elastic net.\label{tab:confusionABCGCBHEMA}} 
 \begin{center}
 \begin{tabular}{lrrrcrrrcrrrcrrr}
 \hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP RCHOP}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}\tabularnewline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP R-CHOP}\tabularnewline
 \cline{2-4} \cline{6-8} \cline{10-12} \cline{14-16}
 \multicolumn{1}{l}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{ABC}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{GCB}\tabularnewline
 \hline
 {\bfseries Wright's method}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$28$&$ 2$&$ 0$&&$176$&$23$&$  0$&&$89$&$ 4$&$  0$&&$38$&$2$&$ 0$\tabularnewline
-~~NC&$ 2$&$19$&$ 1$&&$  6$&$26$&$ 12$&&$ 6$&$19$&$  8$&&$ 1$&$4$&$ 0$\tabularnewline
-~~GCB&$ 0$&$ 5$&$33$&&$  6$&$38$&$183$&&$ 0$&$ 5$&$102$&&$ 0$&$3$&$41$\tabularnewline
+~~ABC&$38$&$2$&$ 0$&&$28$&$14$&$ 0$&&$174$&$23$&$  1$&&$90$&$ 3$&$  0$\tabularnewline
+~~NC&$ 1$&$4$&$ 0$&&$ 1$&$11$&$ 3$&&$  6$&$26$&$ 12$&&$ 6$&$19$&$  8$\tabularnewline
+~~GCB&$ 0$&$2$&$42$&&$ 0$&$ 1$&$29$&&$  5$&$31$&$189$&&$ 0$&$ 5$&$102$\tabularnewline
 \hline
 {\bfseries One-by-one}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$23$&$ 0$&$ 0$&&$ 89$&$ 0$&$  0$&&$76$&$ 0$&$  0$&&$34$&$0$&$ 0$\tabularnewline
-~~NC&$ 7$&$ 4$&$ 0$&&$ 95$&$15$&$  0$&&$19$&$ 7$&$  0$&&$ 5$&$2$&$ 0$\tabularnewline
-~~GCB&$ 0$&$22$&$34$&&$  4$&$72$&$195$&&$ 0$&$21$&$110$&&$ 0$&$7$&$41$\tabularnewline
+~~ABC&$34$&$0$&$ 0$&&$24$&$ 0$&$ 0$&&$ 95$&$ 0$&$  0$&&$76$&$ 0$&$  0$\tabularnewline
+~~NC&$ 5$&$2$&$ 0$&&$ 6$&$ 4$&$ 0$&&$102$&$19$&$  0$&&$20$&$ 6$&$  0$\tabularnewline
+~~GCB&$ 0$&$6$&$42$&&$ 0$&$22$&$35$&&$  4$&$67$&$208$&&$ 0$&$21$&$110$\tabularnewline
 \hline
 {\bfseries Reference based}&&&&&&&&&&&&&&&\tabularnewline
-~~ABC&$17$&$ 0$&$ 0$&&$177$&$43$&$  0$&&$85$&$ 6$&$  0$&&$26$&$2$&$ 0$\tabularnewline
-~~NC&$ 1$&$13$&$ 0$&&$  1$&$38$&$ 58$&&$ 0$&$20$&$  6$&&$ 0$&$3$&$ 3$\tabularnewline
-~~GCB&$ 0$&$ 5$&$24$&&$  0$&$ 2$&$121$&&$ 0$&$ 0$&$ 86$&&$ 0$&$0$&$25$\tabularnewline
+~~ABC&$29$&$6$&$ 0$&&$16$&$ 0$&$ 0$&&$153$&$ 0$&$  0$&&$89$&$22$&$  3$\tabularnewline
+~~NC&$ 0$&$1$&$ 4$&&$ 2$&$12$&$ 0$&&$ 32$&$36$&$  0$&&$ 0$&$ 0$&$ 28$\tabularnewline
+~~GCB&$ 0$&$0$&$19$&&$ 0$&$ 6$&$25$&&$  0$&$42$&$202$&&$ 0$&$ 0$&$ 61$\tabularnewline
 \hline
-\end{tabular}
-\end{center}
-\end{table*}
+\end{tabular}\end{center}}
+
+\end{table}
