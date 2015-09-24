@@ -2,6 +2,8 @@
 #
 # Master script for the hemaclass paper
 #
+#   Anders Ellern Bilgray & Steffen Falgreen
+#
 ################################################################################
 
 # NOTE: Running this script needs more approx 50 GBs of free disk space
@@ -49,7 +51,10 @@ if (file.exists(saved.file)) { load(saved.file) }
 # Auxiliary functions
 ################################################################################
 
-# # Load the resave function
+# Logit function
+logit <- function(p) log(p/(1-p))
+
+# Load the resave function
 source_url(
   "https://raw.githubusercontent.com/AEBilgrau/Bmisc/master/R/resave.R"
 )
@@ -68,18 +73,20 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
       rmaReference(affy.batch, rma[["reference"]][["global"]])$exprs.sc
   }
 
-  rma[["ref.samples"]][[study]] <- sample(colnames(affy.batch$exprs), nsamples)
-  affy.batch.ref <- affy.batch
+  # Select the nsamples at random for reference
+  ref.samples <- sample(colnames(affy.batch$exprs), nsamples)
+  rma[["ref.samples"]][[study]] <- ref.samples
+
+  affy.batch.ref       <- affy.batch
   affy.batch.ref$exprs <- affy.batch.ref$exprs[, rma$ref.samples[[study]]]
 
-  affy.batch.refbased <- affy.batch
+  affy.batch.refbased  <- affy.batch
   affy.batch.refbased$exprs <-
-    affy.batch.refbased$exprs[, setdiff(colnames(affy.batch$exprs),
-                                        rma$ref.samples[[study]])]
+    affy.batch.refbased$exprs[, setdiff(colnames(affy.batch$exprs),ref.samples)]
 
   rma[["reference"]][[study]] <- rmaPreprocessing(affy.batch.ref)
   rma[["refbased"]][[study]]  <-
-    rmaReference(affy.batch.ref, rma[["reference"]][[study]])$exprs.sc
+    rmaReference(affy.batch.refbased, rma[["reference"]][[study]])$exprs.sc
 
   rma <<- rma
 }
@@ -125,13 +132,14 @@ rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 # one-by-one (with and without study-based reference)
 ################################################################################
 
-if (is.null(rma$reference) || recompute) {
+if (is.null(rma$reference) || recompute || TRUE) {
 
   # First the overall reference is made using the LLMPP CHOP data
   normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE); gc()
 
   # Next the other datasets are nomalized according to LLMPPCHOP
-  # and a 30 sample study based reference
+  # and the 30 sample study based reference
+  set.seed(1154538003)
   normalizer(study = "LLMPPRCHOP", gse = "GSE10846"); gc()
   normalizer(study = "MDFCI",      gse = "GSE34171"); gc()
   normalizer(study = "IDRC",       gse = "GSE31312"); gc()
@@ -145,39 +153,138 @@ if (is.null(rma$reference) || recompute) {
 ################################################################################
 
 results <- list()
-for (study in c("LLMPPCHOP", "LLMPPRCHOP", "MDFCI", "CHEPRETRO")) {
+for (study in c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP", "LLMPPCHOP")) {
+  message("Creating results for", study)
 
-  if (study != "LLMPPCHOP") {
-
-    results[["ABCGCB"]][[study]]$cohort <- ABCGCB(rma$cohort[[study]])
-    results[["BAGS"]][[study]]$cohort   <- BAGS(rma$cohort[[study]])
-    results[["REGS"]][[study]]$cohort   <- ResistanceClassifier(rma$cohort[[study]])
-
-  }
+  b <- (study != "LLMPPCHOP")
 
   # ABC/GCB
+  results[["ABCGCB"]][[study]]$cohort   <- ABCGCB(rma$cohort[[study]])
   results[["ABCGCB"]][[study]]$refbased <- ABCGCB(rma$refbased[[study]])
-  results[["ABCGCB"]][[study]]$onebyone <- ABCGCB(rma$onebyone[[study]])
+  if (b) results[["ABCGCB"]][[study]]$onebyone <- ABCGCB(rma$onebyone[[study]])
 
   # BAGS
+  results[["BAGS"]][[study]]$cohort   <- BAGS(rma$cohort[[study]])
   results[["BAGS"]][[study]]$refbased <- BAGS(rma$refbased[[study]])
-  results[["BAGS"]][[study]]$onebyone <- BAGS(rma$onebyone[[study]])
+  if (b) results[["BAGS"]][[study]]$onebyone <- BAGS(rma$onebyone[[study]])
 
-  # REGS
-  # The classifier for Cyclophosphamide, Doxorubicin, and Vincristine:
-  results[["REGS"]][[study]]$refbased <- ResistanceClassifier(rma$refbased[[study]])
-  results[["REGS"]][[study]]$onebyone <- ResistanceClassifier(rma$onebyone[[study]])
-
+  # REGS, the classifier for Cyclophosphamide, Doxorubicin, and Vincristine:
+  RC <- ResistanceClassifier
+  results[["REGS"]][[study]]$cohort   <- RC(rma$cohort[[study]])
+  results[["REGS"]][[study]]$refbased <- RC(rma$refbased[[study]])
+  if (b) results[["REGS"]][[study]]$onebyone <- RC(rma$onebyone[[study]])
 }
+rm(RC)
+
 
 ################################################################################
 # Comparisons of the results
 ################################################################################
 
+library("psych")
+weight <- matrix(c(0, 1, 2, 1, 0, 1, 2, 1, 0), 3)/2
+
+testfun <- function(x, y, dec = 2, weight = NULL){
+  tab <- table(x, y)
+  acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
+  acc <- paste0(round(acc$estimate, dec),
+                " (", paste(round(acc$conf.int, dec), collapse = ","), ")")
+  kap <- cohen.kappa(data.frame(x,y), w = weight)
+  conf.1 <- kap$confid[2,1]
+  conf.2 <- min(kap$confid[2,3],1)
+  kappa <- paste0(round(kap$weighted.kappa, dec),
+                  " (", round(conf.1, dec), ",", round(conf.2, dec), ")")
+
+  return(c("accuracy" = acc, "kappa" = kappa))
+}
+
+getLogit <- function(r, type.y, type.x = "cohort") {
+  y <- logit(r[[type.y]]$prob)
+  x <- logit(r[[type.x]]$prob)
+  x <- x[rownames(y), , drop = FALSE]
+  ans <- cbind(x, y)
+  colnames(ans) <- c(type.x, type.y)
+  return(as.data.frame(ans))
+}
+
+getClass <- function(r, type.y, type.x = "cohort") {
+  y <- r[[type.y]]$class
+  names(y) <- rownames(r[[type.y]]$prob)
+  x <- r[[type.x]]$class
+  names(x) <- rownames(r[[type.x]]$prob)
+  x <- x[names(y)]
+  ans <- data.frame(x, y)
+  colnames(ans) <- c(type.x, type.y)
+  return(ans)
+}
+
+plotline <- function(x, y, ...) {
+  x[x == Inf | y == Inf] <- NaN
+  y[y == Inf | x == Inf] <- NaN
+
+  r <- prcomp(~x + y)
+  slope <- r$rotation[2, 1]/r$rotation[1, 1]
+  intercept <- r$center[2] - slope*r$center[1]
+  abline(intercept, slope, ...)
+}
+
+
+addLegend <- function(r, type, cor.test = NULL, dec = 3) {
+  tmp1 <- getClass(r, type)
+  tmp2 <- testfun(tmp1[,1], tmp1[,2], weight = weight)
+  if (!is.null(cor.test)) {
+    tmp3 <- paste0(round(cor.test$estimate, dec), " (",
+                   paste(round(cor.test$conf.int, dec), collapse = ", "), ")")
+    tmp2 <- c("correlation" = tmp3, tmp2)
+  }
+  legend("topleft", legend = paste(names(tmp2), "=", tmp2))
+}
+
+
+#
+# ABC/GCB
+#
+
+pdf("figures/results_overview_ABCGCB.pdf", width = 14)
+for (study in c("CHEPRETRO", "MDFCI", "IDRC", "LLMPPRCHOP")) {
+  res <- results[["ABCGCB"]][[study]]
+
+  par(mfrow = c(1,2))
+
+  # ONE BY ONE
+  with(as.data.frame(getLogit(res, "onebyone")), {
+    plot(cohort, onebyone)
+    abline(0, 1, lty = 2, lwd = 2)
+    abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
+           lwd = 2, lty = 2)
+    addLegend(res, "onebyone", cor.test(cohort, onebyone))
+    plotline(cohort, onebyone, col = "red")
+  })
+
+  # REF BASED
+  with(A <- as.data.frame(getLogit(res, "refbased")), {
+    plot(cohort, refbased)
+    abline(0, 1, lty = 2, lwd = 2)
+    abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
+           lwd = 2, lty = 2)
+    addLegend(res, "refbased", cor.test(cohort, refbased))
+    plotline(cohort, refbased, col = "red")
+  })
+
+  title(main = study, sub = "ABC/GCB classification", outer = TRUE, line = -1)
+}
+dev.off()
 
 
 
 
+
+
+
+
+
+
+#
 sink(file = "sessionInfo.txt")
 print(sessionInfo())
 sink()
