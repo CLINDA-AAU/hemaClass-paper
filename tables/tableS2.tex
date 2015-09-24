@@ -1,46 +1,48 @@
-
-\begin{table*}[!tbp]
-\small
-\caption{\textbf{Confusion tables for the BAGS classifier.} One-by-one and reference based normalisation are shown in the columns and cohort normalisation in the rows.\label{tab:BAGShemaclass}}
+%latex.default(tableS2, file = "tables/tableS2.tex", title = "",     rgroup = flip(studies.vec)[names(subtab)], cgroup = c("One-by-one normalisation",         "Reference based"), size = "small", label = "tab:BAGShemaclass",     caption = caption)%
+\begin{table}[!tbp]
+{\small
+\caption{Confusion tables for the BAGS classifier.} One-by-one and reference
+based normalisation are shown in the columns and cohort normalisation in the
+rows.\label{tab:BAGShemaclass}} 
 \begin{center}
 \begin{tabular}{lrrrrrrcrrrrrr}
 \hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{6}{c}{\bfseries One-by-one normalisation}&\multicolumn{1}{c}{\bfseries }&\multicolumn{6}{c}{\bfseries Reference based normalisation}\tabularnewline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{6}{c}{\bfseries One-by-one normalisation}&\multicolumn{1}{c}{\bfseries }&\multicolumn{6}{c}{\bfseries Reference based}\tabularnewline
 \cline{2-7} \cline{9-14}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{NC}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{NC}\tabularnewline
-\hline
-{\bfseries MDFCI}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$1$&$ 0$&$  0$&$1$&$ 5$&$0$&&$6$&$ 1$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centroblast&$0$&$16$&$  0$&$0$&$ 0$&$0$&&$1$&$12$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centrocyte&$0$&$ 6$&$  9$&$2$&$11$&$3$&&$0$&$ 1$&$ 15$&$ 0$&$ 1$&$ 1$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$5$&$ 0$&$0$&&$0$&$ 0$&$  0$&$ 2$&$ 0$&$ 1$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$11$&$0$&&$0$&$ 0$&$  0$&$ 0$&$ 7$&$ 0$\tabularnewline
-~~Non classified&$0$&$ 5$&$  0$&$2$&$10$&$3$&&$0$&$ 3$&$  1$&$ 0$&$ 1$&$ 7$\tabularnewline
-\hline
-{\bfseries IDRC}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$0$&$ 0$&$  3$&$0$&$ 3$&$2$&&$5$&$ 0$&$  1$&$ 0$&$ 0$&$ 1$\tabularnewline
-~~Centroblast&$0$&$17$&$ 32$&$0$&$27$&$1$&&$0$&$39$&$ 12$&$ 0$&$ 0$&$19$\tabularnewline
-~~Centrocyte&$0$&$ 0$&$137$&$0$&$28$&$0$&&$0$&$ 0$&$149$&$ 0$&$ 1$&$ 6$\tabularnewline
-~~Memory&$0$&$ 0$&$  1$&$9$&$15$&$1$&&$0$&$ 0$&$  0$&$22$&$ 1$&$ 2$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  3$&$0$&$59$&$0$&&$0$&$ 0$&$  0$&$ 0$&$58$&$ 0$\tabularnewline
-~~Non classified&$0$&$ 0$&$ 37$&$1$&$92$&$2$&&$0$&$ 0$&$ 16$&$ 4$&$37$&$67$\tabularnewline
-\hline
-{\bfseries LLMPP R-CHOP}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$1$&$ 1$&$  0$&$0$&$ 5$&$3$&&$6$&$ 0$&$  1$&$ 0$&$ 0$&$ 2$\tabularnewline
-~~Centroblast&$0$&$34$&$  0$&$0$&$ 4$&$1$&&$0$&$14$&$ 11$&$ 0$&$ 0$&$ 9$\tabularnewline
-~~Centrocyte&$0$&$ 5$&$ 56$&$1$&$18$&$3$&&$0$&$ 0$&$ 74$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$7$&$ 9$&$1$&&$0$&$ 0$&$  1$&$11$&$ 0$&$ 5$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$26$&$0$&&$0$&$ 0$&$  1$&$ 0$&$20$&$ 2$\tabularnewline
-~~Non classified&$0$&$ 5$&$  0$&$0$&$44$&$9$&&$0$&$ 0$&$ 24$&$ 0$&$ 7$&$15$\tabularnewline
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{UC}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{N}&\multicolumn{1}{c}{CB}&\multicolumn{1}{c}{CC}&\multicolumn{1}{c}{M}&\multicolumn{1}{c}{PB}&\multicolumn{1}{c}{UC}\tabularnewline
 \hline
 {\bfseries CHEPRETRO}&&&&&&&&&&&&&\tabularnewline
-~~Naive&$0$&$ 0$&$  0$&$0$&$ 1$&$0$&&$0$&$ 0$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centroblast&$0$&$16$&$  0$&$0$&$ 0$&$0$&&$0$&$13$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
-~~Centrocyte&$0$&$13$&$ 14$&$0$&$ 6$&$2$&&$0$&$ 1$&$ 19$&$ 0$&$ 1$&$ 2$\tabularnewline
-~~Memory&$0$&$ 0$&$  0$&$3$&$ 0$&$1$&&$0$&$ 0$&$  0$&$ 1$&$ 0$&$ 0$\tabularnewline
-~~Plasmablast&$0$&$ 0$&$  0$&$0$&$14$&$0$&&$0$&$ 0$&$  0$&$ 0$&$10$&$ 0$\tabularnewline
-~~Non classified&$1$&$ 9$&$  0$&$1$&$ 6$&$2$&&$2$&$ 0$&$  0$&$ 0$&$ 0$&$10$\tabularnewline
+~~Naive&$1$&$ 0$&$  0$&$0$&$ 0$&$ 1$&&$2$&$ 0$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
+~~Centroblast&$0$&$18$&$  0$&$0$&$ 0$&$ 0$&&$0$&$ 9$&$  0$&$ 0$&$ 0$&$ 3$\tabularnewline
+~~Centrocyte&$0$&$11$&$ 10$&$0$&$ 5$&$ 9$&&$0$&$ 0$&$ 14$&$ 1$&$ 2$&$ 2$\tabularnewline
+~~Memory&$0$&$ 0$&$  0$&$3$&$ 0$&$ 1$&&$0$&$ 0$&$  0$&$ 4$&$ 0$&$ 0$\tabularnewline
+~~Plasmablast&$0$&$ 0$&$  0$&$0$&$16$&$ 0$&&$0$&$ 0$&$  0$&$ 2$&$ 8$&$ 0$\tabularnewline
+~~Unclassified&$0$&$ 7$&$  0$&$0$&$ 4$&$ 3$&&$1$&$ 0$&$  1$&$ 4$&$ 2$&$ 4$\tabularnewline
 \hline
-\end{tabular}
-\end{center}
-\end{table*}
+{\bfseries MDFCI}&&&&&&&&&&&&&\tabularnewline
+~~Naive&$1$&$ 1$&$  0$&$1$&$ 2$&$ 3$&&$4$&$ 0$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
+~~Centroblast&$0$&$18$&$  0$&$0$&$ 1$&$ 0$&&$0$&$14$&$  0$&$ 0$&$ 0$&$ 0$\tabularnewline
+~~Centrocyte&$0$&$ 8$&$  8$&$2$&$ 9$&$ 6$&&$0$&$ 0$&$ 21$&$ 0$&$ 0$&$ 0$\tabularnewline
+~~Memory&$0$&$ 0$&$  0$&$6$&$ 0$&$ 0$&&$0$&$ 0$&$  0$&$ 4$&$ 0$&$ 0$\tabularnewline
+~~Plasmablast&$0$&$ 0$&$  0$&$0$&$11$&$ 0$&&$0$&$ 0$&$  0$&$ 0$&$ 5$&$ 1$\tabularnewline
+~~Unclassified&$0$&$ 1$&$  0$&$1$&$ 7$&$ 5$&&$1$&$ 0$&$  0$&$ 2$&$ 0$&$ 9$\tabularnewline
+\hline
+{\bfseries IDRC}&&&&&&&&&&&&&\tabularnewline
+~~Naive&$0$&$ 0$&$  3$&$0$&$ 6$&$ 4$&&$9$&$ 0$&$  1$&$ 0$&$ 0$&$ 2$\tabularnewline
+~~Centroblast&$0$&$17$&$ 28$&$0$&$25$&$22$&&$0$&$65$&$ 15$&$ 0$&$ 0$&$ 8$\tabularnewline
+~~Centrocyte&$0$&$ 0$&$141$&$0$&$39$&$17$&&$1$&$ 1$&$174$&$ 2$&$ 0$&$ 6$\tabularnewline
+~~Memory&$0$&$ 0$&$  1$&$8$&$19$&$11$&&$0$&$ 0$&$  1$&$35$&$ 0$&$ 1$\tabularnewline
+~~Plasmablast&$0$&$ 0$&$  2$&$0$&$74$&$ 3$&&$0$&$ 0$&$  4$&$ 4$&$53$&$11$\tabularnewline
+~~Unclassified&$0$&$ 0$&$ 14$&$0$&$43$&$18$&&$2$&$ 0$&$ 11$&$15$&$ 2$&$42$\tabularnewline
+\hline
+{\bfseries LLMPP R-CHOP}&&&&&&&&&&&&&\tabularnewline
+~~Naive&$1$&$ 2$&$  0$&$0$&$ 5$&$ 6$&&$8$&$ 1$&$  0$&$ 2$&$ 0$&$ 2$\tabularnewline
+~~Centroblast&$0$&$35$&$  0$&$0$&$ 2$&$ 4$&&$0$&$37$&$  1$&$ 0$&$ 0$&$ 0$\tabularnewline
+~~Centrocyte&$0$&$ 7$&$ 53$&$0$&$15$&$14$&&$0$&$ 5$&$ 60$&$ 1$&$ 1$&$ 9$\tabularnewline
+~~Memory&$0$&$ 0$&$  0$&$5$&$12$&$ 5$&&$0$&$ 0$&$  0$&$19$&$ 0$&$ 1$\tabularnewline
+~~Plasmablast&$0$&$ 0$&$  0$&$0$&$32$&$ 0$&&$0$&$ 0$&$  0$&$ 1$&$23$&$ 3$\tabularnewline
+~~Unclassified&$0$&$ 2$&$  0$&$0$&$27$&$ 6$&&$1$&$ 4$&$  2$&$ 3$&$ 3$&$16$\tabularnewline
+\hline
+\end{tabular}\end{center}}
+
+\end{table}

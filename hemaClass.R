@@ -415,6 +415,8 @@ for (study in studies.vec[-5]) {
 }
 dev.off()
 
+
+
 # TABLE 3 ######################################################################
 
 
@@ -496,13 +498,45 @@ w <- latex(table3,
            caption = caption)
 
 
+# TABLE S2 #####################################################################
+
+subtab <- list()
+for (study in studies.vec[-5]) {
+  # BAGS
+  res <- results[["BAGS"]][[study]]
+
+  subtab[[study]][["onebyone"]] <-
+    table(cohort = res$cohort$class,
+          onebyone = res$onebyone$class)
+  subtab[[study]][["refbased"]] <-
+    table(cohort = res$cohort$class[names(res$refbased$class)],
+          refbased = res$refbased$class)
+}
 
 
+tableS2 <- do.call(rbind, lapply(subtab, function(x) do.call(cbind, x)))
+abbrev <- c("Naive" = "N", "Centroblast" = "CB", "Centrocyte" = "CC",
+            "Memory" = "M",  "Plasmablast" = "PB", "Unclassified" = "UC")
+colnames(tableS2) <- abbrev[colnames(tableS2)]
 
+flip <- function(x) {
+  ans <- names(x)
+  names(ans) <- x
+  return(ans)
+}
 
+caption <- "Confusion tables for the BAGS classifier.} One-by-one and reference
+based normalisation are shown in the columns and cohort normalisation in the
+rows."
 
-
-
+w <- latex(tableS2,
+           file = "tables/tableS2.tex",
+           title = "",
+           rgroup = flip(studies.vec)[names(subtab)],
+           cgroup = c("One-by-one normalisation", "Reference based"),
+           size = "small",
+           label = "tab:BAGShemaclass",
+           caption = caption)
 
 #
 sink(file = "sessionInfo.txt")
