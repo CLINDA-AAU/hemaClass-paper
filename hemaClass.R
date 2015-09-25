@@ -633,12 +633,17 @@ w <- latex(tableS4,
 # FIGURE 2 FIGURE 3 ############################################################
 
 subplot <- function(x, y,
-                    cut.x = logit(c(0.1,0.9)),
+                    cut.x,
                     cut.y = cut.x,
                     col1 = "lightgreen",
                     col2 = "#FFA0A0",
                     ...) {
-  plot(x, y, type = "n", xlab = "", ylab = "", axes = FALSE, ...)
+  tmp <- c(x, y)
+  tmp <- tmp[is.finite(tmp)]
+  rng <- range(tmp, na.rm = TRUE)
+  plot(x, y, type = "n", xlab = "", ylab = "", axes = FALSE,
+       xlim = rng, ylim = rng,
+       ...)
 
   grid()
 
@@ -662,13 +667,14 @@ subplot <- function(x, y,
   plotline(x, y, col = "black", lwd = 1)
 }
 
-myplot <- function(x1, y1, x2, y2, panel = c("A", "B"), ...) {
+myplot <- function(x1, y1, x2, y2, panel = c("A", "B"),
+                   cut.x, cut.y1 = cut.x, cut.y2 = cut.y1, ...) {
   # ONE BY ONE
-  subplot(x1, y1, ...)
+  subplot(x1, y1, cut.x = cut.x, cut.y = cut.y1, ...)
   mtext(panel[1], font = 2, adj = -0.1, line = 0.5, cex = 1.2)
 
   # REF BASED
-  subplot(x2, y2, ...)
+  subplot(x2, y2, cut.x = cut.x, cut.y = cut.y2, ...)
   mtext(panel[2], font = 2, adj = -0.1, line = 0.5, cex = 1.2)
 }
 
@@ -690,7 +696,8 @@ pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
   x <-  logit(res$cohort.prob)
   y1 <- logit(res$refbased.prob)
   y2 <- logit(res$onebyone.prob)
-  myplot(x1 = x, x2 = x, y1, y2, panel = c("A", "B"), main = "ABC/GCB")
+  myplot(x1 = x, x2 = x, y1, y2, panel = c("A", "B"), main = "ABC/GCB",
+         cut.x = logit(c(0.1, 0.9)), asp = 1)
 
   # REGS
   res <- results$REGS$CHEPRETRO
@@ -705,7 +712,7 @@ pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
     stopifnot(all.equal(cut.y, res$onebyone$cut[[drug]]))
     myplot(x1, y1, x2, y2, panel = LETTERS[i + 0:1],
            main = paste0("REGS (", drug, ")"),
-           cut.x = cut.x, cut.y)
+           cut.x = cut.x, cut.y1 = cut.y, asp = 1)
     i <- i + 2
   }
 
@@ -741,8 +748,8 @@ pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
     myplot(x1, y1, x2, y2, panel = LETTERS[i + 0:1],
            main = subtype,
            col1 = col.data$col[col.data$cell == subtype],
-           col2 = "White",
-           cut.x = cut.x, cut.y1)
+           col2 = "White", asp = 1,
+           cut.x = cut.x, cut.y1 = cut.y1, cut.y2 = cut.y2)
     i <- i + 1
   }
 
