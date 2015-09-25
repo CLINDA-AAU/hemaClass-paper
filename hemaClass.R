@@ -50,8 +50,22 @@ saved.file <- "saved.RData"
 if (file.exists(saved.file)) { load(saved.file) }
 
 ################################################################################
-# Auxiliary functions
+# Auxiliary functions / objects
 ################################################################################
+
+# Colour information
+col.data <-
+  data.frame(col   = c("#3257A4", "#99991E", "#7F170F", "#71C7D9", "#7EBB46",
+                       "#A44392", "#F59E20", "#F3E628", "#E9521C",
+                       "red", "blue", "grey"),
+             cell  = c("Immature", "Pre-BI", "Pre-BII", "Naive","Centroblast",
+                       "Centrocyte", "Memory",  "Plasmablast", "Plasmacell",
+                       "ABC", "GCB", "Unclassified"),
+             abr   = c("I", "PreB1", "PreBII", "N", "CB", "CC", "M",  "PB", "PC",
+                       "ABC", "GCB", "UC"),
+             order = 1:12, stringsAsFactors = FALSE)
+rownames(col.data) <- col.data$abr
+
 
 # Logit function
 logit <- function(p) log(p/(1-p))
@@ -409,9 +423,8 @@ w <- latex(tableS1,
            label = "tab:confusionABCGCBHEMA",
            caption = caption)
 
-# Figure 1 and overview ########################################################
+# ABC/GCB Overview ############################################################
 
-# ABC/GCB Overview
 pdf("figures/results_overview_ABCGCB.pdf", width = 7, height = 14)
 par(mfrow = c(4,2))
 for (study in studies.vec[-5]) {
@@ -615,6 +628,129 @@ w <- latex(tableS4,
            size = "small",
            label = "tab:confusiondrugreference",
            caption = captionS4)
+
+
+# FIGURE 2 FIGURE 3 ############################################################
+
+subplot <- function(x, y,
+                    cut.x = logit(c(0.1,0.9)),
+                    cut.y = cut.x,
+                    col1 = "lightgreen",
+                    col2 = "#FFA0A0",
+                    ...) {
+  plot(x, y, type = "n", xlab = "", ylab = "", axes = FALSE, ...)
+
+  grid()
+
+  rect(-100, -100, 100, 100, col = "grey95")
+  rect(max(cut.x), max(cut.y),  100,  100, col = col1, border = NA)
+  rect(min(cut.x), min(cut.y), -100, -100, col = col1, border = NA)
+  rect(min(cut.x), max(cut.y), -100,  100, col = col2, border = NA)
+  rect(max(cut.x), min(cut.y),  100, -100, col = col2, border = NA)
+  abline(0, 1, lty = 2, lwd = 2, col = "darkgrey")
+
+  axis(1)
+  axis(2)
+  box()
+
+  points(x, y, pch = 16, col = "#000000A0")
+
+  cc <- cor.test(x, y)
+  rval <- formatCI(cc$estimate, cc$conf.int, dec = 4)
+  leg <- bquote(italic(r) == .(rval))
+  legend("bottomright", legend = leg, bty = "n")
+  plotline(x, y, col = "black", lwd = 1)
+}
+
+myplot <- function(x1, y1, x2, y2, panel = c("A", "B"), ...) {
+  # ONE BY ONE
+  subplot(x1, y1, ...)
+  mtext(panel[1], font = 2, adj = -0.1, line = 0.5, cex = 1.2)
+
+  # REF BASED
+  subplot(x2, y2, ...)
+  mtext(panel[2], font = 2, adj = -0.1, line = 0.5, cex = 1.2)
+}
+
+
+
+#
+# Plot FIGURE 2
+# ABC/GCB + REGS
+#
+
+f <- 0.5
+pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
+{
+
+  par(mfrow = c(5, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
+
+  # ABC/GCB:
+  res <- results$ABCGCB$CHEPRETRO
+  x <-  logit(res$cohort.prob)
+  y1 <- logit(res$refbased.prob)
+  y2 <- logit(res$onebyone.prob)
+  myplot(x1 = x, x2 = x, y1, y2, panel = c("A", "B"), main = "ABC/GCB")
+
+  # REGS
+  res <- results$REGS$CHEPRETRO
+  i <- 3
+  for (drug in drugs) {
+    x2 <- logit(res$cohort$prob[, drug])
+    y1 <- logit(res$refbased$prob[, drug])
+    x1 <- x2[names(y1)]
+    y2 <- logit(res$onebyone$prob[, drug])
+    cut.x <- res$cohort$cut[[drug]]
+    cut.y <- res$refbased$cut[[drug]]
+    stopifnot(all.equal(cut.y, res$onebyone$cut[[drug]]))
+    myplot(x1, y1, x2, y2, panel = LETTERS[i + 0:1],
+           main = paste0("REGS (", drug, ")"),
+           cut.x = cut.x, cut.y)
+    i <- i + 2
+  }
+
+  mtext("Cohort based classification", side = 1, outer = TRUE)
+  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -2)
+  mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
+}
+dev.off()
+
+
+#
+# Plot FIGURE 3
+# BAGS
+#
+
+pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
+{
+
+  par(mfrow = c(5, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
+
+  # BAGS
+  res <- results$BAGS$CHEPRETRO
+  i <- 1
+  for (subtype in names(abbrev)[-6]) {
+    x2 <- logit(res$cohort$prob.mat[, subtype])
+    y1 <- logit(res$refbased$prob.mat[, subtype])
+    x1 <- x2[names(y1)]
+    y2 <- logit(res$onebyone$prob.mat[, subtype])
+    cut.x <- c(-100, res$cohort$cut)
+    cut.y1 <- c(-100, res$refbased$cut)
+    cut.y2 <- c(-100, res$onebyone$cut)
+
+    myplot(x1, y1, x2, y2, panel = LETTERS[i + 0:1],
+           main = subtype,
+           col1 = col.data$col[col.data$cell == subtype],
+           col2 = "White",
+           cut.x = cut.x, cut.y1)
+    i <- i + 1
+  }
+
+  mtext("Cohort based classification", side = 1, outer = TRUE)
+  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -2)
+  mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
+}
+dev.off()
 
 
 ################################################################################
