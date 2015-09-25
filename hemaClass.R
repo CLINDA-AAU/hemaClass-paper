@@ -157,7 +157,7 @@ weightFun <- function(n) {
 # Rename and reorder ABC/GCB factors
 reFactor <- function(x) {
   x <- as.character(x)
-  x[x == "Unclassified"]  <- "NC"
+  x[x == "Unclassified" | x == "UC"]  <- "NC"
   factor(x, levels = c("ABC", "NC", "GCB"))
 }
 
@@ -291,47 +291,58 @@ rm(RC)
 #  and add to results-object
 #
 
-load("data/metadataCHEPRETRO.RData")
-load("data/metadataMDFCI.RData")
-load("data/metadataIDRC.RData")
-load("data/metadataLLMPPRCHOP.RData")
-
-metadataCHEPRETRO$WrightClass  <- reFactor(metadataCHEPRETRO$WrightClass)
-metadataMDFCI$WrightClass      <- reFactor(metadataMDFCI$WrightClass)
-metadataIDRC$WrightClass       <- reFactor(metadataIDRC$WrightClass)
-metadataLLMPPRCHOP$WrightClass <- reFactor(metadataLLMPPRCHOP$WrightClass)
-
 # Add these results to the results-object!
 # Add wright to CHEPRETRO
-tmp <- metadataCHEPRETRO[, c("WrightClass", "WrightProb")]
-colnames(tmp) <- c("wright.class", "wright.prob")
+metadataCHEPRETRO <-
+  dat$GSE56315$metadata[, "characteristics_ch1.5", drop = FALSE]
+names(metadataCHEPRETRO) <- "wright.class"
+levels(metadataCHEPRETRO$wright.class) <- c("", "ABC", "GCB", "Unclassified")
+metadataCHEPRETRO <-
+  metadataCHEPRETRO[metadataCHEPRETRO$wright.class != "", , drop = FALSE]
+metadataCHEPRETRO$wright.class <- reFactor(metadataCHEPRETRO$wright.class)
+
 # check order
-tmp1 <- gsub("GSM[0-9]+|_|-|\\(|\\)| ", "", metadataCHEPRETRO$file)
-tmp2 <- gsub("GSM[0-9]+|_|-|\\(|\\)| ", "", rownames(results$ABCGCB$CHEPRETRO))
-stopifnot(all(tmp1 == tmp2))
+tmp <- metadataCHEPRETRO
+tmp1 <- rownames(metadataCHEPRETRO)
+tmp2 <- gsub("(GSM[0-9]+)_.+", "\\1", rownames(results$ABCGCB$CHEPRETRO))
+stopifnot(all(tmp1 == tmp2))  # Make sure the sorting is the same
 rownames(tmp) <- rownames(results$ABCGCB$CHEPRETRO)
+
 results$ABCGCB$CHEPRETRO <- merge.by.rownames(results$ABCGCB$CHEPRETRO, tmp)
 
 # Add wright to MDFCI
-tmp <- metadataMDFCI[, "WrightClass", drop = FALSE]
-rownames(tmp)[!is.na(metadataMDFCI$HGU133Plus2)] <-
-  paste0(na.omit(metadataMDFCI$HGU133Plus2), ".CEL")
-colnames(tmp) <- "wright.class"
+metadataMDFCI <- read.csv(file = "data/metadataMDFCI.csv", row.names = 1)
+metadataMDFCI$wright.class <- reFactor(metadataMDFCI$wright.class)
+tmp <- metadataMDFCI[, "wright.class", drop = FALSE]
+notna <- !is.na(metadataMDFCI$HGU133Plus2)
+tmp <- tmp[notna, , drop = FALSE]
+rownames(tmp) <- paste0(metadataMDFCI$HGU133Plus2[notna], ".CEL")
+
 results$ABCGCB$MDFCI <- merge.by.rownames(results$ABCGCB$MDFCI, tmp)
 
 # Add wright to IDRC
-tmp <- metadataIDRC[, "WrightClass", drop = FALSE]
-rownames(tmp) <- metadataIDRC$Array.Data.File
-colnames(tmp) <- "wright.class"
+metadataIDRC <- dat$GSE31312$metadata[, "characteristics_ch1", drop = FALSE]
+
+names(metadataIDRC) <- "wright.class"
+metadataIDRC$wright.class <- gsub("gene expression profiling subgroup: ", "",
+                                 metadataIDRC$wright.class)
+metadataIDRC$wright.class <- reFactor(metadataIDRC$wright.class)
+
+tmp <- metadataIDRC[, "wright.class", drop = FALSE]
+rownames(tmp) <- paste0(rownames(tmp), ".CEL")
 results$ABCGCB$IDRC <- merge.by.rownames(results$ABCGCB$IDRC, tmp)
 
 # Add wright to LLMPP R-CHOP
-tmp <- metadataLLMPPRCHOP[, "WrightClass", drop = FALSE]
-rownames(tmp) <- paste0(metadataLLMPPRCHOP$GEO.ID, ".cel")
-colnames(tmp) <- "wright.class"
+metadataLLMPPRCHOP <- dat$GSE10846$metadata[, "WrightClass", drop = FALSE]
+metadataLLMPPRCHOP$wright.class <- reFactor(metadataLLMPPRCHOP$WrightClass)
+
+tmp <- metadataLLMPPRCHOP[, "wright.class", drop = FALSE]
+rownames(tmp) <- gsub(".CEL", ".cel", rownames(metadataLLMPPRCHOP))
 results$ABCGCB$LLMPPRCHOP <- merge.by.rownames(results$ABCGCB$LLMPPRCHOP, tmp)
 
-
+# Remove
+na <- rowSums(!is.na(subset(results$ABCGCB$LLMPPRCHOP, select = -wright.class)))
+results$ABCGCB$LLMPPRCHOP <- results$ABCGCB$LLMPPRCHOP[na != 0, ]
 
 ################################################################################
 # ABC/GCB
@@ -584,8 +595,8 @@ One-by-one normalisation are shown in the rows and cohort normalisation in the
 columns."
 
 captionS4 <- "Confusion tables for the REGS classifiers.
-One-by-one normalisation are shown in the rows and cohort normalisation in the
-columns."
+Reference based normalisation are shown in the rows and cohort normalisation in
+the columns."
 
 w <- latex(tableS3,
            file = "tables/tableS3.tex",
