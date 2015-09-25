@@ -134,6 +134,9 @@ rma[["cohort"]][["MDFCI"]]      <- microarrayScale(exprs(dat$GSE34171$es$GPL570)
 rma[["cohort"]][["IDRC"]]       <- microarrayScale(exprs(dat$GSE31312$es$Batch1))
 rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 
+
+
+
 ################################################################################
 # RMA normalization
 # one-by-one (with and without study-based reference)
@@ -388,7 +391,7 @@ w <- latex(tableS1,
 
 # Figure 1 and overview ########################################################
 
-# ABCGCB Overview
+# ABC/GCB Overview
 pdf("figures/results_overview_ABCGCB.pdf", width = 7, height = 14)
 par(mfrow = c(4,2))
 for (study in studies.vec[-5]) {
@@ -418,7 +421,6 @@ dev.off()
 
 
 # TABLE 3 ######################################################################
-
 
 comp.matrix <-   # To be filled
   matrix("-", 4, 3, dimnames = list(studies.vec[-5], c("acc", "kappa", "rho")))
@@ -499,6 +501,7 @@ w <- latex(table3,
 
 
 # TABLE S2 #####################################################################
+# BAGS table
 
 subtab <- list()
 for (study in studies.vec[-5]) {
@@ -538,7 +541,64 @@ w <- latex(tableS2,
            label = "tab:BAGShemaclass",
            caption = caption)
 
-#
+
+
+
+# TABLE S3, TABLE S4 ###########################################################
+# REGS supp. tables
+
+drugs <- c("Cyclophosphamide", "Doxorubicin", "Vincristine", "Combined")
+subtab <- list()
+for (study in studies.vec[-5]) {
+  res <- results[["REGS"]][[study]]
+
+  for (drug in drugs) {
+    subtab[["onebyone"]][[drug]][[study]] <-
+      table(cohort = res$cohort$class[, drug],
+            onebyone = res$onebyone$class[, drug])
+    subtab[["refbased"]][[drug]][[study]] <-
+      table(cohort = res$cohort$class[rownames(res$refbased$class), drug],
+            refbased = res$refbased$class[, drug])
+  }
+}
+
+tableS3 <- do.call(rbind, lapply(subtab$onebyone, function(x) do.call(cbind,x)))
+tableS4 <- do.call(rbind, lapply(subtab$refbased, function(x) do.call(cbind,x)))
+
+abbrev2 <- c("Sensitive" = "Sen", "Intermediate" = "Int", "Resistant" = "Res")
+
+colnames(tableS3) <- abbrev2[colnames(tableS3)]
+colnames(tableS4) <- abbrev2[colnames(tableS4)]
+
+captionS3 <- "Confusion tables for the REGS classifiers.
+One-by-one normalisation are shown in the rows and cohort normalisation in the
+columns."
+
+captionS4 <- "Confusion tables for the REGS classifiers.
+One-by-one normalisation are shown in the rows and cohort normalisation in the
+columns."
+
+w <- latex(tableS3,
+           file = "tables/tableS3.tex",
+           title = "",
+           rgroup = names(subtab$onebyone),
+           cgroup = flip(studies.vec)[names(subtab$onebyone[[1]])],
+           size = "small",
+           label = "tab:confusiondrugonebyone",
+           caption = captionS3)
+
+w <- latex(tableS4,
+           file = "tables/tableS4.tex",
+           title = "",
+           rgroup = names(subtab$refbased),
+           cgroup = flip(studies.vec)[names(subtab$refbased[[1]])],
+           size = "small",
+           label = "tab:confusiondrugreference",
+           caption = captionS4)
+
+
+################################################################################
+
 sink(file = "sessionInfo.txt")
 print(sessionInfo())
 sink()

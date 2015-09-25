@@ -1,34 +1,36 @@
-
-\begin{table*}[!tbp]
-\small
-\caption{\textbf{Confusion tables for the REGS classifiers.} One-by-one normalisation are shown in the rows and cohort normalisation in the columns.\label{tab:confusiondrugonebyone}}
+%latex.default(tableS3, file = "tables/tableS3.tex", title = "",     rgroup = names(subtab$onebyone), cgroup = flip(studies.vec)[names(subtab$onebyone[[1]])],     size = "small", label = "tab:confusiondrugonebyone", caption = captionS3)%
+\begin{table}[!tbp]
+{\small
+\caption{Confusion tables for the REGS classifiers.
+One-by-one normalisation are shown in the rows and cohort normalisation in the
+columns.\label{tab:confusiondrugonebyone}} 
 \begin{center}
 \begin{tabular}{lrrrcrrrcrrrcrrr}
 \hline\hline
-\multicolumn{1}{l}{\bfseries  }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP R-CHOP}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}\tabularnewline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries CHEPRETRO}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries MDFCI}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries IDRC}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries LLMPP R-CHOP}\tabularnewline
 \cline{2-4} \cline{6-8} \cline{10-12} \cline{14-16}
 \multicolumn{1}{l}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Sen}&\multicolumn{1}{c}{Int}&\multicolumn{1}{c}{Res}\tabularnewline
 \hline
 {\bfseries Cyclophosphamide}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$23$&$ 4$&$ 0$&&$111$&$189$&$170$&&$76$&$16$&$ 0$&&$26$&$ 2$&$ 0$\tabularnewline
-~~Intermediate&$ 4$&$31$&$ 2$&&$  0$&$  0$&$  0$&&$ 1$&$62$&$31$&&$ 1$&$37$&$ 4$\tabularnewline
-~~Resistant&$ 0$&$ 3$&$23$&&$  0$&$  0$&$  0$&&$ 0$&$ 0$&$47$&&$ 0$&$ 0$&$19$\tabularnewline
+~~Sensitive&$40$&$ 1$&$ 0$&&$34$&$ 5$&$ 0$&&$178$&$  0$&$  0$&&$107$&$ 3$&$ 0$\tabularnewline
+~~Intermediate&$ 5$&$18$&$ 0$&&$ 0$&$15$&$ 6$&&$114$&$  0$&$  0$&&$  7$&$33$&$ 1$\tabularnewline
+~~Resistant&$ 0$&$ 3$&$22$&&$ 0$&$ 1$&$30$&&$203$&$  0$&$  0$&&$  0$&$14$&$68$\tabularnewline
 \hline
 {\bfseries Doxorubicin}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$28$&$33$&$ 6$&&$ 23$&$  0$&$  0$&&$78$&$77$&$14$&&$30$&$21$&$ 0$\tabularnewline
-~~Intermediate&$ 0$&$ 0$&$12$&&$ 80$&$ 12$&$  0$&&$ 0$&$ 0$&$45$&&$ 0$&$ 6$&$15$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$11$&&$ 36$&$164$&$155$&&$ 0$&$ 0$&$19$&&$ 0$&$ 0$&$17$\tabularnewline
+~~Sensitive&$30$&$ 0$&$ 0$&&$29$&$ 0$&$ 0$&&$ 25$&$ 86$&$ 39$&&$ 77$&$ 0$&$ 0$\tabularnewline
+~~Intermediate&$21$&$ 6$&$ 0$&&$32$&$ 0$&$ 0$&&$  0$&$  6$&$170$&&$ 78$&$ 1$&$ 0$\tabularnewline
+~~Resistant&$ 0$&$14$&$18$&&$ 6$&$12$&$12$&&$  0$&$  0$&$169$&&$ 12$&$44$&$21$\tabularnewline
 \hline
 {\bfseries Vincristine}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$32$&$26$&$ 1$&&$ 40$&$  1$&$  1$&&$78$&$59$&$11$&&$36$&$ 8$&$ 1$\tabularnewline
-~~Intermediate&$ 0$&$ 1$&$15$&&$ 89$&$ 14$&$  3$&&$ 0$&$15$&$36$&&$ 0$&$ 8$&$ 9$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$15$&&$ 33$&$134$&$155$&&$ 0$&$ 0$&$34$&&$ 0$&$ 0$&$27$\tabularnewline
+~~Sensitive&$36$&$ 0$&$ 0$&&$33$&$ 0$&$ 0$&&$ 40$&$ 91$&$ 34$&&$ 78$&$ 0$&$ 0$\tabularnewline
+~~Intermediate&$ 7$&$ 9$&$ 0$&&$24$&$ 2$&$ 0$&&$  1$&$ 17$&$136$&&$ 59$&$15$&$ 0$\tabularnewline
+~~Resistant&$ 1$&$ 9$&$27$&&$ 1$&$14$&$17$&&$  1$&$  2$&$173$&&$ 11$&$36$&$34$\tabularnewline
 \hline
 {\bfseries Combined}&&&&&&&&&&&&&&&\tabularnewline
-~~Sensitive&$29$&$30$&$ 5$&&$ 63$&$  0$&$  0$&&$78$&$77$&$14$&&$31$&$21$&$ 0$\tabularnewline
-~~Intermediate&$ 0$&$ 0$&$16$&&$ 64$&$ 84$&$  2$&&$ 0$&$ 0$&$44$&&$ 0$&$ 8$&$13$\tabularnewline
-~~Resistant&$ 0$&$ 0$&$10$&&$  4$&$ 99$&$154$&&$ 0$&$ 0$&$20$&&$ 0$&$ 0$&$16$\tabularnewline
+~~Sensitive&$32$&$ 0$&$ 0$&&$33$&$ 0$&$ 0$&&$134$&$ 15$&$  1$&&$ 87$&$ 0$&$ 0$\tabularnewline
+~~Intermediate&$19$&$ 9$&$ 0$&&$27$&$ 1$&$ 0$&&$ 18$&$143$&$ 22$&&$ 70$&$ 0$&$ 0$\tabularnewline
+~~Resistant&$ 0$&$13$&$16$&&$ 2$&$14$&$14$&&$  0$&$ 24$&$138$&&$ 15$&$43$&$18$\tabularnewline
 \hline
-\end{tabular}
-\end{center}
-\end{table*}
+\end{tabular}\end{center}}
+
+\end{table}
