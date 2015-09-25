@@ -226,7 +226,7 @@ testfun <- function(x, y, dec = 2, weight = NULL){
   acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
   acc <- formatCI(acc$estimate, acc$conf.int, dec)
 
-  kap <- cohen.kappa(data.frame(x, y), w = weight)
+  kap <- cohen.kappa(tab, w = weight)
   conf <- pmin(kap$confid[2, c("lower", "upper")], 1)
   kappa <- formatCI(kap$weighted.kappa, conf)
 
