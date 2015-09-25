@@ -9,6 +9,7 @@
 # NOTE: Running this script needs more approx 50 GBs of free disk space
 
 # Initalization
+set.seed(2207447033) # Set random seed
 rm(list = ls()) # Clear global enviroment
 # memory.limit(size = 60000)  # If using a Windows machine
 
