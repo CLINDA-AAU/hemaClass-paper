@@ -97,23 +97,56 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
   rma <<- rma
 }
 
-#function for comparing results
-testfun <- function(x, y, dec = 2, weight){
-  a <- table(x, y)
-  acc <- binom.test(c(sum(diag(a)),sum(a)-sum(diag(a))))
-  acc <- paste(round(acc$estimate, dec),
-               " (", paste(round(acc$conf.int, dec), collapse = ","), ")", sep = "")
 
-  kap <- cohen.kappa(data.frame(x,y), w=weight)
-  conf.1 <- kap$confid[2,1]
-  conf.2 <- min(kap$confid[2,3],1)
-  kappa <- paste(round(kap$weighted.kappa, dec),
-                 " (", round(conf.1, dec), ",", round(conf.2, dec), ")", sep = "")
-
-  c(acc, kappa)
+# Format confidence intervals
+formatCI <- function(est, ci, dec = 2) {
+  paste0(round(est, dec), " (", paste(round(ci, dec), collapse = ", "), ")")
 }
 
-weightFun <- function(n){
+# Functions for comparing results
+testfun <- function(x, y, dec = 2, weight = NULL){
+  tab <- table(x, y)
+  acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
+  acc <- formatCI(acc$estimate, acc$conf.int, dec)
+
+  kap <- cohen.kappa(tab, w = weight)
+  conf <- pmin(kap$confid[2, c("lower", "upper")], 1)
+  kappa <- formatCI(kap$weighted.kappa, conf)
+
+  return(c("accuracy" = acc, "kappa" = kappa))
+}
+
+summclasses <- function(xc, yc, x, y, weight = NULL, dec = 3) {
+  ans <- testfun(xc, yc, weight = weight)
+  if (!missing(x) & !missing(y)) {
+    rho <- cor.test(x, y)
+    ans <- c(ans, rho = formatCI(rho$estimate, rho$conf.int, dec))
+  }
+  return(ans)
+}
+
+# Add orthogonal regression (total least squares) line
+plotline <- function(x, y, ...) {
+  isna <- is.na(x) | is.na(y)
+  x <- x[!isna]
+  y <- y[!isna]
+  x[x == Inf | y == Inf] <- NaN
+  y[y == Inf | x == Inf] <- NaN
+
+  r <- prcomp(~x + y)
+  slope <- r$rotation[2, 1]/r$rotation[1, 1]
+  intercept <- r$center[2] - slope*r$center[1]
+  abline(intercept, slope, ...)
+}
+
+# Helper function for adding legends to plots
+addLegend <- function(xc, yc, x, y, weight = NULL, dec = 3) {
+  tmp <- summclasses(xc, yc, x, y, weight = weight, dec = dec)
+  legend("topleft", legend = paste(names(tmp), "=", tmp))
+}
+
+# Function to create weightes for Cohen's weighted kappa
+weightFun <- function(n) {
   weight <- matrix(1, n, n)
   weight[ncol(weight), ] <- 0.5
   weight[, nrow(weight)] <- 0.5
@@ -121,16 +154,13 @@ weightFun <- function(n){
   return(weight)
 }
 
-testfunCor <- function(x, y){
-
-  logit <- function(p) log(p/(1-p))
-
-  cort <- cor.test(logit(x), logit(y))
-
-  leg <- paste0(round(cort$estimate, 2),
-                " (", paste(round(cort$conf.int, 2), collapse = ","), ")")
-  return(leg)
+# Rename and reorder ABC/GCB factors
+reFactor <- function(x) {
+  x <- as.character(x)
+  x[x == "Unclassified"]  <- "NC"
+  factor(x, levels = c("ABC", "NC", "GCB"))
 }
+
 
 
 ################################################################################
@@ -162,8 +192,6 @@ for (gse in as.character(studies$GSE)) {
 if (!exists("rma", inherits = FALSE) || recompute) {
   rma <- list()
 }
-
-
 
 rma[["cohort"]][["LLMPPCHOP"]]  <- microarrayScale(exprs(dat$GSE10846$es$CHOP))
 rma[["cohort"]][["LLMPPRCHOP"]] <- microarrayScale(exprs(dat$GSE10846$es$'R-CHOP'))
@@ -254,108 +282,9 @@ for (study in studies.vec) {
 rm(RC)
 
 
-
-
-
 ################################################################################
 # Comparisons of the results
 ################################################################################
-comparison <- list()
-
-comp.matrix <- matrix("-", nrow = length(studies.vec), ncol = 3,
-                      dimnames = list(studies.vec,
-                                      c("Accuracy", "Kappa", "rho")))
-
-# Add the weights for Cohens Kappa
-comparison[["ABCGCB"]]$weight <- matrix(c(0,1,2,1,0,1,2,1,0), 3) / 2
-comparison[["BAGS"]]$weights  <- weightFun(6)
-comparison[["REGS"]]$weights  <- weightFun(3)
-
-comparison[["ABCGCB"]][["onebyone"]]$result <- comp.matrix
-comparison[["ABCGCB"]][["refbased"]]$result <- comp.matrix
-
-comparison[["BAGS"]][["onebyone"]]$result <- comp.matrix
-comparison[["BAGS"]][["refbased"]]$result <- comp.matrix
-
-comparison[["REGS"]][["onebyone"]]$result <- comp.matrix
-comparison[["REGS"]][["refbased"]]$result <- comp.matrix
-
-
-for(study in studies.vec){
-  comparison[["ABCGCB"]][["onebyone"]][[study]]<- table(c("ABC", "NC", "GCB"), c("ABC", "NC", "GCB"))
-  comparison[["ABCGCB"]][["refbased"]][[study]] <- table(c("ABC", "NC", "GCB"), c("ABC", "NC", "GCB"))
-
-  comparison[["BAGS"]][["onebyone"]][[study]] <- table(c("N", "CB", "CC", "M", "PB"), c("N", "CB", "CC", "M", "PB"))
-  comparison[["BAGS"]][["refbased"]][[study]] <- table(c("N", "CB", "CC", "M", "PB"), c("N", "CB", "CC", "M", "PB"))
-
-  for(drug in c("Cyclophosphamide", "Doxorubicin", "Vincristine", "Combined")){
-    comparison[["REGS"]][["onebyone"]][[study]][[drug]] <- table(c("Sensitive", "Intermediate", "Resistant"), c("Sensitive", "Intermediate", "Resistant"))
-    comparison[["REGS"]][["refbased"]][[study]][[drug]] <- table(c("Sensitive", "Intermediate", "Resistant"), c("Sensitive", "Intermediate", "Resistant"))
-  }
-}
-
-
-
-
-
-
-# Aux functions
-formatCI <- function(est, ci, dec = 2) {
-  paste0(round(est, dec), " (", paste(round(ci, dec), collapse = ", "), ")")
-}
-
-testfun <- function(x, y, dec = 2, weight = NULL){
-  tab <- table(x, y)
-  acc <- binom.test(c(sum(diag(tab)), sum(tab) - sum(diag(tab))))
-  acc <- formatCI(acc$estimate, acc$conf.int, dec)
-
-  kap <- cohen.kappa(tab, w = weight)
-  conf <- pmin(kap$confid[2, c("lower", "upper")], 1)
-  kappa <- formatCI(kap$weighted.kappa, conf)
-
-  return(c("accuracy" = acc, "kappa" = kappa))
-}
-
-summclasses <- function(xc, yc, x, y, weight = NULL, dec = 3) {
-  ans <- testfun(xc, yc, weight = weight)
-  if (!missing(x) & !missing(y)) {
-    rho <- cor.test(x, y)
-    ans <- c(ans, rho = formatCI(rho$estimate, rho$conf.int, dec))
-  }
-  return(ans)
-}
-
-plotline <- function(x, y, ...) {
-  isna <- is.na(x) | is.na(y)
-  x <- x[!isna]
-  y <- y[!isna]
-  x[x == Inf | y == Inf] <- NaN
-  y[y == Inf | x == Inf] <- NaN
-
-  r <- prcomp(~x + y)
-  slope <- r$rotation[2, 1]/r$rotation[1, 1]
-  intercept <- r$center[2] - slope*r$center[1]
-  abline(intercept, slope, ...)
-}
-
-addLegend <- function(xc, yc, x, y, weight = NULL, dec = 3) {
-  tmp <- summclasses(xc, yc, x, y, weight = weight, dec = dec)
-  legend("topleft", legend = paste(names(tmp), "=", tmp))
-}
-
-weightFun <- function(n){
-  weight <- matrix(1, n, n)
-  weight[ncol(weight), ] <- 0.5
-  weight[, nrow(weight)] <- 0.5
-  diag(weight) <- 0
-  return(weight)
-}
-
-reFactor <- function(x) {
-  x <- as.character(x)
-  x[x == "Unclassified"]  <- "NC"
-  factor(x, levels = c("ABC", "NC", "GCB"))
-}
 
 #
 # Load classifications by Wright's method
