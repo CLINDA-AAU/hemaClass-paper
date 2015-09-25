@@ -548,7 +548,7 @@ flip <- function(x) {
   return(ans)
 }
 
-caption <- "Confusion tables for the BAGS classifier.} One-by-one and reference
+caption <- "Confusion tables for the BAGS classifier. One-by-one and reference
 based normalisation are shown in the columns and cohort normalisation in the
 rows."
 
