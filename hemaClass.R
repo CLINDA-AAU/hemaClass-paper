@@ -14,7 +14,7 @@ rm(list = ls()) # Clear global enviroment
 # memory.limit(size = 60000)  # If using a Windows machine
 
 # If any of the used packages are missing they will be installed.
-pkgs <- c("devtools", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
+pkgs <- c("rgdal", "psych", "devtools", "Hmisc", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
           "RcppEigen", "testthat", "WriteXLS", "RLumShiny", "gdata",
           "Biobase", "affy", "affyio", "preprocessCore", "BiocInstaller",
           "AnnotationDbi", "GEOquery", "GEOquery", "oligo",
@@ -23,11 +23,11 @@ missing <- setdiff(pkgs, installed.packages()[, "Package"])
 
 if (length(missing)) {
   # Packages from CRAN
-  install.packages(pkgs[1:10])
+  install.packages(pkgs[1:12])
 
   # Packages form Bioconductor
   source("http://bioconductor.org/biocLite.R")
-  biocLite(pkgs[11:19])
+  biocLite(pkgs[13:21])
 
   # Packages from github
   devtools::install_github("AnalytixWare/ShinySky")
@@ -99,7 +99,7 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
 
   affy.batch.refbased       <- affy.batch
   affy.batch.refbased$exprs <-
-    affy.batch.refbased$exprs[, setdiff(colnames(affy.batch$exprs),ref.samples)]
+    affy.batch.refbased$exprs[, setdiff(colnames(affy.batch$exprs), ref.samples)]
 
   # Build reference
   rma[["reference"]][[study]] <- rmaPreprocessing(affy.batch.ref)
@@ -295,6 +295,8 @@ for (study in studies.vec) {
 
 }
 rm(RC)
+
+
 
 
 ################################################################################
@@ -527,8 +529,8 @@ respectively."
 w <- latex(table3,
            file = "tables/table3.tex",
            title = "",
-           cgroup = gsub("ABCGCB", "ABC/GCB", names(results)),
-           rgroup = c("One-by-one normalisation", "Reference based"),
+           rgroup = gsub("ABCGCB", "ABC/GCB", names(results)),
+           cgroup = c("One-by-one pre-processing", "Reference based pre-processing"),
            size = "scriptsize",
            label = "tab:classALL",
            caption = caption)
@@ -634,7 +636,7 @@ w <- latex(tableS4,
 # FIGURE 2 FIGURE 3 ############################################################
 
 subplot <- function(x, y,
-                    cut.x,
+                    cut.x = NULL,
                     cut.y = cut.x,
                     col1 = "lightgreen",
                     col2 = "#FFA0A0",
@@ -648,11 +650,16 @@ subplot <- function(x, y,
 
   grid()
 
-  rect(-100, -100, 100, 100, col = "grey95")
-  rect(max(cut.x), max(cut.y),  100,  100, col = col1, border = NA)
-  rect(min(cut.x), min(cut.y), -100, -100, col = col1, border = NA)
-  rect(min(cut.x), max(cut.y), -100,  100, col = col2, border = NA)
-  rect(max(cut.x), min(cut.y),  100, -100, col = col2, border = NA)
+  rect(rng[1] - abs(rng[1]*10), rng[1] - abs(rng[1]*10),
+       rng[2] + abs(rng[2]*10), rng[2] + abs(rng[2]*10), col = "grey95")
+
+  if(!is.null((cut.x))){
+    rect(max(cut.x), max(cut.y),  100,  100, col = col1, border = NA)
+    rect(min(cut.x), min(cut.y), -100, -100, col = col1, border = NA)
+    rect(min(cut.x), max(cut.y), -100,  100, col = col2, border = NA)
+    rect(max(cut.x), min(cut.y),  100, -100, col = col2, border = NA)
+  }
+
   abline(0, 1, lty = 2, lwd = 2, col = "darkgrey")
 
   axis(1)
@@ -669,7 +676,7 @@ subplot <- function(x, y,
 }
 
 myplot <- function(x1, y1, x2, y2, panel = c("A", "B"),
-                   cut.x, cut.y1 = cut.x, cut.y2 = cut.y1, ...) {
+                   cut.x = NULL, cut.y1 = cut.x, cut.y2 = cut.y1, ...) {
   # ONE BY ONE
   subplot(x1, y1, cut.x = cut.x, cut.y = cut.y1, ...)
   mtext(panel[1], font = 2, adj = -0.1, line = 0.5, cex = 1.2)
@@ -695,19 +702,19 @@ pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
   # ABC/GCB:
   res <- results$ABCGCB$CHEPRETRO
   x <-  logit(res$cohort.prob)
-  y1 <- logit(res$refbased.prob)
-  y2 <- logit(res$onebyone.prob)
-  myplot(x1 = x, x2 = x, y1, y2, panel = c("A", "B"), main = "ABC/GCB",
+  y1 <- logit(res$onebyone.prob)
+  y2 <- logit(res$refbased.prob)
+  myplot(x1 = x, y1, x2 = x, y2, panel = c("A", "B"), main = "ABC/GCB",
          cut.x = logit(c(0.1, 0.9)), asp = 1)
 
   # REGS
   res <- results$REGS$CHEPRETRO
   i <- 3
-  for (drug in drugs) {
-    x2 <- logit(res$cohort$prob[, drug])
-    y1 <- logit(res$refbased$prob[, drug])
-    x1 <- x2[names(y1)]
-    y2 <- logit(res$onebyone$prob[, drug])
+  for (drug in drugs) { # skal vendes om
+    x1 <- logit(res$cohort$prob[, drug])
+    y1 <- logit(res$onebyone$prob[, drug])
+    y2 <- logit(res$refbased$prob[, drug])
+    x2 <- x1[names(y2)]
     cut.x <- res$cohort$cut[[drug]]
     cut.y <- res$refbased$cut[[drug]]
     stopifnot(all.equal(cut.y, res$onebyone$cut[[drug]]))
@@ -738,10 +745,11 @@ pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
   res <- results$BAGS$CHEPRETRO
   i <- 1
   for (subtype in names(abbrev)[-6]) {
-    x2 <- logit(res$cohort$prob.mat[, subtype])
-    y1 <- logit(res$refbased$prob.mat[, subtype])
-    x1 <- x2[names(y1)]
-    y2 <- logit(res$onebyone$prob.mat[, subtype])
+    x1 <- logit(res$cohort$prob.mat[, subtype])
+    y1 <- logit(res$onebyone$prob.mat[, subtype])
+    y2 <- logit(res$refbased$prob.mat[, subtype])
+    x2 <- x1[names(y2)]
+
     cut.x <- c(-100, res$cohort$cut)
     cut.y1 <- c(-100, res$refbased$cut)
     cut.y2 <- c(-100, res$onebyone$cut)
@@ -762,6 +770,75 @@ dev.off()
 
 
 ################################################################################
+
+################################################################################
+# Comparisons of the pre-processing results
+################################################################################
+
+for(type in c("ABCGCB", "BAGS", "REGS")){
+
+  pdf(paste0("figures/figure4", type,".pdf"), height = 4*7*f, width = 2*7*f)
+
+
+  par(mfrow = c(4, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
+
+  if(type == "ABCGCB")
+    probe.order <- rownames(hemaClass::readABCGCBCoef())[-1]
+
+  if(type == "BAGS")
+    probe.order <- rownames(hemaClass::readBAGSCoef())[-1]
+
+  if(type == "REGS")
+    probe.order <- rownames(hemaClass::readClasCoef())[-1]
+
+  sample <- colnames(rma[["refbased"]][["CHEPRETRO"]])[1]
+
+  x <-  microarrayScale(exprs(dat$GSE56315$es$DLBCL))[probe.order ,sample]
+  y1 <- rma[["onebyone"]][["CHEPRETRO"]][probe.order, sample]
+  y2 <- rma[["refbased"]][["CHEPRETRO"]][probe.order, sample]
+
+  myplot(x, y1, x, y2, panel = c("A", "B"),
+         main = "CHEPRETRO", asp = 1)
+
+  sample <- colnames(rma[["refbased"]][["MDFCI"]])[1]
+
+  x1 <-  microarrayScale(exprs(dat$GSE34171$es$GPL570))[probe.order ,sample]
+  y1 <- rma[["onebyone"]][["MDFCI"]][probe.order, sample]
+  y2 <- rma[["refbased"]][["MDFCI"]][probe.order, sample]
+  x2 <- x1[names(y2)]
+
+  myplot(x1, y1, x2, y2, panel = c("C", "D"),
+         main = "MDFCI", asp = 1)
+
+  sample <- colnames(rma[["refbased"]][["IDRC"]])[1]
+
+  x1 <-  microarrayScale(exprs(dat$GSE31312$es$Batch1))[probe.order ,sample]
+  y1 <- rma[["onebyone"]][["IDRC"]][probe.order, sample]
+  y2 <- rma[["refbased"]][["IDRC"]][probe.order, sample]
+  x2 <- x1[names(y2)]
+
+  myplot(x1, y1, x2, y2, panel = c("E", "F"),
+         main = "IDRC", asp = 1)
+
+
+  # Compare onebyone and refbased pre-processing to cohort for LLMPP R-CHOP
+  sample <- colnames(rma[["refbased"]][["LLMPPRCHOP"]])[1]
+
+  x1 <-  microarrayScale(exprs(dat$GSE10846$es$`R-CHOP`))[probe.order ,sample]
+  y1 <- rma[["onebyone"]][["LLMPPRCHOP"]][probe.order, sample]
+  y2 <- rma[["refbased"]][["LLMPPRCHOP"]][probe.order, sample]
+  x2 <- x1[names(y2)]
+
+  myplot(x1, y1, x2, y2, panel = c("G", "H"),
+         main = "LLMPP R-CHOP", asp = 1)
+
+  mtext("Cohort based Pre-processing", side = 1, outer = TRUE)
+  mtext("One-by-one based Pre-processing", side = 2, outer = TRUE, line = -2)
+  mtext("Reference based Pre-processing", side = 2, outer = TRUE, line = -28)
+
+
+  dev.off()
+}
 
 sink(file = "sessionInfo.txt")
 print(sessionInfo())
