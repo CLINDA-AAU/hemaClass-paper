@@ -223,13 +223,13 @@ rma[["cohort"]][["CHEPRETRO"]]  <- microarrayScale(exprs(dat$GSE56315$es$DLBCL))
 ################################################################################
 
 if (is.null(rma$reference) || recompute) {
+  set.seed(1154538003)
 
   # First the overall reference is made using the LLMPP CHOP data
   normalizer(study = "LLMPPCHOP", gse = "GSE10846", global = TRUE); gc()
 
   # Next the other datasets are nomalized according to LLMPPCHOP
   # and the 30 sample study based reference
-  set.seed(1154538003)
   normalizer(study = "LLMPPRCHOP", gse = "GSE10846"); gc()
   normalizer(study = "MDFCI",      gse = "GSE34171"); gc()
   normalizer(study = "IDRC",       gse = "GSE31312"); gc()
@@ -840,6 +840,11 @@ for(type in c("ABCGCB", "BAGS", "REGS")){
   dev.off()
 }
 
+
+################################################################################
+# Write session info
+################################################################################
+
 sink(file = "sessionInfo.txt")
-print(sessionInfo())
+  print(sessionInfo())
 sink()

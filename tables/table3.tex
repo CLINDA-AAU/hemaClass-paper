@@ -1,4 +1,4 @@
-%latex.default(table3, file = "tables/table3.tex", title = "",     cgroup = gsub("ABCGCB", "ABC/GCB", names(results)), rgroup = c("One-by-one normalisation",         "Reference based"), size = "scriptsize", label = "tab:classALL",     caption = caption)%
+%latex.default(table3, file = "tables/table3.tex", title = "",     rgroup = gsub("ABCGCB", "ABC/GCB", names(results)), cgroup = c("One-by-one pre-processing",         "Reference based pre-processing"), size = "scriptsize",     label = "tab:classALL", caption = caption)%
 \begin{table}[!tbp]
 {\scriptsize
 \caption{Comparison of classifications obtained using cohort based
@@ -9,27 +9,29 @@ CIs. The comparisons in the first and last three columns are based on the
 one-by-one normalisation method and the reference based normalisation method,
 respectively.\label{tab:classALL}} 
 \begin{center}
-\begin{tabular}{lllcllcll}
+\begin{tabular}{llllclll}
 \hline\hline
-\multicolumn{1}{l}{\bfseries }&\multicolumn{2}{c}{\bfseries ABC/GCB}&\multicolumn{1}{c}{\bfseries }&\multicolumn{2}{c}{\bfseries BAGS}&\multicolumn{1}{c}{\bfseries }&\multicolumn{2}{c}{\bfseries REGS}\tabularnewline
-\cline{2-3} \cline{5-6} \cline{8-9}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Pearson's $r$}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}\tabularnewline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries One-by-one pre-processing}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries Reference based pre-processing}\tabularnewline
+\cline{2-4} \cline{6-8}
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Rate of agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}\tabularnewline
 \hline
-{\bfseries One-by-one normalisation}&&&&&&&&\tabularnewline
-~~CHEPRETRO&0.88 (0.79, 0.94)&0.87 (0.78, 0.97)&&0.999 (0.998, 0.999)&0.83 (0.71, 0.92)&&0.82 (0.65, 0.99)&1 (1, 1)\tabularnewline
-~~MDFCI&0.69 (0.59, 0.78)&0.68 (0.53, 0.82)&&0.999 (0.998, 0.999)&0.87 (0.76, 0.94)&&0.85 (0.7, 1)&0.997 (0.995, 0.998)\tabularnewline
-~~IDRC&0.65 (0.61, 0.69)&0.62 (0.57, 0.68)&&0.986 (0.983, 0.988)&0.84 (0.8, 0.87)&&0.84 (0.79, 0.88)&0.996 (0.996, 0.997)\tabularnewline
-~~LLMPP R-CHOP&0.82 (0.77, 0.87)&0.82 (0.74, 0.89)&&0.999 (0.999, 0.999)&0.74 (0.67, 0.8)&&0.72 (0.65, 0.8)&1 (1, 1)\tabularnewline
-~~CHEPRETRO&0.57 (0.46, 0.68)&0.54 (0.27, 0.82)&&-&0.69 (0.56, 0.81)&&0.7 (0.26, 1)&-\tabularnewline
-~~MDFCI&0.54 (0.43, 0.64)&0.48 (0.17, 0.79)&&-&0.93 (0.84, 0.98)&&0.95 (0.47, 1)&-\tabularnewline
+{\bfseries ABC/GCB}&&&&&&&\tabularnewline
+~~CHEPRETRO&0.88 (0.79, 0.94)&0.87 (0.78, 0.97)&0.999 (0.998, 0.999)&&0.98 (0.91, 1)&0.98 (0.93, 1)&1 (0.999, 1)\tabularnewline
+~~MDFCI&0.69 (0.59, 0.78)&0.68 (0.53, 0.82)&0.999 (0.998, 0.999)&&0.98 (0.91, 1)&0.98 (0.85, 1)&1 (0.999, 1)\tabularnewline
+~~IDRC&0.65 (0.61, 0.69)&0.62 (0.57, 0.68)&0.986 (0.983, 0.988)&&0.94 (0.91, 0.96)&0.93 (0.9, 0.97)&0.995 (0.994, 0.996)\tabularnewline
+~~LLMPP R-CHOP&0.82 (0.77, 0.87)&0.82 (0.74, 0.89)&0.999 (0.999, 0.999)&&0.94 (0.9, 0.97)&0.94 (0.9, 0.98)&0.992 (0.989, 0.994)\tabularnewline
 \hline
-{\bfseries Reference based}&&&&&&&&\tabularnewline
-~~IDRC&0.52 (0.48, 0.57)&0.42 (0.32, 0.51)&&-&0.81 (0.77, 0.85)&&0.8 (0.63, 0.96)&-\tabularnewline
-~~LLMPP R-CHOP&0.57 (0.5, 0.63)&0.54 (0.37, 0.71)&&-&0.8 (0.74, 0.86)&&0.81 (0.53, 1)&-\tabularnewline
-~~CHEPRETRO&0.74 (0.69, 0.78)&0.71 (0.65, 0.78)&&0.935 (0.92, 0.947)&0.8 (0.74, 0.85)&&0.79 (0.72, 0.85)&0.995 (0.993, 0.996)\tabularnewline
-~~MDFCI&0.6 (0.55, 0.65)&0.55 (0.48, 0.62)&&0.825 (0.789, 0.855)&0.93 (0.89, 0.96)&&0.92 (0.85, 0.99)&0.994 (0.993, 0.996)\tabularnewline
-~~IDRC&0.52 (0.49, 0.54)&0.33 (0.3, 0.36)&&0.661 (0.636, 0.686)&0.83 (0.81, 0.85)&&0.81 (0.79, 0.84)&0.969 (0.966, 0.972)\tabularnewline
-~~LLMPP R-CHOP&0.58 (0.55, 0.61)&0.5 (0.46, 0.54)&&0.811 (0.788, 0.832)&0.7 (0.66, 0.73)&&0.67 (0.63, 0.71)&0.979 (0.976, 0.982)\tabularnewline
+{\bfseries BAGS}&&&&&&&\tabularnewline
+~~CHEPRETRO&0.57 (0.46, 0.68)&0.54 (0.27, 0.82)&-&&0.78 (0.65, 0.88)&0.74 (0.34, 1)&-\tabularnewline
+~~MDFCI&0.54 (0.43, 0.64)&0.48 (0.17, 0.79)&-&&0.79 (0.66, 0.88)&0.81 (0.3, 1)&-\tabularnewline
+~~IDRC&0.52 (0.48, 0.57)&0.42 (0.32, 0.51)&-&&0.79 (0.75, 0.83)&0.8 (0.62, 0.97)&-\tabularnewline
+~~LLMPP R-CHOP&0.57 (0.5, 0.63)&0.54 (0.37, 0.71)&-&&0.82 (0.76, 0.87)&0.83 (0.54, 1)&-\tabularnewline
+\hline
+{\bfseries REGS}&&&&&&&\tabularnewline
+~~CHEPRETRO&0.74 (0.69, 0.78)&0.71 (0.65, 0.78)&0.935 (0.92, 0.947)&&0.83 (0.78, 0.88)&0.82 (0.76, 0.89)&0.992 (0.99, 0.994)\tabularnewline
+~~MDFCI&0.6 (0.55, 0.65)&0.55 (0.48, 0.62)&0.825 (0.789, 0.855)&&0.9 (0.86, 0.94)&0.89 (0.83, 0.96)&0.997 (0.996, 0.997)\tabularnewline
+~~IDRC&0.52 (0.49, 0.54)&0.33 (0.3, 0.36)&0.661 (0.636, 0.686)&&0.84 (0.82, 0.85)&0.82 (0.79, 0.84)&0.984 (0.983, 0.986)\tabularnewline
+~~LLMPP R-CHOP&0.58 (0.55, 0.61)&0.5 (0.46, 0.54)&0.811 (0.788, 0.832)&&0.89 (0.87, 0.91)&0.89 (0.85, 0.92)&0.992 (0.991, 0.993)\tabularnewline
 \hline
 \end{tabular}\end{center}}
 
