@@ -151,7 +151,11 @@ For validation the following four DLBCL cohorts are used:
 \input{tables/table1.tex}
 
 \subsection{One-by-one RMA normalization}
-Recall that RMA pre-processing consists of three steps: 1) Background correction, 2) quantile normalisation, and 3) summarisation of probes to probe-sets \citep{Irizarry2003}.
+Recall that robust multichip average (RMA) pre-processing consists of three steps in order:
+(1) Background correction,
+(2) quantile normalisation, and
+(3) summarisation of probes to probe-sets \citep{Irizarry2003}.
+Confer \citet{Bolstad2004} for a comprehensive account on RMA.
 Both the normalisation and summarisation procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme.
 As quantile normaliser the empirical cumulative distribution function (ECDF) of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles \citep{Bolstad2003}.
 To mimic the summarisation procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
