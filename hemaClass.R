@@ -78,6 +78,7 @@ source_url(
 
 # Function for doing the one-by-one and study based reference normalization
 normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
+  if (verbose) message("RMA normalizing ", gse, " (", study, ")")
 
   # Read files used in cohort
   files <- file.path("data", gse, colnames(rma$cohort[[study]]))
@@ -115,7 +116,9 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
 
 # Format confidence intervals
 formatCI <- function(est, ci, dec = 2) {
-  paste0(round(est, dec), " (", paste(round(ci, dec), collapse = ", "), ")")
+  est <- sprintf(paste0("%.", dec, "f"), round(est, dec))
+  ci <- sprintf(paste0("%.", dec, "f"), round(ci, dec))
+  return(paste0("$", est, "~(", paste(ci, collapse = ", "), ")$"))
 }
 
 # Functions for comparing results
@@ -314,8 +317,7 @@ metadataCHEPRETRO <-
   dat$GSE56315$metadata[, "characteristics_ch1.5", drop = FALSE]
 names(metadataCHEPRETRO) <- "wright.class"
 levels(metadataCHEPRETRO$wright.class) <- c("", "ABC", "GCB", "Unclassified")
-metadataCHEPRETRO <-
-  metadataCHEPRETRO[metadataCHEPRETRO$wright.class != "", , drop = FALSE]
+metadataCHEPRETRO <- subset(metadataCHEPRETRO, wright.class != "")
 metadataCHEPRETRO$wright.class <- reFactor(metadataCHEPRETRO$wright.class)
 
 # check order
@@ -371,7 +373,7 @@ ABCGCB.weights <- matrix(c(0,1,2,1,0,1,2,1,0), 3)/2
 
 table2 <- matrix(nrow = 4, ncol = 2)
 rownames(table2) <- names(studies.vec[-5])
-colnames(table2) <- c("Rate of agreement", "Cohen's $\\kappa$")
+colnames(table2) <- c("Agreement", "Cohen's $\\kappa$")
 
 for (i in seq_len(nrow(table2))) {
   table2[i, ] <-
@@ -381,8 +383,9 @@ for (i in seq_len(nrow(table2))) {
 
 caption <- "Comparison of ABC/GCB classification performed using Wright's
 method and the established elastic net classifier based on cohort normalisation
-for both. The first column shows the rate of agreement between the classifiers
-with $95\\%$ CI. The second column shows the Cohen's $\\kappa$ and $95\\%$ CI."
+for both. The first column shows the rate of agreement (accuracy) between the
+classifiers with $95\\%$ CI. The second column shows the Cohen's $\\kappa$ and
+$95\\%$ CI."
 
 # Create latex table
 w <- latex(table2, file = "tables/table2.tex",
@@ -520,11 +523,15 @@ rownames(table3) <- rep(names(studies.vec[-5]), 3)
 
 caption <- "Comparison of classifications obtained using cohort based
 normalisation and \\hemaClass{}.
-The classifications are compared in terms of accuracy, Cohen's weighted
-$\\kappa$, and Pearson's correlation coefficient $r$ all supplied with $95\\%$
-CIs. The comparisons in the first and last three columns are based on the
-one-by-one normalisation method and the reference based normalisation method,
-respectively."
+The classifications are compared in terms of rate of argreement (accuracy),
+Cohen's weighted $\\kappa$, and Pearson's correlation coefficient $r$ all
+supplied with $95\\%$ CIs. The comparisons in the first and last three columns
+are based on the one-by-one normalisation method and the reference based
+normalisation method, respectively."
+
+# Remove leading zeros:
+table3 <- gsub("0\\.", ".", table3)
+table3 <- gsub("1\\.0", "1.", table3)
 
 w <- latex(table3,
            file = "tables/table3.tex",
