@@ -26,8 +26,8 @@
 
 \title{\hemaClass{}: An online based diffuse large B-cell lymphoma classification tool}
 
-\author[1]{Steffen Falgreen}
-\author[12]{Anders Ellern Bilgrau}
+\author[1]{Steffen Falgreen\thanks{Shared first authorship.}}
+\author[3]{Anders Ellern Bilgrau$^\ast$}
 \author[13]{Lasse Hjorth Jakobsen}
 \author[13]{Jonas Have}
 \author[13]{Kasper Lindblad Nielsen}
@@ -36,7 +36,7 @@
 \author[1]{Alexander Schmitz}
 \author[13]{Hans Erik Johnsen}
 \author[13]{Karen Dybk{\ae}r}
-\author[13]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed (\texttt{martin.boegsted@rn.dk})}}
+\author[13]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed: (\texttt{martin.boegsted@rn.dk})}}
 
 \affil[1]{Department of Haematology, Aalborg University Hospital}
 \affil[2]{Department of Mathematical Sciences, Aalborg University}
@@ -117,7 +117,7 @@ This workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 \end{figure}
 
 \subsection{Software}
-The normalisation and classification procedures are implemented using the statistical programming language \R{} \citep{RCoreTeam2013} and Bioconductor \citep{Gentleman2004}.
+The normalisation and classification procedures are implemented using the statistical programming language \R{} \citep{RCoreTeam} and Bioconductor \citep{Gentleman2004}.
 The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \texttt{shiny} \citep{RStudio2013} and the accompanying Linux server software.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
 
