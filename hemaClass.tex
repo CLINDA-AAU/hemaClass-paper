@@ -85,8 +85,8 @@ Although drug targetable genes which are only expressed in subtypes of the DLBCL
 On the basis of gene expression profile analyses DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
 The validity of this classification and its prognostic importance has been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Lenz2008a,Monti2012a}.
 Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier capable of classifying DLBCL samples into 5 different B-cell subtypes: Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
-For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{Dybkaer2013} which opens up for considering different treatment regimes in the GBC class of patients.
-In another study \citep{Falgreen2013c} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients: Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
+For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015} which opens up for considering different treatment regimes in the GBC class of patients.
+In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients: Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
 However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a clinical setting.
 
 The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the IPI for large cell lymphoma and FLIPI for follicular lymphoma (both derived from patient age, performance status, easy available blood tests, and disease stage).
@@ -133,13 +133,13 @@ To establish the classifiers the following datasets are used:
   This cohort will be referred to as the Lymphoma/Leukemia Molecular Profiling Project CHOP cohort (LLMPP CHOP) \citep{Lenz2008a}.
   The cohort is also used as a reference set for normalisation of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
-  This dataset will be referred to as the \textit{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{Dybkaer2013}.
+  This dataset will be referred to as the \textit{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
   \item The REGS classifiers are based on a panel of 12 Multiple Myeloma (MM) and 14 DLBCL cell lines this panel will be referred to as BCELL26.
-  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2013c}.
+  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
-  \item[4] The Aalborg OCT (CHEPRETRO) cohort of 89 Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{Dybkaer2013}.
+  \item[4] The Aalborg OCT (CHEPRETRO) cohort of 89 Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{DybkaerBoegsted2015}.
   The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
   \item[5] The International DLBCL Rituximab-CHOP Consortium MD Anderson (IDRC) cohort of 470 DLBCL patients treated with R-CHOP first-line therapy.
   Detailed information about the cohort can be found in \citep{Visco2012}.
@@ -181,14 +181,14 @@ Similar to the lasso this penalty ensures simultaneous variable selection and mo
 In contrast to the lasso the elastic net penalty is capable of selecting more variables than samples.
 
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
-The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of 0 and 1, respectively.
+The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of $0$ and $1$, respectively.
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
 Regularised logistic and multinomial regression are performed with the \R{}-package \texttt{glmnet} \citep{Friedman2010}.
 
 \subsubsection{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
-Of the 181 patients 74 were ABC, 76 were GCB and 31 were non-classified.
-Using the 150 patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
+Of the $181$ patients $74$ were ABC, $76$ were GCB and $31$ were non-classified.
+Using the $150$ patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
 
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through 10 fold cross-validation.
 The parameter $\alpha$ was varied between 0.1 and 1 with step size $0.025$ and $\lambda$ was varied between -10 and 2 with step size $0.06$.
@@ -200,7 +200,7 @@ When a tumour sample is classified according to the ABC/GCB classifier using ref
 In contrast, the one-by-one normalised data is used directly.
 
 \subsubsection{REGS classification}
-In the paper by \citet{Falgreen2013c} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
+In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
 The classifiers were established on BCELL26 using regularised logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
 The probability of resistance to the combination therapy CHO is estimated based on the probabilities of drug resistance toward the three drugs C, H, and O.
@@ -213,7 +213,7 @@ Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user
 
 
 \subsubsection{BAGS classification}
-The BAGS classifier established by \citet{Dybkaer2013} was based on multinomial regression regularised by an elastic net penalty.
+The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularised by an elastic net penalty.
 The classifier was trained on the Tonsil dataset in a manner similar to the ABC/GCB classifier.
 
 When a tumour sample is classified according to the BAGS classifier the associated gene expressions are probe-set wise rescaled by the standard deviation of the tonsil data divided by the standard deviation of the LLMPP CHOP dataset.
@@ -312,7 +312,7 @@ The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGS
 
 \section{Discussion}
 Despite the enormous resources spent on developing molecular based cancer classification systems there seems to be an inertial resistance to develop clinical applications.
-To allow for fast validation of our recent findings \citep{Dybkaer2013, Falgreen2013c}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
+To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
 
 The classifications performed by \hemaClass{} were compared to those obtained using cohort based normalisation in four clinical cohorts.
 Even though gene expression data for the four cohorts was obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach performed comparably with the whole cohort based method.
