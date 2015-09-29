@@ -63,7 +63,7 @@ However, they often employ complex algorithms and are only applicable on whole c
 This prompted us to create \hemaClass{} which is an online tool providing an easy interface to one-by-one microarray based risk classification of diffuse large B-cell lymphoma (DLBCL) into e.g.\ ABC/GCB, BAGS, and REGS classes.
 Laboratory specific effects cannot be accounted for in one-by-one normalisation, however.
 Hence, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications.
-Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in 4 publicly available datasets.
+Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
  \hemaClass{} is relevant for biological and clinical researchers in the lymphoma field as it provides a reliable and swift method for calculation of DLBCL subclasses.
 Finally, \hemaClass{} is based on the \R{}-package \texttt{hemaClass} accompanied with a Shiny server interface, which makes it straightforward to deploy it as a web server. The server works at the moment on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
@@ -84,7 +84,7 @@ Although drug targetable genes which are only expressed in subtypes of the DLBCL
 \citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
 On the basis of gene expression profile analyses DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
 The validity of this classification and its prognostic importance has been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Lenz2008a,Monti2012a}.
-Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier capable of classifying DLBCL samples into 5 different B-cell subtypes: Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
+Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier capable of classifying DLBCL samples into $5$ different B-cell subtypes: Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
 For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015} which opens up for considering different treatment regimes in the GBC class of patients.
 In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients: Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
 However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a clinical setting.
@@ -105,7 +105,11 @@ We believe that \hemaClass{} will provide a novel and user-friendly concept for 
 \section{Materials and Methods}
 
 \subsection{Classification workflow}
-The analysis workflow of \hemaClass{} can be divided into four parts: (1) Three reference datasets which have been pre-processed and prepared offline are loaded upon server start, (2) a graphical user interface with upload and input facilities, (3) a server handling the online processing and classification of the user input, and (4) the resulting classifications available for download and inspection via the user interface.
+The analysis workflow of \hemaClass{} can be divided into four parts:
+(1) Three reference datasets which have been pre-processed and prepared offline are loaded upon server start,
+(2) a graphical user interface with upload and input facilities,
+(3) a server handling the online processing and classification of the user input, and
+(4) the resulting classifications available for download and inspection via the user interface.
 This workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 
 \begin{figure}
@@ -129,23 +133,23 @@ The seven gene expression datasets used in this article are summarised in Table 
 All GEP data are on the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) website (www.ncbi.nlm.nih.gov/geo/query).
 To establish the classifiers the following datasets are used:
 \begin{enumerate}
-  \item Gene expression data from 181 CHOP treated DLBCL patients are used to establish the ABC/GCB classifier.
+  \item Gene expression data from $181$ CHOP treated DLBCL patients are used to establish the ABC/GCB classifier.
   This cohort will be referred to as the Lymphoma/Leukemia Molecular Profiling Project CHOP cohort (LLMPP CHOP) \citep{Lenz2008a}.
   The cohort is also used as a reference set for normalisation of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
   This dataset will be referred to as the \textit{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
-  \item The REGS classifiers are based on a panel of 12 Multiple Myeloma (MM) and 14 DLBCL cell lines this panel will be referred to as BCELL26.
+  \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines this panel will be referred to as BCELL26.
   The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
-  \item[4] The Aalborg OCT (CHEPRETRO) cohort of 89 Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{DybkaerBoegsted2015}.
+  \item[4] The Aalborg OCT (CHEPRETRO) cohort of $89$ Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{DybkaerBoegsted2015}.
   The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
-  \item[5] The International DLBCL Rituximab-CHOP Consortium MD Anderson (IDRC) cohort of 470 DLBCL patients treated with R-CHOP first-line therapy.
+  \item[5] The International DLBCL Rituximab-CHOP Consortium MD Anderson (IDRC) cohort of $470$ DLBCL patients treated with R-CHOP first-line therapy.
   Detailed information about the cohort can be found in \citep{Visco2012}.
-  \item[6] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (LLMPP R-CHOP) cohort of 233 DLBCL patients treated with R-CHOP first-line therapy.
+  \item[6] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (LLMPP R-CHOP) cohort of $233$ DLBCL patients treated with R-CHOP first-line therapy.
   Details about the dataset can be found in \citep{Lenz2008a}.
-  \item[7] The Mayo-Dana-Farber Cancer Institute (MDFCI) cohort of 90 DLBCL patients treated with R-CHOP first-line therapy \citep{Monti2012a}.
+  \item[7] The Mayo-Dana-Farber Cancer Institute (MDFCI) cohort of $90$ DLBCL patients treated with R-CHOP first-line therapy \citep{Monti2012a}.
 \end{enumerate}
 
 \input{tables/table1.tex}
@@ -165,7 +169,7 @@ Finally, the median of each probe-set in the LLMPP CHOP is subtracted from the c
 This ensures identical classification probabilities whether data is supplied as a cohort or one-by-one.
 
 To accommodate laboratory and sample preparation specific effects different from the LLMPP CHOP reference data, \hemaClass{} allows the user to upload an alternative dataset which is to be used in place of LLMPP CHOP as reference.
-In this article the reference datasets have consisted of 30 randomly selected samples.
+In this article the reference datasets have consisted of $30$ randomly selected samples.
 
 The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalisation.
 
@@ -190,11 +194,11 @@ The ABC/GCB classifier is established using logistic regression with an elastic 
 Of the $181$ patients $74$ were ABC, $76$ were GCB and $31$ were non-classified.
 Using the $150$ patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
 
-To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through 10 fold cross-validation.
-The parameter $\alpha$ was varied between 0.1 and 1 with step size $0.025$ and $\lambda$ was varied between -10 and 2 with step size $0.06$.
+To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
+The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\lambda$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
 The results of the cross validation are shown in Supplementary Figure \ref{fig:crossval}.
-The minimum 0.13 was attained in $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of 381 probe-sets.
+The minimum $0.13$ was attained in $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
 
 When a tumour sample is classified according to the ABC/GCB classifier using reference based normalisation the associated gene expressions are probe-set wise rescaled by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
 In contrast, the one-by-one normalised data is used directly.
@@ -222,16 +226,16 @@ The rescaling is performed to make the data comparable to the tonsil dataset.
 
 
 \subsection{Inter method reproducibility assessments}
-To evaluate the reproducibility of the class probabilities obtained through cohort based normalisation and \hemaClass{} normalisation Pearson's correlation coefficient for the logit-transformed probabilities and 95\% confidence interval (CI) were calculated for each classifier and dataset.
+To evaluate the reproducibility of the class probabilities obtained through cohort based normalisation and \hemaClass{} normalisation Pearson's correlation coefficient for the logit-transformed probabilities and $95\%$ confidence interval (CI) were calculated for each classifier and dataset.
 The identity and orthogonal least square regression lines were compared to assess bias in estimated probabilities \citep{CHEN1989}.
 Orthogonal regression was used because errors in both classification probabilities are present.
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
-The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath 0.1, and unclassified otherwise.
-For the BAGS classifier a tumour was classified as N, CB, CC, M, or PB if the associated probability exceeded 0.5 and unclassified when this threshold was not met for any subtype.
-For the REGS classifier, C, H, O, and CHO combined the 33\% and 66\% percentile of the estimated probabilities were $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$.
+The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath $0.1$, and unclassified otherwise.
+For the BAGS classifier a tumour was classified as N, CB, CC, M, or PB if the associated probability exceeded $0.5$ and unclassified when this threshold was not met for any subtype.
+For the REGS classifier, C, H, O, and CHO combined the $33\%$ and $66\%$ percentile of the estimated probabilities were $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$.
 After thresholding the class probabilities confusion matrices were created.
-From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding 95\% CIs were computed to assess the agreement between the determined classes.
+From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
 
 
 \section{Results}
@@ -245,15 +249,15 @@ The classifications by this classifier were evaluated in the four clinical cohor
 The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes weighted Cohen's $\kappa$ estimates.
-Here misclassifications involving the unclassified group are weighted by 0.5.
+Here misclassifications involving the unclassified group are weighted by $0.5$.
 The accompanying confusion matrices are shown in Supplementary Table \ref{tab:confusionABCGCBHEMA}.
 
 The logit probability of being ABC estimated using the established classifier was compared to the estimate obtained through the one-by-one classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The rank of the probabilities estimated through the two methods are very similar, however, the probabilities estimated through \hemaClass{} are skewed upwards, indicating that different cut points should be used for classification.
-By normalising to a reference set of 30 randomly selected samples from CHEPRETRO this error is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B.
+By normalising to a reference set of $30$ randomly selected samples from CHEPRETRO this error is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B.
 
-For both methods patients are classified as ABC when the estimated probability exceeds 0.9 and GCB when it is below 0.1.
-In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and weighted Cohen's $\kappa$ for the four cohorts: CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP showing good agreement, even considering that misclassifications involving unclassified samples count as errors, albeit weighted by 0.5 in Cohen's $\kappa$.
+For both methods patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
+In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and weighted Cohen's $\kappa$ for the four cohorts: CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP showing good agreement, even considering that misclassifications involving unclassified samples count as errors, albeit weighted by $0.5$ in Cohen's $\kappa$.
 The accompanying confusion matrices are shown in Supplementary Table \ref{tab:confusionABCGCBHEMA}.
 
 \input{tables/table2.tex}
@@ -274,7 +278,7 @@ For ABC/GCB and REGS the grey areas indicate unclassified and intermediate resis
 \includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
 \end{center}
 \caption{Comparison of logit probabilities for the BAGS classifier obtained through cohort normalisation and \hemaClass{}.
-The coloured regions in the figure correspond to a threshold probability of 0.5.}
+The coloured regions in the figure correspond to a threshold probability of $0.5$.}
 \label{fig:Bagscorr}
 \end{figure}
 \newpage
@@ -320,7 +324,7 @@ It seems that this approach allows for a realistic application of microarray bas
 
 The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without account of underlying tumour-biology \citep{Schmoll2012}.
 The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (rituximab) \citep{Coiffier2002a}.
-Despite the addition of antibody therapy to conventional chemotherapy only 55\% of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
+Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
 Thus, the need for new therapeutic options in DLBCL is obvious.
 Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials has not been defined.
 These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \citep{Friedberg2011}.
@@ -398,8 +402,8 @@ In panels A and B the deviance is plotted against the model parameter $\alpha$ a
 In Panel C the regularisation curves are shown.
 Black and grey curves represent selected and non-selected probe-sets, respectively.
 Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
-The red line indicates the model chosen through 10 fold cross validation.
-The gene symbols for the 20 probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed.}
+The red line indicates the model chosen through $10$ fold cross validation.
+The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed.}
 \label{fig:crossval}
 \end{figure*}
 
