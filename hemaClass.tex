@@ -59,14 +59,14 @@
 \addcontentsline{toc}{section}{Abstract}
 \begin{abstract}
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
-However, they are often based on complex algorithms only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
-This prompted us to create \hemaClass{} which is an online tool providing an easy interface to one-by-one microarray based risk classification of diffuse large B-cell lymphoma (DLBCL) into e.g. ABC/GCB, BAGS, and REGS classes.
-However, laboratory specific effects cannot be accounted for in one-by-one normalisation.
+However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
+This prompted us to create \hemaClass{} which is an online tool providing an easy interface to one-by-one microarray based risk classification of diffuse large B-cell lymphoma (DLBCL) into e.g.\ ABC/GCB, BAGS, and REGS classes.
+Laboratory specific effects cannot be accounted for in one-by-one normalisation, however.
 Hence, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications.
 Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in 4 publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
  \hemaClass{} is relevant for biological and clinical researchers in the lymphoma field as it provides a reliable and swift method for calculation of DLBCL subclasses.
-Finally, \hemaClass{} is based on the R-package \texttt{hemaClass} accompanied with a Shiny server interface, which makes it straightforward to deploy it as a web server. The server works at the moment on Affymetrix HGU-133 plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
+Finally, \hemaClass{} is based on the \R{}-package \texttt{hemaClass} accompanied with a Shiny server interface, which makes it straightforward to deploy it as a web server. The server works at the moment on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
 \medskip\\
 \textbf{Keywords:~}
 Dose response experiments; NCI60; Doxorubicin; Mathematical modelling; Differential equation modelling; Nonlinear regression; Isotonic regression; Bootstrap; Parametric bootstrap
@@ -117,9 +117,9 @@ This workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 \end{figure}
 
 \subsection{Software}
-The normalisation and classification procedures are implemented using the statistical programming language R \citep{RCoreTeam2013} and Bioconductor \citep{Gentleman2004}.
-The interactive web application available at \url{http://hemaclass.org} was created using the R-package \texttt{shiny} \citep{RStudio2013} and the accompanying Linux server software.
-The Shiny server handles the interaction between the front end web application and the back end R processing.
+The normalisation and classification procedures are implemented using the statistical programming language \R{} \citep{RCoreTeam2013} and Bioconductor \citep{Gentleman2004}.
+The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \texttt{shiny} \citep{RStudio2013} and the accompanying Linux server software.
+The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
 
 The RMA pre-processing was carried out with the Bioconductor package \texttt{affy} \citep{Gautier2004}.
 The code is open source and freely available for sharing, modification, and redistribution at GitHub.com (\url{https://github.com/oncoclass/hemaclass}).
@@ -179,7 +179,7 @@ In contrast to the lasso the elastic net penalty is capable of selecting more va
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
 The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of 0 and 1, respectively.
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
-Regularised logistic and multinomial regression are performed with the R-package \texttt{glmnet} \citep{Friedman2010}.
+Regularised logistic and multinomial regression are performed with the \R{}-package \texttt{glmnet} \citep{Friedman2010}.
 
 \subsubsection{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
