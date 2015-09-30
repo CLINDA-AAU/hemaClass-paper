@@ -14,10 +14,10 @@ rm(list = ls()) # Clear global enviroment
 # memory.limit(size = 60000)  # If using a Windows machine
 
 # If any of the used packages are missing they will be installed.
-pkgs <- c("rgdal", "psych", "devtools", "Hmisc", "shiny", "matrixStats", "Rcpp", "RcppArmadillo",
-          "RcppEigen", "testthat", "WriteXLS", "RLumShiny", "gdata",
-          "Biobase", "affy", "affyio", "preprocessCore", "BiocInstaller",
-          "AnnotationDbi", "GEOquery", "GEOquery", "oligo",
+pkgs <- c("rgdal", "psych", "devtools", "Hmisc", "shiny", "matrixStats", "Rcpp",
+          "RcppArmadillo", "RcppEigen", "testthat", "WriteXLS", "RLumShiny",
+          "gdata", "Biobase", "affy", "affyio", "preprocessCore",
+          "BiocInstaller", "AnnotationDbi", "GEOquery", "GEOquery", "oligo",
           "shinysky", "DLBCLdata", "hemaClass")
 missing <- setdiff(pkgs, installed.packages()[, "Package"])
 
@@ -56,20 +56,22 @@ if (file.exists(saved.file)) { load(saved.file) }
 
 # Colour information
 col.data <-
-  data.frame(col   = c("#3257A4", "#99991E", "#7F170F", "#71C7D9", "#7EBB46",
-                       "#A44392", "#F59E20", "#F3E628", "#E9521C",
-                       "red", "blue", "grey"),
-             cell  = c("Immature", "Pre-BI", "Pre-BII", "Naive","Centroblast",
-                       "Centrocyte", "Memory",  "Plasmablast", "Plasmacell",
-                       "ABC", "GCB", "Unclassified"),
-             abr   = c("I", "PreB1", "PreBII", "N", "CB", "CC", "M",  "PB", "PC",
-                       "ABC", "GCB", "UC"),
+  data.frame(col  = c("#3257A4", "#99991E", "#7F170F", "#71C7D9", "#7EBB46",
+                      "#A44392", "#F59E20", "#F3E628", "#E9521C",
+                      "red", "blue", "grey"),
+             cell = c("Immature", "Pre-BI", "Pre-BII", "Naive","Centroblast",
+                      "Centrocyte", "Memory",  "Plasmablast", "Plasmacell",
+                      "ABC", "GCB", "Unclassified"),
+             abr  = c("I", "PreB1", "PreBII", "N", "CB", "CC", "M",  "PB", "PC",
+                      "ABC", "GCB", "UC"),
              order = 1:12, stringsAsFactors = FALSE)
 rownames(col.data) <- col.data$abr
 
 
 # Logit function
-logit <- function(p) log(p/(1-p))
+logit <- function(p) {
+  return(log(p/(1 - p)))
+}
 
 # Load the resave function
 source_url(
@@ -108,11 +110,9 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
   # RMA normalize using reference
   rma[["refbased"]][[study]]  <-
     rmaReference(affy.batch.refbased, rma[["reference"]][[study]])$exprs.sc
-  # rmaReference(affy.batch, rma[["reference"]][[study]])$exprs.sc
 
   rma <<- rma
 }
-
 
 # Format confidence intervals
 formatCI <- function(est, ci, dec = 2) {
@@ -176,7 +176,7 @@ weightFun <- function(n) {
 reFactor <- function(x) {
   x <- as.character(x)
   x[x == "Unclassified" | x == "UC"]  <- "NC"
-  factor(x, levels = c("ABC", "NC", "GCB"))
+  return(factor(x, levels = c("ABC", "NC", "GCB")))
 }
 
 
@@ -363,8 +363,10 @@ results$ABCGCB$LLMPPRCHOP <- merge.by.rownames(results$ABCGCB$LLMPPRCHOP, tmp)
 na <- rowSums(!is.na(subset(results$ABCGCB$LLMPPRCHOP, select = -wright.class)))
 results$ABCGCB$LLMPPRCHOP <- results$ABCGCB$LLMPPRCHOP[na != 0, ]
 
+
+
 ################################################################################
-# ABC/GCB
+# Create output
 ################################################################################
 
 # TABLE 2 ######################################################################
@@ -782,22 +784,22 @@ dev.off()
 # Comparisons of the pre-processing results
 ################################################################################
 
-for(type in c("ABCGCB", "BAGS", "REGS")){
+for (type in c("ABCGCB", "BAGS", "REGS")) {
 
   pdf(paste0("figures/figure4", type,".pdf"), height = 4*7*f, width = 2*7*f)
 
 
   par(mfrow = c(4, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
 
-  if(type == "ABCGCB")
+  if (type == "ABCGCB") {
     probe.order <- rownames(hemaClass::readABCGCBCoef())[-1]
-
-  if(type == "BAGS")
+  }
+  if (type == "BAGS") {
     probe.order <- rownames(hemaClass::readBAGSCoef())[-1]
-
-  if(type == "REGS")
+  }
+  if (type == "REGS") {
     probe.order <- rownames(hemaClass::readClasCoef())[-1]
-
+  }
   sample <- colnames(rma[["refbased"]][["CHEPRETRO"]])[1]
 
   x <-  microarrayScale(exprs(dat$GSE56315$es$DLBCL))[probe.order ,sample]
