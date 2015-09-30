@@ -21,6 +21,7 @@
 % Macros
 \newcommand{\hemaClass}{\href{http://hemaClass.org}{\texttt{hemaClass.org}}}
 \newcommand{\R}{\textsf{R}}
+\newcommand{\pkg}[1]{\textbf{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,7 +67,7 @@ Hence, \hemaClass{} optionally allows the user to supply a reference dataset to 
 Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
  \hemaClass{} is relevant for biological and clinical researchers in the lymphoma field as it provides a reliable and swift method for calculation of DLBCL subclasses.
-Finally, \hemaClass{} is based on the \R{}-package \texttt{hemaClass} accompanied with a Shiny server interface, which makes it straightforward to deploy it as a web server. The server works at the moment on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
+Finally, \hemaClass{} is based on the \R{}-package \pkg{hemaClass} accompanied with a Shiny server interface, which makes it straightforward to deploy it as a web server. The server works at the moment on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
 \medskip\\
 \textbf{Keywords:~}
 Dose response experiments; NCI60; Doxorubicin; Mathematical modelling; Differential equation modelling; Nonlinear regression; Isotonic regression; Bootstrap; Parametric bootstrap
@@ -122,11 +123,13 @@ This workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 
 \subsection{Software}
 The normalisation and classification procedures are implemented using the statistical programming language \R{} \citep{RCoreTeam} and Bioconductor \citep{Gentleman2004}.
-The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \texttt{shiny} \citep{RStudio2013} and the accompanying Linux server software.
+The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \pkg{shiny} \citep{RStudio2013} and the accompanying Linux server software.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
+The back end is in enssence the accompanying \pkg{hemaclass} package which allows users to run \hemaClass{} locally and use the package functionality programmatically.
 
-The RMA pre-processing was carried out with the Bioconductor package \texttt{affy} \citep{Gautier2004}.
-The code is open source and freely available for sharing, modification, and redistribution at GitHub.com (\url{https://github.com/oncoclass/hemaclass}).
+The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
+Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
+The \pkg{hemaclass} package is open source and freely available for sharing, modification, and redistribution at \url{https://github.com/oncoclass/hemaclass}.
 
 \subsection{Data overview}
 The seven gene expression datasets used in this article are summarised in Table \ref{table:01}.
@@ -188,7 +191,7 @@ In contrast to the lasso the elastic net penalty is capable of selecting more va
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
 The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of $0$ and $1$, respectively.
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
-Regularised logistic and multinomial regression are performed with the \R{}-package \texttt{glmnet} \citep{Friedman2010}.
+Regularised logistic and multinomial regression are performed with the \R{}-package \pkg{glmnet} \citep{Friedman2010}.
 
 \subsubsection{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
@@ -371,7 +374,7 @@ Hopefully, this work can also spawn interesting discussions on the clinical requ
 \section*{Availability and technical details}
 All of the \hemaClass{} functionality is available through the \R{}-package \textbf{hemaClass} freely available at
 \url{https://github.com/oncoclass/hemaclass}.
-First, the package can be used as a programatical interface the functionality of the website.
+First, the package can be used as a programmatical interface the functionality of the website.
 However, it also features a local version of the website should users wishes to avoid uploading large files to our server.
 Material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
 \todo[inline]{Expand this section? Any other details?}
