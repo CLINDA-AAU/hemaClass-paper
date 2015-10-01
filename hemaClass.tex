@@ -220,6 +220,10 @@ If a drug is left out in the combination therapy the drug is simply removed from
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are probe-set wise rescaled by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
+Resistance classifiers for other chemotherapeutic drugs are also available on \hemaClass{} though estabilshed elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
+The Rituximap resistance classifier of \citet{Laursen2014} is based upon an elastic net appraoch, like above, using three classes.
+The Melphalan resistance classifier of \citet{Boegsted2011} resistance uses sparse partial least squares and two classes.
+A classifier for Dexamethasone (P) is still considered experimental and available only in the package.
 
 \subsubsection{BAGS classification}
 The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularised by an elastic net penalty.
@@ -376,7 +380,7 @@ Hopefully, this work can also spawn interesting discussions on the clinical requ
 \section*{Availability and technical details}
 All of the \hemaClass{} functionality is available through the \R{}-package \textbf{hemaClass} freely available at
 \url{https://github.com/oncoclass/hemaclass}.
-First, the package can be used as a programmatical interface the functionality of the website.
+Primariliy, the package can be utilized as a programmatical interface to the functionality of the website.
 However, it also features a local version of the website should users wishes to avoid uploading large files to our server.
 Material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
 \todo[inline]{Expand this section? Any other details?}
