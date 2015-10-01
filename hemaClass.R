@@ -2,15 +2,15 @@
 #
 # Master script for the hemaclass paper
 #
-#   Anders Ellern Bilgray & Steffen Falgreen
+#   Anders Ellern Bilgrau & Steffen Falgreen
 #
 ################################################################################
 
-# NOTE: Running this script needs more approx 50 GBs of free disk space
+# NOTE: Running this script needs approx 50 GBs of free disk space
 
 # Initalization
 set.seed(220744703) # Set random seed
-rm(list = ls()) # Clear global enviroment
+rm(list = ls())     # Clear global enviroment
 # memory.limit(size = 60000)  # If using a Windows machine
 
 # If any of the used packages are missing they will be installed.
@@ -35,12 +35,12 @@ if (length(missing)) {
   devtools::install_github("oncoclass/hemaClass", dependencies = TRUE)
 }
 
-# Load packages
+# Load needed packages
 library("hemaClass")  # Load the hemaclass package
 library("DLBCLdata")  # Package for data handling and download
-library("devtools")   # For source_url
-library("psych")
-library("Hmisc")      # For latex
+library("devtools")   # For source_url()
+library("psych")      # For cohen.kappa()
+library("Hmisc")      # For latex()
 
 # Global variables
 recompute <- FALSE
@@ -160,6 +160,7 @@ plotline <- function(x, y, ...) {
 # Helper function for adding legends to plots
 addLegend <- function(xc, yc, x, y, weight = NULL, dec = 3) {
   tmp <- summclasses(xc, yc, x, y, weight = weight, dec = dec)
+  tmp <- gsub("\\$|~", "", tmp)
   legend("topleft", legend = paste(names(tmp), "=", tmp))
 }
 
@@ -386,8 +387,8 @@ for (i in seq_len(nrow(table2))) {
 caption <- "Comparison of ABC/GCB classification performed using Wright's
 method and the established elastic net classifier based on cohort normalisation
 for both. The first column shows the rate of agreement (accuracy) between the
-classifiers with $95\\%$ CI. The second column shows the Cohen's $\\kappa$ and
-$95\\%$ CI."
+classifiers with $95\\%$ CI. The second column shows the Cohen's weighted
+$\\kappa$ and $95\\%$ CI."
 
 # Create latex table
 w <- latex(table2, file = "tables/table2.tex",
@@ -647,8 +648,8 @@ w <- latex(tableS4,
 subplot <- function(x, y,
                     cut.x = NULL,
                     cut.y = cut.x,
-                    col1 = "lightgreen",
-                    col2 = "#FFA0A0",
+                    col1 = "#90EE9060",
+                    col2 = "#FFA0A060",
                     ...) {
   tmp <- c(x, y)
   tmp <- tmp[is.finite(tmp)]
@@ -734,7 +735,7 @@ pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
   }
 
   mtext("Cohort based classification", side = 1, outer = TRUE)
-  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -2)
+  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -1.5)
   mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
 }
 dev.off()
@@ -765,14 +766,14 @@ pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
 
     myplot(x1, y1, x2, y2, panel = LETTERS[i + 0:1],
            main = subtype,
-           col1 = col.data$col[col.data$cell == subtype],
+           col1 = paste0(col.data$col, "60")[col.data$cell == subtype],
            col2 = "White", asp = 1,
            cut.x = cut.x, cut.y1 = cut.y1, cut.y2 = cut.y2)
     i <- i + 1
   }
 
   mtext("Cohort based classification", side = 1, outer = TRUE)
-  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -2)
+  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -1.5)
   mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
 }
 dev.off()
@@ -842,7 +843,7 @@ for (type in c("ABCGCB", "BAGS", "REGS")) {
          main = "LLMPP R-CHOP", asp = 1)
 
   mtext("Cohort based Pre-processing", side = 1, outer = TRUE)
-  mtext("One-by-one based Pre-processing", side = 2, outer = TRUE, line = -2)
+  mtext("One-by-one based Pre-processing", side = 2, outer = TRUE, line = -1.5)
   mtext("Reference based Pre-processing", side = 2, outer = TRUE, line = -28)
 
 
