@@ -396,6 +396,19 @@ The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and H
 \bibliography{references}
 
 
+% Prefix S to figures, tables, etc
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+% \renewcommand{\theequation}{S\arabic{equation}}
+% \renewcommand{\thesection}{\arabic{section}}
+
+%'% reset counters
+\setcounter{figure}{0}
+\setcounter{table}{0}
+% \setcounter{section}{0}
+% \setcounter{subsection}{0}
+% \setcounter{equation}{0}
+% \setcounter{page}{1}
 
 \begin{figure*}[htb]
 \begin{center}
@@ -410,7 +423,6 @@ The red line indicates the model chosen through $10$ fold cross validation.
 The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed.}
 \label{fig:crossval}
 \end{figure*}
-
 
 \input{tables/tableS1.tex}
 \input{tables/tableS2.tex}
