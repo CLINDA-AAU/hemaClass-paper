@@ -127,9 +127,10 @@ All \hemaClass{} functionality, including the RMA normalisation and classificati
 The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \pkg{shiny} \citep{shiny} and the accompanying Linux server software.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
 The back end is in enssence the accompanying \pkg{hemaclass} package which allows users to run \hemaClass{} locally and use the package functionality programmatically.
-The package can be utilized as a programmatical interface to the functionality of the website.
+The well-documented package can be utilized as a programmatical interface to the functionality of the website.
 However, it also features a local version of the website should users wishes to avoid uploading large files to our servers.
 The development and latest version of \pkg{hemaClass} is freely available at \url{https://github.com/oncoclass/hemaclass}.
+All bug-reports, suggestions, and comments on the website or package are welcome following the latter link.
 
 The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
 Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
@@ -256,8 +257,12 @@ From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding $9
 
 \section{Results}
 \subsection{Usage of \hemaClass{}}
-\hemaClass{} has an easy-to-use interface with a single data query field and the possibility to select between classification methods.
+\hemaClass{} has an easy-to-use interface with possibility to select the wanted RMA normalization method and the classification methods.
+The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
+A comprehensive tutorial and guide for the website and \pkg{hemaClass}-package is provided on the website or by running \texttt{vignette("howto", package = "hemaClass")} in \R{}, however.
+
 The classifications made by \hemaClass{} using the one-by-one and reference based normalisations are compared to that obtained by means of cohort based normalisation in the following sections.
+
 
 \subsection{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalisation method a classifier based on regularised logistic regression was established.
