@@ -148,7 +148,8 @@ To establish the classifiers the following datasets are used:
   The cohort is also used as a reference set for normalisation of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
   This dataset will be referred to as the \textit{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
-  \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines this panel will be referred to as BCELL26.
+  \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines.
+  This panel will be referred to as BCELL26.
   The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
@@ -206,7 +207,7 @@ Of the $181$ patients $74$ were ABC, $76$ were GCB and $31$ were non-classified.
 Using the $150$ patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
 
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
-The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\lambda$ was varied between $-10$ and $2$ with step size $0.06$.
+The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
 The results of the cross validation are shown in Supplementary Figure \ref{fig:crossval}.
 The minimum $0.13$ was attained in $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
@@ -227,9 +228,9 @@ When a tumour sample is classified according to the REGS classifiers the associa
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
 Resistance classifiers for other chemotherapeutic drugs are also available on \hemaClass{} though estabilshed elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
-The Rituximap resistance classifier of \citet{Laursen2014} is based upon an elastic net appraoch, like above, using three classes.
-The Melphalan resistance classifier of \citet{Boegsted2011} resistance uses sparse partial least squares and two classes.
-A classifier for Dexamethasone (P) is still considered experimental and available only in the package.
+The Rituximap resistance classifier of \citet{Laursen2014} is based upon an elastic net appraoch, like above, however using three classes.
+The Melphalan resistance classifier of \citet{Boegsted2011} uses sparse partial least squares and two classes.
+A classifier for Dexamethasone (P) is still considered experimental and currently available only in the package.
 
 \subsubsection{BAGS classification}
 The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularised by an elastic net penalty.
@@ -248,7 +249,7 @@ Orthogonal regression was used because errors in both classification probabiliti
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
 The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath $0.1$, and unclassified otherwise.
 For the BAGS classifier a tumour was classified as N, CB, CC, M, or PB if the associated probability exceeded $0.5$ and unclassified when this threshold was not met for any subtype.
-For the REGS classifier, C, H, O, and CHO combined the $33\%$ and $66\%$ percentile of the estimated probabilities were $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$.
+For the REGS classifier, C, H, O, and CHO combined the $33\%$ and $66\%$ percentile of the estimated probabilities were $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$, respectively.
 After thresholding the class probabilities confusion matrices were created.
 From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
 
@@ -260,7 +261,7 @@ The classifications made by \hemaClass{} using the one-by-one and reference base
 
 \subsection{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalisation method a classifier based on regularised logistic regression was established.
-The classifications by this classifier were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to Wright's method \citep{Wright2003,Lenz2008a} \todo{Call it something else that "Wright's method"?}.
+The classifications by this classifier were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \citep{Wright2003,Lenz2008a}.
 The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes weighted Cohen's $\kappa$ estimates.
@@ -284,7 +285,8 @@ The accompanying confusion matrices are shown in Supplementary Table \ref{tab:co
 \caption{Comparison of logit probabilities for ABC/GCB and REGS classification obtained through cohort normalisation and \hemaClass{}.
 The areas marked with green indicate patients with similar classification between \hemaClass{} and cohort based normalisation.
 Contrary, the areas marked with blue indicate misclassification.
-For ABC/GCB and REGS the grey areas indicate unclassified and intermediate resistant, respectively.}
+For ABC/GCB and REGS the grey areas indicate unclassified and intermediate resistant, respectively.
+The dashed and solid line shows the identity and least total squares line, respectively.}
 \label{fig:ABCGCBDrug}
 \end{figure}
 
@@ -292,8 +294,8 @@ For ABC/GCB and REGS the grey areas indicate unclassified and intermediate resis
 \begin{center}
 \includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
 \end{center}
-\caption{Comparison of logit probabilities for the BAGS classifier obtained through cohort normalisation and \hemaClass{}.
-The coloured regions in the figure correspond to a threshold probability of $0.5$.}
+\caption{Comparison of logit probabilities for the BAGS classifier obtained through one-by-one and reference based RMA normalization of \hemaClass{} against cohort RMA normalisation.
+The coloured regions in the figure correspond to a threshold probability of $0.5$. The dashed and solid line shows the identity and least total squares line, respectively.}
 \label{fig:Bagscorr}
 \end{figure}
 \newpage
@@ -341,10 +343,10 @@ The present treatment algorithms for DLBCL are based on disease stage and clinic
 The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (rituximab) \citep{Coiffier2002a}.
 Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
 Thus, the need for new therapeutic options in DLBCL is obvious.
-Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials has not been defined.
+Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials have not been defined.
 These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \citep{Friedberg2011}.
 An important example is inhibition of the NF-$\kappa\beta$ pathway by proteasome inhibitors (i.e.\ bortezomib).
-Interestingly, the constitutive activation of the NF-$\kappa\beta$ pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib more activity in this subtype \citep{Nogai2013}.
+Interestingly, the constitutive activation of the NF-$\kappa\beta$ pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib induces more activity in this subtype \citep{Nogai2013}.\todo{Check if sentence is factually correct. Bortezomib induces more activity or decreases it?}
 With the increasing number of new drugs likely to become available over the next years and the fact that their efficacy may vary between subsets of patients defined by gene expression profiles, the current treatment of patients based on disease stage and clinical information alone will not be sufficient.
 \hemaClass{} provides an example of fast processing of complex molecular information in a way that is simple and readily at hand for clinicians.
 
@@ -361,9 +363,9 @@ The server works at the moment only on Affymetrix HG-U133 Plus 2.0 microarrays, 
 This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \citet{Care2013} or by re-annotated chip definition files as suggested by \citep{Dai2005}.
 At the moment we are working on extending the web application to other array types along these lines.
 
-Traditionally ABC/GCB classification has been achieved using the method of \citet{Wright2003} which is based on cohorts, MAS5.0 normalised arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
+Traditionally ABC/GCB classification has been achieved using the naive Bayes classifier of \citet{Wright2003} which is based on cohorts, MAS5.0 normalised arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
 However, a classifier based on logistic regression regularised by an elastic net penalty was implemented to make the classification more adaptable to RMA normalisation, one-by-one processing, and stable towards varying amounts of ABC/GCB patients.
-This classifier proved to be quite comparable with Wright's classifier over the four studied datasets confirming the strong and stable signal of the ABC/GBC subclasses of DLBCL.
+This classifier proved to be quite comparable with the naive Bayes classifier over the four studied datasets confirming the strong and stable signal of the ABC/GBC subclasses of DLBCL.
 
 Under the validation of the one-by-one method one should notice that the unclassified is treated as a class in its own right.
 This implies a lower accuracy compared to an approach where the unclassified are left out of the validations.

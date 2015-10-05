@@ -308,7 +308,7 @@ rm(RC)
 ################################################################################
 
 #
-# Load classifications by Wright's method
+# Load classifications by Wright's naive Bayes method
 #  and add to results-object
 #
 
@@ -384,8 +384,9 @@ for (i in seq_len(nrow(table2))) {
          testfun(cohort.class, wright.class, weight = ABCGCB.weights))
 }
 
-caption <- "Comparison of ABC/GCB classification performed using Wright's
-method and the established elastic net classifier based on cohort normalisation
+caption <- "Comparison of ABC/GCB classification performed using Wright's naive
+Bayes classifier \\citep{Wright2003} and the established elastic net classifier
+based on cohort normalisation
 for both. The first column shows the rate of agreement (accuracy) between the
 classifiers with $95\\%$ CI. The second column shows the Cohen's weighted
 $\\kappa$ and $95\\%$ CI."
