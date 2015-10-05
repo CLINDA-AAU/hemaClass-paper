@@ -37,13 +37,13 @@
 \author[1]{Alexander Schmitz}
 \author[12]{Hans Erik Johnsen}
 \author[12]{Karen Dybk{\ae}r}
-\author[12]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed (\texttt{martin.boegsted@rn.dk})}}
+\author[12]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed (\texttt{mboegsted@dcm.aau.dk})}}
 
 \affil[1]{Department of Haematology, Aalborg University Hospital}
 \affil[2]{Department of Clinical Medicine, Aalborg University}
 
 % Steffen Falgreen - sfl@rn.dk
-% Anders Ellern Bilgrau - a.bilgrau@rn.dk
+% Anders Ellern Bilgrau - anders.ellern.bilgrau@gmail.com
 % Tarec Christoffer El-Galaly - tarec.galaly@gmail.com
 % Julie S.\  B\o dker - j.boedker@rn.dk
 % Alexander Schmitz - alex.schmitz@rn.dk
@@ -70,7 +70,7 @@ The website and \R{}-package is relevant for biological and clinical lymphoma re
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
 \medskip\\
 \textbf{Keywords:~}
-Classification; Oncogenomics; Microarrays; Pre-processing; Dose response experiments; NCI60; Doxorubicin; Mathematical modelling; Differential equation modelling; Nonlinear regression; Isotonic regression; Bootstrap; Parametric bootstrap
+Classification; Oncogenomics; Microarrays; Pre-processing; Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Robust Multichip Average
 \end{abstract}
 
 
@@ -121,15 +121,22 @@ This workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 \label{fig:webtooldiagram}
 \end{figure}
 
-\subsection{Software}
-The normalisation and classification procedures are implemented using the statistical programming language \R{} \citep{RCoreTeam} and Bioconductor \citep{Gentleman2004}.
-The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \pkg{shiny} \citep{RStudio2013} and the accompanying Linux server software.
+
+\subsection{Software availability and technical details}
+All \hemaClass{} functionality, including the RMA normalisation and classification procedures, are available through the software package \pkg{hemaClass} for the statistical programming language \R{} \citep{RCoreTeam} using Bioconductor \citep{Gentleman2004}.
+The interactive web application available at \url{http://hemaclass.org} was created using the \R{}-package \pkg{shiny} \citep{shiny} and the accompanying Linux server software.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
 The back end is in enssence the accompanying \pkg{hemaclass} package which allows users to run \hemaClass{} locally and use the package functionality programmatically.
+The package can be utilized as a programmatical interface to the functionality of the website.
+However, it also features a local version of the website should users wishes to avoid uploading large files to our servers.
+The development and latest version of \pkg{hemaClass} is freely available at \url{https://github.com/oncoclass/hemaclass}.
 
 The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
 Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
 The \pkg{hemaclass} package is open source and freely available for sharing, modification, and redistribution at \url{https://github.com/oncoclass/hemaclass}.
+
+
+
 
 \subsection{Data overview}
 The seven gene expression datasets used in this article are summarised in Table \ref{table:01}.
@@ -374,15 +381,7 @@ It is our hope that making our own findings publicly available in this way will 
 Although \hemaClass{} is still separated from the clinic we believe a web based tool and suggestion for a clinical reference sample will bring cancer classification closer to the clinic.
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
 
-\phantomsection
-\addcontentsline{toc}{section}{Availability and technical details}
-\section*{Availability and technical details}
-All of the \hemaClass{} functionality is available through the \R{}-package \textbf{hemaClass} freely available at
-\url{https://github.com/oncoclass/hemaclass}.
-Primariliy, the package can be utilized as a programmatical interface to the functionality of the website.
-However, it also features a local version of the website should users wishes to avoid uploading large files to our server.
 Material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
-\todo[inline]{Expand this section? Any other details?}
 
 \phantomsection
 \addcontentsline{toc}{section}{Acknowledgements}
