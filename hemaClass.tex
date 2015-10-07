@@ -39,13 +39,14 @@
 \begin{abstract}
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
-This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) into e.g.\ oncogenomic cell-of-origin and chemotherapeutic resistance classes.
+This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into e.g.\ oncogenomic cell-of-origin and chemotherapeutic resistance classes.
 Laboratory specific effects cannot be accounted for in true one-by-one microarray normalisation, however.
 Hence, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications.
-Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
+Classification results for one-by-one array pre-processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
-The website \hemaClass{} is based on the \R{}-package \pkg{hemaClass} accompanied with a Shiny web application, which makes it straightforward use programatically, deploy as a web service, or even as a local instance.
-The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides a reliable and swift method for calculation of DLBCL subclasses.
+The website is essentially the \R{}-package \pkg{hemaClass} accompanied by a Shiny web application.
+The well-documented package can be used to run the website locally or to use the developed methods programatically.
+The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides a reliable and swift methods for calculation of disease subclasses.
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
 \medskip\\
 \textbf{Keywords:~}
@@ -55,12 +56,9 @@ Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Oncogenomics; Classification; C
 
 
 \section{Introduction}
-
-%\subsection{Background}
 In addition to current clinically used risk factor scoring systems several independent gene expression profile (GEP) based risk stratifications have been proposed with biological and clinical significance in DLBCL.
 Although drug targetable genes which are only expressed in subtypes of the DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009}.
 
-%\subsection{Motivation}
 \citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
 On the basis of gene expression profile analyses DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
 The validity of this classification and its prognostic importance has been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Poulsen2005,Lenz2008a,Monti2012a}.
@@ -75,12 +73,12 @@ However, easily accessible molecular classification methods are lacking behind a
 A few methods exist for cancer types other than lymphoma, see e.g.\ \citep{Huang2009} for an AML application.
 But to our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
 A single accessible Windows based application has recently been published for ABC/GCB classification \citep{Care2013}.
-Although this method develops a new ABC/GCB classifier which is stable across a number of microarray technologies and trial centres it is biased for prognostic biomarkers.\todo{Check/verify that this is indeed the case.}
+Although this method develops a new ABC/GCB classifier which is stable across a number of microarray technologies and trial centres it is biased for prognostic biomarkers.\todo{Check/verify that this is indeed the case.}{}
 
 This prompted us to develop an easy accessible and flexible web-based tool for ABC/GCB, BAGS, and REGS classification which is capable of computing our recently developed classifiers.
 The classifications made by the web-based tool \hemaClass{} are compared to the existing state-of-the-art and approved ABC/GCB classifications of DLBCL.
 We believe that \hemaClass{} will provide a novel and user-friendly concept for bringing complex molecular classification of disease swiftly into daily clinical practice.
-
+As already delineated, this paper primarily describes developed classification schemes for DLBCL altough MM classification is currently also featured on the website and extenstive treatment hereof is planned.
 
 \section{Materials and Methods}
 
@@ -209,10 +207,10 @@ If a drug is left out in the combination therapy the drug is simply removed from
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are probe-set wise rescaled by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
-Resistance classifiers for other chemotherapeutic drugs are also available on \hemaClass{} though estabilshed elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
+Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though estabilshed elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
 The Rituximap resistance classifier of \citet{Laursen2014} is based upon an elastic net appraoch, like above, however using three classes.
 The Melphalan resistance classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
-This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.\todo{More about Melphalan?}{}
+This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.
 A classifier for Dexamethasone (P) is still considered experimental and currently available only in the package.
 
 \subsubsection{BAGS classification}
@@ -333,7 +331,7 @@ Thus, the need for new therapeutic options in DLBCL is obvious.
 Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials have not been defined.
 These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \citep{Friedberg2011}.
 An important example is inhibition of the NF-$\kappa\beta$ pathway by proteasome inhibitors (i.e.\ bortezomib).
-Interestingly, the constitutive activation of the NF-$\kappa\beta$ pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib induces more activity in this subtype \citep{Nogai2013}.\todo{Check if sentence is factually correct. Bortezomib induces more activity or decreases it?}
+Interestingly, the constitutive activation of the NF-$\kappa\beta$ pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib induces more activity in this subtype \citep{Nogai2013}.\todo{Check if sentence is factually correct. Bortezomib induces more activity or decreases it?}{}
 With the increasing number of new drugs likely to become available over the next years and the fact that their efficacy may vary between subsets of patients defined by gene expression profiles, the current treatment of patients based on disease stage and clinical information alone will not be sufficient.
 \hemaClass{} provides an example of fast processing of complex molecular information in a way that is simple and readily at hand for clinicians.
 
