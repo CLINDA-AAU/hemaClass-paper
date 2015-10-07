@@ -17,7 +17,7 @@ all: results pdf clean
 results: figures/figure2.pdf figures/figure3.pdf tables/table1.tex
 	Rscript --vanilla hemaclass.R
 
-pdf: hemaclass.pdf
+pdf:
 	pdflatex --synctex=1 hemaclass.tex
 	bibtex hemaclass
 	pdflatex --synctex=1 hemaclass.tex
