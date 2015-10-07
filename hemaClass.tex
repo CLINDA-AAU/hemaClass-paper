@@ -40,7 +40,7 @@
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
 This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) into e.g.\ oncogenomic cell-of-origin and chemotherapeutic resistance classes.
-Laboratory specific effects cannot be accounted for in one-by-one normalisation, however.
+Laboratory specific effects cannot be accounted for in true one-by-one microarray normalisation, however.
 Hence, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications.
 Classification results for one-by-one array processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
@@ -155,13 +155,11 @@ Both the normalisation and summarisation procedures of RMA are cohort based and 
 As quantile normaliser the empirical cumulative distribution function (ECDF) of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles \citep{Bolstad2003}.
 To mimic the summarisation procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
 The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
-
 Finally, the median of each probe-set in the LLMPP CHOP is subtracted from the corresponding probe-set in the user data.
 This ensures identical classification probabilities whether data is supplied as a cohort or one-by-one.
 
 To accommodate laboratory and sample preparation specific effects different from the LLMPP CHOP reference data, \hemaClass{} allows the user to upload an alternative dataset which is to be used in place of LLMPP CHOP as reference.
 In this article the reference datasets have consisted of $30$ randomly selected samples.
-
 The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalisation.
 
 
@@ -199,9 +197,13 @@ In contrast, the one-by-one normalised data is used directly.
 In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
 The classifiers were established on BCELL26 using regularised logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
-The probability of resistance to the combination therapy CHO is estimated based on the probabilities of drug resistance toward the three drugs C, H, and O.
-This probability is calculated by a formula derived as the posterior probability of being resistant given resistance towards each of the individual drugs under the assumption of drug independence.
-The formula is also known as Graham's formula: $\mbox{CHO}/(\mbox{CHO}+(1-\mbox{C})(1-\mbox{H})(1-\mbox{O}))$.
+The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward the each of three drugs $p_C$, $p_H$, and $p_O$, respectively.
+This probability is calculated by a formula derived as the posterior probability of being resistant given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
+The formula is also known as Graham's formula:
+\begin{equation*}
+  p_{CHO} = \frac{p_C p_H p_O}{p_C p_H p_O + (1 - p_C)(1 - p_H)(1 - p_O)},
+\end{equation*}
+derived in supplementary section \ref{sec:graham}.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
 
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are probe-set wise rescaled by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
@@ -210,7 +212,7 @@ Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user
 Resistance classifiers for other chemotherapeutic drugs are also available on \hemaClass{} though estabilshed elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
 The Rituximap resistance classifier of \citet{Laursen2014} is based upon an elastic net appraoch, like above, however using three classes.
 The Melphalan resistance classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
-This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.\todo{More about Melphalan?}
+This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.\todo{More about Melphalan?}{}
 A classifier for Dexamethasone (P) is still considered experimental and currently available only in the package.
 
 \subsubsection{BAGS classification}
@@ -237,9 +239,9 @@ From these accuracy or rate of agreement, Cohen's $\kappa$, and corresponding $9
 
 \section{Results}
 \subsection{Usage of \hemaClass{}}
-\hemaClass{} has an easy-to-use interface with possibility to select the wanted RMA normalization method and the classification methods.
+The website is an easy-to-use interface with possibility to select the wanted RMA normalization method and the classification methods.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
-A comprehensive tutorial and guide for the website and \pkg{hemaClass}-package is provided on the website or by running \texttt{vignette("howto")} in \R{}, however.
+A comprehensive tutorial and guide for the \pkg{hemaClass} website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}, however.
 
 The classifications made by \hemaClass{} using the one-by-one and reference based normalisations are compared to that obtained by means of cohort based normalisation in the following sections.
 
@@ -387,50 +389,14 @@ The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and H
 \bibliography{references}
 
 
-% Prefix S to figures, tables, etc
-\renewcommand{\thefigure}{S\arabic{figure}}
-\renewcommand{\thetable}{S\arabic{table}}
-% \renewcommand{\theequation}{S\arabic{equation}}
-% \renewcommand{\thesection}{\arabic{section}}
-
-%'% reset counters
-\setcounter{figure}{0}
-\setcounter{table}{0}
-% \setcounter{section}{0}
-% \setcounter{subsection}{0}
-% \setcounter{equation}{0}
-% \setcounter{page}{1}
-
-\begin{figure*}[htb]
-\begin{center}
-\includegraphics[width=1\textwidth]{figures/CrosvalidationClass.pdf}
-\end{center}
-\caption{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ for logistic regression regularised by elastic net.
-In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularisation parameter $\lambda$, respectively.
-In Panel C the regularisation curves are shown.
-Black and grey curves represent selected and non-selected probe-sets, respectively.
-Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
-The red line indicates the model chosen through $10$ fold cross validation.
-The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed.}
-\label{fig:crossval}
-\end{figure*}
-
-\input{tables/tableS1.tex}
-\input{tables/tableS2.tex}
-\input{tables/tableS3.tex}
-\input{tables/tableS4.tex}
-
-\newpage
-\listoftodos
-
-
 % Supplementary material
 \cleardoublepage
 
 % Prefix S to figures, tables, etc
 \renewcommand{\theequation}{S\arabic{equation}}
 \renewcommand{\thefigure}{S\arabic{figure}}
-\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thesection}{S\arabic{section}}
 
 % reset counters
 \setcounter{section}{0}
@@ -440,8 +406,15 @@ The gene symbols for the $20$ probe-sets associated with the largest absolute co
 \setcounter{table}{0}
 \setcounter{page}{1}
 
-
 \input{supplementary.tex}
+
+\cleardoublepage
+\listoftodos
+
+
+
+
+
 
 
 
