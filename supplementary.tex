@@ -1,0 +1,32 @@
+% \input{preamble}
+% \begin{document}
+
+\phantomsection
+\addcontentsline{toc}{section}{Supplementary Material}
+\begin{center}
+{\huge SUPPLEMENTARY MATERIAL}\bigskip \\
+{\large\bf \hemaClass{}: Online one-by-one normalization and classification of hematological malignacies}
+\end{center}
+
+\section{Graham's formula}
+We show that the posterior probability of being resistant to the combination of two drugs, given resistance to the individual drugs equals Graham's formula. It is straightforward to generalize the method to include three different drugs.
+
+Let $C,H,$ and, $R$ be Bernoulli distributed random variables with probability parameter $1/2$, where $H=1$ indicates resistance to drug $H$, $C=1$ indicates resistance to drug $C$, and $R=1$ indicates resistance to the combination of drug $H$ and $C$. Conversely $0$ indicates sensitivity towards the drugs. Under the assumption of drug independence
+\begin{align*}
+P(H = 1, C = 1 | R = 1) &= P(H = 1 | R = 1)P(C = 1| R = 1) \\
+P(H = 1, C = 1 | R = 0) &= P(H = 1 | R = 0)P(C = 1| R = 0)
+\end{align*}
+we have
+\begin{align*}
+P(R=1 | H=1, C =1) &= \frac{P(R=1 , H=1, C=1)}{P(H=1, C=1)} \\
+&= \frac{P(H=1, C=1 | R =1)P(R=1)}{P(H=1 , C=1, R=1) + P(H=1 , C=1, R=0)}\\
+&= \frac{P(H=1|R=1)P(C=1 | R=1)P(R=1 )}{P(H=1 , C=1| R=1)P(R=1) + P(H=1 , C=1| R=0)P(R=0)}.
+\intertext{For notational convenience we abbreviate $P(H=1|R=1) = P_H$, $P(C=1 | R=1) = P_C$, $P(R=1) = P_R$, and $P(R=1 | H=1, C= 1)=P_{CH}$, which imply}
+P_{CH}&= \frac{P_H P_C P_R}{P_H P_C P_R + P(H = 1| R= 0)P(C=1 | R = 0)P(R=0)} \\
+&= \frac{P_H P_C P_R}{P_H P_C P_R + (1 - P(H = 0|R=0))(1 - P(C=0|R=0))(1-P(R=1))}.
+\intertext{The distributional assumptions implies}
+P_{CH}&= \frac{P_H P_C P_R}{P_H P_C P_R + (1 - P_H)(1 - P_C)(1-P_R)}\\
+&= \frac{P_H P_C}{P_H P_C + (1 - P_H)(1 - P_C)}.
+\end{align*}
+
+% \end{document}
