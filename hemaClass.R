@@ -393,7 +393,7 @@ $\\kappa$ and $95\\%$ CI."
 
 # Create latex table
 w <- latex(table2, file = "tables/table2.tex",
-           title = "",
+           title = "Dataset",
            caption = caption,
            label = "tab:ABCGCBclassifier",
            size = "small")
