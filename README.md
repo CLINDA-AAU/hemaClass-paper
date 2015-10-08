@@ -26,9 +26,10 @@ A tutorial of how to use the website and/or package is provided on the [website]
 ## Citing this paper
 We have invested alot of time and effort into the paper and [**hemaClass**](https://github.com/oncoclass/hemaclass), so please cite them if you use elements of them. Please confer `citation("hemaClass")`.
 
-1. Steffen Falgreen, Anders Ellern Bilgrau, Jonas Have; **"hemaClass: Online classification of gene expression profiles in hematological cancers."** (2014) http://github.com/falgreen/hemaClass
+1. Steffen Falgreen, Anders Ellern Bilgrau, Jonas Have; **"hemaClass: Online classification of gene expression profiles in hematological cancers."** (2015) R package version 0.11; http://github.com/falgreen/hemaClass
 
-2. Steffen Falgreen, Anders Ellern Bilgrau, Lasse Hjort Jakobsen, Jonas Have, Kasper Lindblad Nielsen, Tarec Christoffer El-Galaly, Julie Støve Bøker, Alexander Schmitz, Hans Erik Johnsen, Karen Dybkær, and Martin Bøgsted; hemaClass.org: An online based diffuse large B-cell lymphoma classification tool. (2015) In preperation for BMC genomics.
+2. Steffen Falgreen, Anders Ellern Bilgrau, Lasse Hjort Jakobsen, Jonas Have, Kasper Lindblad Nielsen, Tarec Christoffer El-Galaly, Julie Støve Bøker, Alexander Schmitz, Hans Erik Johnsen, Karen Dybkær, and Martin Bøgsted; **"hemaClass.org: An online based diffuse large B-cell lymphoma classification tool."** (2015) In preperation for BMC genomics.
+
 
 
 ## References
