@@ -90,4 +90,73 @@ The distributional assumptions then imply:
 \end{align*}
 which is the two-drug equivalent to the used formula.
 
+
+
+
+\section{RMA normalization}
+Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \citep{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
+
+\subsection{Backgroud adjustment}
+In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
+\citep{Irizarry2003b,Bolstad2004}.
+
+\subsection{Quantile normalisation}
+Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
+
+Furthermore, let $G_i$ denote the empirical cumulative distribution function (ECDF) of the probes $\{x_{ijk}\}_{jk}$ on the $i$'th cohort array and $F$ the ECDF of the across array averaged sample quantiles $\{\bar{x}_{\cdot (jk)}\}_{ij}$, where $\{x_{i(jk)}\}_{jk}$ is the order statistic of all probes on the i'th cohorte array. Then each data point is quantile normalized in the following way
+\begin{equation*}
+     \tilde{x}_{ijk} = F^{-1}(G_i(x_{ijk})),
+\end{equation*}
+where $F^{-1}$ is calculated as the quantiles of type 2 \citep{Hyndman1996}.
+This step is performed by the \texttt{RMA\_norm} function with option \texttt{generateQuan} equal to one in the \hemaClass{} package.
+
+\subsection{Summarisation}
+
+For each probe-set $j$ we let $\mu_{ij}$ represent the $\log_2$-scale expression level for array $i$ and probeset $j$, $\alpha_{jk}$ the probe affinity effect, and the $\epsilon_{ijk}$'s are independent identically distributed  error terms with mean 0 and formulate the following linear additive model
+\begin{equation*}
+   \tilde{x}_{ijk} = \mu_{ij} + \alpha_{jk}+ \epsilon_{ijk},
+\end{equation*}
+where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are estimated by median polish \citep{Holder2001}. The probe affinity estimates are denoted by $\hat{\alpha}_{jk}$.
+
+The RMA normalized cohort data are given by
+\begin{equation*}
+   \hat{x}_{ij\cdot} = \hat{\mu}_{ij}.
+\end{equation*}
+This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} package.
+
+\section{One-by-one RMA normalization of user supplied data}
+
+\subsection{Quantile normalization}
+
+Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as descrbied above. Similarly,  let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes.
+
+Furthermore, let G and H denote the ECDF of all the reference $\{x_{ijk}\}_{ijk}$ and user supplied data $\{y_{ijk}\}_{ijk}$, respectively. Finally, let $H^{-1}$ denote the sample quantile of type 4 based on the reference data set \citep{Hyndman1996}.
+
+As quantile normalizer the ECDF of the background corrected reference data is used in place of the ususally applied ECDF of the mean of the sample quantiles
+\begin{equation*}
+   \tilde{y}_{ijk} = H^{-1}(G(y_{ijk})).
+\end{equation*}
+This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \hemaClass{} package.
+
+
+\subsection{Summarisation}
+To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
+\begin{equation*}
+   \hat{y}_{ijk} = \tilde{y}_{ijk} - \hat{\alpha}_{jk}.
+\end{equation*}
+The pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
+\begin{equation*}
+   \hat{y}_{ij\cdot} = \median_{k \in \{1,\dots,n_j \}} \{ \hat{y}_{ijk} \}.
+\end{equation*}
+
+
+\subsection{Classification}
+To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
+\begin{equation*}
+  (\hat{y}_{ij\cdot} - \hat{x}_{\cdot j\cdot})/s_{\cdot j\cdot},
+\end{equation*}
+where
+$\hat{x}_{\cdot j\cdot} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij\cdot}\}$ and $s_{\cdot j\cdot} = \std_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij\cdot}\}$.
+
+
 % \end{document}
