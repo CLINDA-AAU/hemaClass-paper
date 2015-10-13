@@ -96,9 +96,10 @@ which is the two-drug equivalent to the used formula.
 \section{RMA normalization}
 Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \citep{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
 
-\subsection{Backgroud adjustment}
+\subsection{Backgroud correction}
 In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
 \citep{Irizarry2003b,Bolstad2004}.
+
 
 \subsection{Quantile normalisation}
 Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
@@ -125,6 +126,10 @@ The RMA normalized cohort data are given by
 This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} package.
 
 \section{One-by-one RMA normalization of user supplied data}
+\subsection{Backgroud correction}
+The background correction in one-by-one RMA normalization is unaltered as it is already works in an one-by-one fashion.
+
+
 
 \subsection{Quantile normalization}
 
