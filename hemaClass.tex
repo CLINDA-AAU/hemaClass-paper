@@ -250,6 +250,9 @@ From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and c
 The website is an easy-to-use interface to \pkg{hemaClass} with possibility to select the wanted RMA normalization method and the classification methods.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
 A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}, however.
+Users upload patient samples which then are one-by-one normalized and classified depending on settings set by the users.
+An text summary of the results and a plot of the predicted overall survival and progression free survival is optionally provided for each patient sample.
+These predictions are based on patient survival data from LLMPP, MDFCI, and IDRC using a Cox regression with IPI and a combination of the ABC/GCB and BAGS classes.
 
 The classifications made by \hemaClass{} using the one-by-one and reference based normalisations are compared to that obtained by means of cohort based normalisation in the following sections.
 
