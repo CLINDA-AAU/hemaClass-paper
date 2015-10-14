@@ -75,8 +75,9 @@ However, easily accessible molecular classification methods are lacking behind a
 A few methods exist for cancer types other than lymphoma, see e.g.\ \citep{Huang2009} for an AML application.
 But to our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
 A accessible Windows based application has been published for ABC/GCB classification \citep{Care2013}.
-Although this method develops a new ABC/GCB classifier which is stable across a number of microarray technologies and trial centres it may be select ABC/GCB classes biased towards prognosis instead of biology, as the ensembl of classifiers are chosen on basis on their ability to separate survival curves.\todo{Check/verify that this is indeed the case.}{}
-Furthermore, the need for a whole cohort of patients is still present in this application.
+Although \citet{Care2013} develops a new ABC/GCB classifier which is stable across microarray technologies and trial centres, the ABC/GCB classifier is potentially biased towards classes which differentiate the prognosis and not biology.
+This bias arises as the ensemble of classifiers are chosen on basis on their ability to separate survival.
+Nevertheless, the need for a whole cohort of patients is still present in this application.
 
 In clinical settings, the methods need be applicable for a single patient sample and straightforward to use.
 This prompted us to develop an easy accessible and flexible web-based tool for ABC/GCB, BAGS, and REGS classification which is capable of computing our recently developed classifiers.
