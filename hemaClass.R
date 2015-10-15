@@ -14,20 +14,22 @@ rm(list = ls())     # Clear global enviroment
 # memory.limit(size = 60000)  # If using a Windows machine
 
 # If any of the used packages are missing they will be installed.
-pkgs <- c("rgdal", "psych", "devtools", "Hmisc", "shiny", "matrixStats", "Rcpp",
+pkgs <- c("glmnet", "rgdal", "psych", "devtools", "Hmisc", "shiny",
+          "matrixStats", "Rcpp",
           "RcppArmadillo", "RcppEigen", "testthat", "WriteXLS", "RLumShiny",
           "gdata", "Biobase", "affy", "affyio", "preprocessCore",
           "BiocInstaller", "AnnotationDbi", "GEOquery", "GEOquery", "oligo",
+          "annotate", "hgu133plus2.db",
           "shinysky", "DLBCLdata", "hemaClass")
 missing <- setdiff(pkgs, installed.packages()[, "Package"])
 
 if (length(missing)) {
   # Packages from CRAN
-  install.packages(pkgs[1:12])
+  install.packages(pkgs[1:13])
 
   # Packages form Bioconductor
   source("http://bioconductor.org/biocLite.R")
-  biocLite(pkgs[13:21])
+  biocLite(pkgs[14:23])
 
   # Packages from github
   devtools::install_github("AnalytixWare/ShinySky")
@@ -36,15 +38,24 @@ if (length(missing)) {
 }
 
 # Load needed packages
-library("hemaClass")  # Load the hemaclass package
-library("DLBCLdata")  # Package for data handling and download
-library("devtools")   # For source_url()
-library("psych")      # For cohen.kappa()
-library("Hmisc")      # For latex()
+library("hemaClass")      # Load the hemaclass package
+library("DLBCLdata")      # Package for data handling and download
+library("devtools")       # For source_url()
+library("psych")          # For cohen.kappa()
+library("Hmisc")          # For latex()
+library("glmnet")         # For fitting ABC/GCB classifier
+library("annotate")       # For annotation
+library("hgu133plus2.db") # For annotation
 
 # Global variables
 recompute <- FALSE
-verbose <- TRUE
+verbose   <- TRUE
+
+twocol    <- 16 / 2.54 # Width of two column figures
+onecol    <-  8 / 2.54 # Width of one column figures
+maxheight <- 23 / 2.54 # Maximum figure height
+pointsize <-  8        # Pointsize in figures
+
 
 # Load saved data
 saved.file <- "saved.RData"
@@ -180,6 +191,249 @@ reFactor <- function(x) {
   return(factor(x, levels = c("ABC", "NC", "GCB")))
 }
 
+plotCoef <- function(cv.fit,
+                     col.chosen = 1, col.discarded = "grey",
+                     ylab = NULL, xlab = NULL,
+                     max.names = 20, label.pct = 33, labels = TRUE,
+                     main = NULL,
+                     ...){
+  fit <- cv.fit$glmnet.fit
+  index <- log(cv.fit$lambda)
+  beta.which <- NULL
+  COEF <- coef(fit)
+  if(class(fit)[1] == "multnet"){
+    beta.which <- names(COEF)[1]
+    COEF <- COEF[[beta.which]]
+  }
+  COEF <- COEF[-1,]
+  COEF <- COEF[-nrow(COEF), ]
+  beta <- as.matrix(COEF[rowSums(COEF) != 0,,drop = FALSE])
+
+  wh <- length(index) - which.min(rev(cv.fit$cvm)) + 1
+
+  COEF.chosen <- rownames(beta[beta[,wh] != 0, , drop = FALSE])
+  not.chosen  <- setdiff(names(beta[,wh]), COEF.chosen)
+  ylim <- range(beta)
+  xlim <- (rev(range(index)))
+  xlim2 <- xlim
+  if(labels){
+    xlim2 <- xlim
+    xlim[2] <- (xlim[2]-xlim[1]*label.pct/100) / (1-label.pct/100)
+    #xlim[2] <- xlim[2] - abs(xlim[1] - xlim[2]) / l.ratio
+
+    # xlim <- xlim2
+  }
+  if(is.null(xlab))
+    xlab <- expression(paste("Regularisation Parameter - log(", lambda, ")"))
+  if(is.null(ylab) & !is.null(beta.which))
+    ylab <- as.expression(substitute(paste("Coefficients: Response ", a),
+                                     list(a= beta.which)))
+  if(is.null(ylab))
+    ylab <- as.expression(substitute(paste("Coefficients: Response")))
+
+
+  plot(0, 0,
+       xlim = xlim, ylim = ylim, type = "n", axes = FALSE,
+       xlab = xlab,
+       ylab = ylab)
+
+  get_axp <- function(x) {
+    c1 <- ifelse(x[1] < 0, floor(x[1]), ceiling(x[1]))
+    c2 <- ifelse(x[2] > 0, floor(x[2]), ceiling(x[2]))
+    c(c1, c2)
+  }
+  get_axp <- function(x) {
+    c1 <- ifelse(x[1] < 0, ceiling(x[1]), floor(x[1]))
+    c2 <- ifelse(x[2] > 0, ceiling(x[2]), floor(x[2]))
+    c(c1, c2)
+  }
+
+
+  #unique((at.x <- round(axTicks(side=1, usr=xlim2,
+  #                       axp=c(get_axp(xlim2), n=6), log=FALSE, nintLog=5))))
+  at.x <- axTicks(side=1, usr=xlim2,
+                  axp=c(get_axp(xlim2), n=6), log=FALSE, nintLog=5)
+  at.x <- unique( round(at.x ,1))
+  (at.y <- axTicks(side=2))
+  axis(side = 1, at = at.x)
+  axis(side = 2, las = 2)
+  q <- cv.fit$nzero
+  q.round <- vector()
+  for(a in 1:length(at.x))
+    q.round[a] <- round(q)[which.min(abs(index - at.x[a]))]
+  #axis(side = 3, at = index[seq(1, length(index), length.out = 5)],
+  #     labels = round(q)[seq(1, length(index), length.out = 5)])
+  axis(side = 3, at = at.x,
+       labels = q.round)
+
+  graphics:::box()
+
+  grid2 <- function(xlim, ylim, at.y, at.x, lwd = par("lwd"),
+                    col = "grey", lty = "dotted"){
+
+    for(y in at.y)
+      segments(xlim[1], y, xlim[2], y, lty = lty,
+               col = col, lwd = lwd)
+    for(x in at.x)
+      segments(x, ylim[1], x, ylim[2], at.y, lty = lty,
+               col = col, lwd = lwd)
+  }
+
+  grid2(xlim = c(xlim2[1] + 1, xlim2[2]),
+        ylim = c(ylim[1]-1, ylim[2]+1),
+        at.y = at.y, at.x = at.x )
+
+
+  if(length(not.chosen) > 0)
+    matplot(index, t(beta[not.chosen,  , drop = FALSE]), lty = 1,
+            type = "l",col = col.discarded, add = TRUE)# ...)
+  if(length(COEF.chosen) > 0)
+    matplot(index, t(beta[COEF.chosen, , drop = FALSE]), lty = 1,
+            type = "l", col = col.chosen, add = TRUE)#, ...)
+
+  graphics:::box()
+
+  abline(v = index[wh], lty = 2, col = 2)
+  if(!is.null(COEF.chosen)){
+    if(length(COEF.chosen) == 1){
+      which2 <- COEF.chosen
+    }else{
+      which2 <- names(sort(abs(beta[COEF.chosen, wh]),decreasing=TRUE))
+    }
+    if(length(which2) > max.names)
+      which2 <- names(sort(abs(beta[COEF.chosen, wh]),
+                           decreasing=TRUE)[1:max.names])
+
+    genes <- unlist(lookUp(which2, "hgu133plus2", "SYMBOL"))
+
+    if(any(is.na(genes)))
+      genes[is.na(genes)] <- names(genes[is.na(genes)])
+
+    if(labels){
+      y1.cords <- beta[which2, ncol(beta)]
+      names(y1.cords) <- which2
+      y2.cords <- seq(min(ylim), max(ylim), length.out = length(which2))
+      if(length(which2) == 1)
+        y2.cords <- y1.cords
+      names(y2.cords) <- names(y1.cords)[order(y1.cords)]
+      x1.cords <- min(index)
+      x2.cords <- min(index) - (xlim[1] - xlim[2])/10
+
+      for(i in which2){
+        segments(x1.cords, y1.cords[i], x2.cords, y2.cords[i], lty = 1,
+                 col = "grey", lwd = par("lwd"))
+        #if(labels & !is.null(array))
+        #  text(x2.cords, y2.cords[i], genes[i], pos = 4)
+        #if(labels & is.null(array))
+        text(x2.cords, y2.cords[i], genes[i], pos = 4)
+      }
+    }
+  }
+  if(is.null(main))
+    main <- paste("Regularisation Curves for", beta.which)
+  title(main, line = 3)
+}
+
+plotCV <- function(x, y, lo, up,
+                   xlab = NULL, ylab = NULL,
+                   col = "#333333", log = "y",
+                   col.alpha = 20, ...){
+
+  if(grepl("y", log)){
+    y <- log(y)
+    lo <- log(lo)
+    up <- log(up)
+  }
+  if(grepl("x", log)){
+    x <- log(x)
+  }
+
+  matplot(x, cbind(y, lo, up), col = 0, ylab = ylab, xlab = xlab,...)
+
+
+  polygon(x= c(x, rev(x)),
+          y = c(lo, rev(up)),
+          col = paste(col, col.alpha, sep = ""), border = 0)
+  lines(x, y, lwd= 2, col = col)
+}
+
+plotCValpha <- function(x, y, lo, up, nzero, parameter = "alpha",
+                        xlab = NULL,
+                        ylab = NULL,
+                        main = NULL,
+                        main1 = NULL, ...){
+  if(is.null(main))
+    if(is.null(main1)){
+      main <- as.expression(
+        substitute(paste("Cross validation: ", alpha, " = ", b) ,
+                   list(b= round(a[which.min(mat.list$AUC[,c(1)])],2))))
+    }else{
+      main <- as.expression(
+        substitute(paste(m," (CV: ", alpha, " = ", b, ")") ,
+                   list(m = main1, p = parameter, b= round(x[which.min(y)],2))))
+    }
+  if(is.null(xlab))
+    xlab <- expression(paste("Model parameter: ", alpha, sep = ""))
+
+  if(is.null(ylab))
+    ylab <- "Mean-Squared Error"
+
+  matplot(x, cbind(y, lo, up), col = 0,
+          xlab = xlab, ylab = ylab )
+
+
+  polygon(x= c(x, rev(x)),
+          y = c(lo, rev(up)),
+          col = "#33333320", border = 0)
+  lines(x, y, lwd= 2, col = "#333333")
+
+  abline(v=x[which.min(y)], lty = 2)
+
+
+  axis(side = 3, at = x[seq(1, length(x), length.out = 5)],
+       labels = round(nzero)[seq(1, length(x), length.out = 5)])
+  title(main, line = 3)
+}
+
+plotCVlambda <- function(x, y, lo, up, nzero, parameter = "alpha",
+                         xlab = NULL,
+                         ylab = NULL,
+                         main = NULL,
+                         main1 = NULL, ...){
+  if(is.null(main))
+    if(is.null(main1)){
+      main <- as.expression(substitute(
+        paste("Cross validation: ", lambda, " = ",
+              b) , list(b= round(a[which.min(mat.list$AUC[,c(1)])],2))))
+    }else{
+      main <- as.expression(substitute(paste(m," (CV: log(", lambda, ") = ",
+                                             b, ")") ,
+                                       list(m = main1, p = parameter,
+                                            b= round((x[which.min(y)]),2))))
+    }
+  if(is.null(xlab))
+    xlab <- expression(paste("Penalty: log(", lambda, ")", sep = ""))
+
+  if(is.null(ylab))
+    ylab <- "Mean-Squared Error"
+
+  matplot(x, cbind(y, lo, up), col = 0,
+          xlab = xlab, ylab = ylab )
+
+
+  polygon(x= c(x, rev(x)),
+          y = c(lo, rev(up)),
+          col = "#33333320", border = 0)
+  lines(x, y, lwd= 2, col = "#333333")
+  min <- length(y) -which.min(rev(y))
+  abline(v=x[min], lty = 2)
+
+
+  axis(side = 3, at = x[seq(1, length(x), length.out = 5)],
+       labels = round(nzero)[seq(1, length(x), length.out = 5)])
+
+  title(main, line = 3)
+}
 
 
 ################################################################################
@@ -851,6 +1105,138 @@ for (type in c("ABCGCB", "BAGS", "REGS")) {
   dev.off()
 }
 
+################################################################################
+# Establish the ABC/GCB classifier
+################################################################################
+
+# In order to make the LLMPP CHOP data comparable to other datasets
+# it is median centered.
+GEPLLMPPCHOP.med <- microarrayScale(exprs(dat$GSE10846$es$CHOP), scale = FALSE)
+file.ABCGCB.class.cv <- file.path("GeneratedData", "ABCGCB.class.cv.RData")
+
+alphas <- seq(0.1, 1, 0.025)
+
+if(file.exists(file.ABCGCB.class.cv)){
+  load(file.ABCGCB.class.cv)
+}else{
+
+  dir.create(dirname(file.ABCGCB.class.cv),
+             showWarnings = FALSE, recursive = TRUE)
+  mat <- matrix(NaN, ncol = 4, nrow = length(alphas))
+  colnames(mat) <- c("ABCGCB", "ABCGCB.lo", "ABCGCB.up", "ABCGCB.n")
+  row.names(mat) <- alphas
+
+  ABCGCB.fit.cv <- list()
+
+  min.error <- Inf
+
+  metadata <- dat$GSE10846$metadata[
+    dat$GSE10846$metadata$microarray.diagnosis %in% c("ABC", "GCB") &
+      dat$GSE10846$metadata$chemo == "CHOP" , ]
+
+  metadata$microarray.diagnosis <-
+    factor(metadata$microarray.diagnosis, levels=c("GCB", "ABC"))
+
+  set.seed(1000)
+
+  sample <- sample(rep(seq(10), length = nrow(metadata)))
+
+  keep <- rownames(GEPLLMPPCHOP.med)[!grepl("AFFX", rownames(GEPLLMPPCHOP.med))]
+
+  x <- t((GEPLLMPPCHOP.med[keep, paste0(metadata$GEO.ID, ".cel")]))
+  y <- metadata$microarray.diagnosis
+  for(alpha in alphas){
+    cat(alpha, "\n")
+
+    fit <- cv.glmnet(x, y,
+                     standardize = FALSE, family = "binomial",
+                     foldid = sample,
+                     lambda = exp(seq(-10, 2, length.out = 200)),
+                     alpha  = alpha, type.measure = "deviance",
+                     keep   = TRUE)
+
+    wh.min <- length(fit$cvm) - which.min(rev(fit$cvm))
+    mat[paste(alpha), "ABCGCB"] <- min(fit$cvm)
+    mat[paste(alpha), paste("ABCGCB", ".lo", sep = "")] <-
+      fit$cvlo[wh.min]
+    mat[paste(alpha), paste("ABCGCB", ".up", sep = "")] <-
+      fit$cvup[wh.min]
+    mat[paste(alpha), paste("ABCGCB", ".n", sep = "")] <-
+      fit$nzero[wh.min]
+
+    if(min(fit$cvm) < min.error){
+      cat("new.min =", min(fit$cvm), "\n")
+      min.error <- min(fit$cvm)
+      ABCGCB.fit <- fit
+    }
+
+  }
+  LLMPPCHOP.sd <- matrixStats::rowSds(GEPLLMPPCHOP.med[keep, metadata$GEO.ID])
+  names(LLMPPCHOP.sd ) <- keep
+  save(ABCGCB.fit, mat, sample, LLMPPCHOP.sd, file = file.ABCGCB.class.cv)
+}
+
+
+# Plot the result
+
+pdf(file.path("figures/FigureS1.pdf"),
+    pointsize = pointsize ,
+    width = twocol, height = twocol/3)
+
+par(mfrow = c(1, 3))
+
+plotCValpha(x  = as.numeric(row.names(mat)),
+            y  = mat[,"ABCGCB"],
+            lo = mat[, paste("ABCGCB", ".lo", sep = "")],
+            up = mat[, paste("ABCGCB", ".up", sep = "")],
+            nzero = mat[,paste("ABCGCB", ".n", sep = "")],
+            main1 = "ABC/GCB",
+            ylim  = c(0,0.08),
+            ylab  = "Logistic Deviance")
+
+mtext(LETTERS[1], 3,
+      line=1.5, adj=-0.145, cex=10/pointsize)
+
+
+plotCVlambda(x  = log(ABCGCB.fit$lambda),
+             y  = ABCGCB.fit$cvm,
+             lo = ABCGCB.fit$cvlo,
+             up = ABCGCB.fit$cvup,
+             nzero = ABCGCB.fit$nzero,
+             main1 = "ABC/GCB",
+             ylab  = "Logistic Deviance")
+
+mtext(LETTERS[2], 3,
+      line=1.5, adj=-0.145, cex=10/pointsize)
+
+plotCoef(ABCGCB.fit,
+         label.pct=35,
+         main = paste("Regularisation Curves"),
+         ylab = "Coeffecients: ABC")
+
+mtext(LETTERS[3], 3,
+      line=1.5, adj=-0.145, cex=10/pointsize)
+
+
+dev.off()
+
+
+coef <- coef(ABCGCB.fit, s = "lambda.min")
+ABCGCB.coef <- as.matrix(coef)[as.matrix(coef) != 0, , drop=FALSE]
+ABCGCB.coef <- ABCGCB.coef * c(1, LLMPPCHOP.sd[rownames(ABCGCB.coef)[-1]])
+nrow(ABCGCB.coef) - 1
+
+
+dir.create("hemaclass.com/ABCGCB", showWarnings = FALSE, recursive = TRUE)
+saveRDS(ABCGCB.coef,
+        file = "hemaclass.com/ABCGCB/ABCGCB.coef.rds")
+
+
+int <- intersect(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
+setdiff(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
+setdiff(rownames(ABCGCB.coef), rownames(readABCGCBCoef()))
+
+plot(data.frame(readABCGCBCoef()[int, ], (ABCGCB.coef)[int, ]))
 
 ################################################################################
 # Write session info
