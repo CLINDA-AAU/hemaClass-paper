@@ -387,9 +387,9 @@ for (i in seq_len(nrow(table2))) {
 caption <- "Comparison of ABC/GCB classification performed using Wright's naive
 Bayes classifier \\citep{Wright2003} and the established elastic net classifier
 based on cohort normalisation
-for both. The first column shows the rate of agreement (accuracy) between the
-classifiers with $95\\%$ CI. The second column shows the Cohen's weighted
-$\\kappa$ and $95\\%$ CI."
+for both. The second column shows the rate of agreement (accuracy) between the
+classifiers with $95\\%$ CI. The third column shows the Cohen's weighted
+$\\kappa$ with $95\\%$ CI."
 
 # Create latex table
 w <- latex(table2, file = "tables/table2.tex",
