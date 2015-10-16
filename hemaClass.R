@@ -128,7 +128,7 @@ normalizer <- function(study, gse, nsamples = 30, global = FALSE) {
 # Format confidence intervals
 formatCI <- function(est, ci, dec = 2) {
   est <- sprintf(paste0("%.", dec, "f"), round(est, dec))
-  ci <- sprintf(paste0("%.", dec, "f"), round(ci, dec))
+  ci  <- sprintf(paste0("%.", dec, "f"), round(ci, dec))
   return(paste0("$", est, "~(", paste(ci, collapse = ", "), ")$"))
 }
 
@@ -936,6 +936,7 @@ subplot <- function(x, y,
 
   cc <- cor.test(x, y)
   rval <- formatCI(cc$estimate, cc$conf.int, dec = 4)
+  rval <- gsub("~|\\$", " ", rval)
   leg <- bquote(italic(r) == .(rval))
   legend("bottomright", legend = leg, bty = "n")
   plotline(x, y, col = "black", lwd = 1)
@@ -1117,9 +1118,9 @@ file.ABCGCB.class.cv <- file.path("GeneratedData", "ABCGCB.class.cv.RData")
 
 alphas <- seq(0.1, 1, 0.025)
 
-if(file.exists(file.ABCGCB.class.cv)){
+if (file.exists(file.ABCGCB.class.cv)) {
   load(file.ABCGCB.class.cv)
-}else{
+} else {
 
   dir.create(dirname(file.ABCGCB.class.cv),
              showWarnings = FALSE, recursive = TRUE)
@@ -1136,7 +1137,7 @@ if(file.exists(file.ABCGCB.class.cv)){
       dat$GSE10846$metadata$chemo == "CHOP" , ]
 
   metadata$microarray.diagnosis <-
-    factor(metadata$microarray.diagnosis, levels=c("GCB", "ABC"))
+    factor(metadata$microarray.diagnosis, levels = c("GCB", "ABC"))
 
   set.seed(1000)
 
@@ -1146,7 +1147,7 @@ if(file.exists(file.ABCGCB.class.cv)){
 
   x <- t((GEPLLMPPCHOP.med[keep, paste0(metadata$GEO.ID, ".cel")]))
   y <- metadata$microarray.diagnosis
-  for(alpha in alphas){
+  for (alpha in alphas) {
     cat(alpha, "\n")
 
     fit <- cv.glmnet(x, y,
@@ -1165,7 +1166,7 @@ if(file.exists(file.ABCGCB.class.cv)){
     mat[paste(alpha), paste("ABCGCB", ".n", sep = "")] <-
       fit$nzero[wh.min]
 
-    if(min(fit$cvm) < min.error){
+    if (min(fit$cvm) < min.error) {
       cat("new.min =", min(fit$cvm), "\n")
       min.error <- min(fit$cvm)
       ABCGCB.fit <- fit
@@ -1183,55 +1184,44 @@ if(file.exists(file.ABCGCB.class.cv)){
 pdf(file.path("figures/FigureS1.pdf"),
     pointsize = pointsize ,
     width = twocol, height = twocol/3)
-
-par(mfrow = c(1, 3))
-
-plotCValpha(x  = as.numeric(row.names(mat)),
-            y  = mat[,"ABCGCB"],
-            lo = mat[, paste("ABCGCB", ".lo", sep = "")],
-            up = mat[, paste("ABCGCB", ".up", sep = "")],
-            nzero = mat[,paste("ABCGCB", ".n", sep = "")],
-            main1 = "ABC/GCB",
-            ylim  = c(0,0.08),
-            ylab  = "Logistic Deviance")
-
-mtext(LETTERS[1], 3,
-      line=1.5, adj=-0.145, cex=10/pointsize)
+{
+  par(mfrow = c(1, 3))
+  plotCValpha(x  = as.numeric(row.names(mat)),
+              y  = mat[,"ABCGCB"],
+              lo = mat[, paste("ABCGCB", ".lo", sep = "")],
+              up = mat[, paste("ABCGCB", ".up", sep = "")],
+              nzero = mat[,paste("ABCGCB", ".n", sep = "")],
+              main1 = "ABC/GCB",
+              ylim  = c(0,0.08),
+              ylab  = "Logistic Deviance")
+  mtext(LETTERS[1], 3, line = 1.5, adj = -0.145, cex = 10/pointsize)
 
 
-plotCVlambda(x  = log(ABCGCB.fit$lambda),
-             y  = ABCGCB.fit$cvm,
-             lo = ABCGCB.fit$cvlo,
-             up = ABCGCB.fit$cvup,
-             nzero = ABCGCB.fit$nzero,
-             main1 = "ABC/GCB",
-             ylab  = "Logistic Deviance")
+  plotCVlambda(x  = log(ABCGCB.fit$lambda),
+               y  = ABCGCB.fit$cvm,
+               lo = ABCGCB.fit$cvlo,
+               up = ABCGCB.fit$cvup,
+               nzero = ABCGCB.fit$nzero,
+               main1 = "ABC/GCB",
+               ylab  = "Logistic Deviance")
+  mtext(LETTERS[2], 3, line = 1.5, adj = -0.145, cex = 10/pointsize)
 
-mtext(LETTERS[2], 3,
-      line=1.5, adj=-0.145, cex=10/pointsize)
-
-plotCoef(ABCGCB.fit,
-         label.pct=35,
-         main = paste("Regularisation Curves"),
-         ylab = "Coeffecients: ABC")
-
-mtext(LETTERS[3], 3,
-      line=1.5, adj=-0.145, cex=10/pointsize)
-
-
+  plotCoef(ABCGCB.fit,
+           label.pct = 35,
+           main = paste("Regularisation Curves"),
+           ylab = "Coeffecients: ABC")
+  mtext(LETTERS[3], 3, line = 1.5, adj = -0.145, cex = 10/pointsize)
+}
 dev.off()
 
-
 coef <- coef(ABCGCB.fit, s = "lambda.min")
-ABCGCB.coef <- as.matrix(coef)[as.matrix(coef) != 0, , drop=FALSE]
+ABCGCB.coef <- as.matrix(coef)[as.matrix(coef) != 0, , drop = FALSE]
 ABCGCB.coef <- ABCGCB.coef * c(1, LLMPPCHOP.sd[rownames(ABCGCB.coef)[-1]])
 nrow(ABCGCB.coef) - 1
 
 
-dir.create("hemaclass.com/ABCGCB", showWarnings = FALSE, recursive = TRUE)
-saveRDS(ABCGCB.coef,
-        file = "hemaclass.com/ABCGCB/ABCGCB.coef.rds")
-
+dir.create("hemaclass.org/ABCGCB", showWarnings = FALSE, recursive = TRUE)
+saveRDS(ABCGCB.coef, file = "hemaclass.org/ABCGCB/ABCGCB.coef.rds")
 
 int <- intersect(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
 setdiff(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
