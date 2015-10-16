@@ -877,7 +877,8 @@ columns."
 
 captionS4 <- "Confusion tables for the REGS classifiers.
 Reference based normalisation are shown in the rows and cohort normalisation in
-the columns."
+the columns. Note, 30 samples were used as reference data and hence not present
+in this table."
 
 w <- latex(tableS3,
            file = "tables/tableS3.tex",
