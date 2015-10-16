@@ -134,7 +134,7 @@ To establish the classifiers the following datasets are used:
   This dataset will be referred to as the \textit{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
   \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines.
   This panel will be referred to as BCELL26.
-  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as \textit{DLBCL14} \citep{Falgreen2015}.
+  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as   DLBCL14 \citep{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
@@ -234,7 +234,7 @@ The rescaling is performed to make the data comparable to the tonsil dataset.
 
 \subsection{Inter method reproducibility assessments}
 To evaluate the reproducibility of the class probabilities obtained through cohort based normalisation and \hemaClass{} normalisation, Pearson's correlation coefficient for the logit-transformed probabilities and $95\%$ confidence interval (CI) were calculated for each classifier and dataset.
-The identity and \emph{total} least square regression lines were compared to assess bias in estimated probabilities \citep{CHEN1989}.
+The identity and \emph{total} least square regression lines were compared to assess bias in the estimated probabilities \citep{CHEN1989}.
 Total least squares regression was used as errors are present in both classification probabilities.
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
@@ -250,7 +250,7 @@ From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and c
 \subsection{Using \hemaClass{}}
 The website is an easy-to-use interface to \pkg{hemaClass} with possibility to select the wanted RMA normalization method and the classification methods.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
-A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}, however.
+A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
 Users upload patient samples which then are one-by-one normalized and classified depending on settings set by the users.
 A text summary of the results and a plot of the predicted overall survival and progression free survival is optionally provided for each patient sample.
 These predictions are based on patient survival data from LLMPP, MDFCI, and IDRC using a Cox regression with IPI and a combination of the ABC/GCB and BAGS classes.
@@ -269,7 +269,7 @@ The accompanying confusion matrices are shown in the first rows of Supplementary
 
 The logit probability of being ABC estimated using the established classifier was compared to the estimate obtained through the one-by-one classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The rank of the probabilities estimated through the two methods are very similar, however, the probabilities estimated through \hemaClass{} are slightly uncalibrated (or bias) and skewed upwards, indicating that different cut points might be used for the classifications.
-By normalising to a reference set of $30$ randomly selected samples from CHEPRETRO this error and bias is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B, however.
+By normalising to a reference set of $30$ randomly selected samples from CHEPRETRO this error and bias is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B.
 
 For both methods, patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
 In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for the four validation datasets.
@@ -306,7 +306,7 @@ The coloured regions in the figure correspond to a threshold probability of $0.5
 
 
 \subsection{REGS classification}
-The probability of resistance toward the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalisation.
+The probability of resistance towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalisation.
 The logit probabilities of resistance are plotted against those obtained by cohort based normalisation in Figure \ref{fig:ABCGCBDrug}.
 Panels C, E, G, and I show the plots based on one-by-one normalisation and panels D, F, H, and J show the plots for the reference based normalisation.
 The probabilities obtained by one-by-one and cohort based normalisation are comparable. However, similar to the other classifiers the one-by-one normalisation leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
