@@ -274,7 +274,10 @@ By normalising to a reference set of $30$ randomly selected samples from CHEPRET
 For both methods, patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
 In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for the four validation datasets.
 CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP all shows a good rate of agreement, even considering that misclassifications involving unclassified samples count as errors, as wells as Cohen's weighted $\kappa$.
+The reduced rate of agreement and Cohen's weighted $\kappa$ using one-by-one pre-processing in IDRC may be due to the samples being FFPE although this seems to be remedied by reference based pre-processing.
 The accompanying confusion matrices are shown in the lower part of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
+Note, changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
+Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
 \input{tables/table2.tex}
 
@@ -312,7 +315,7 @@ The probabilities obtained by the reference based normalisation resembles the co
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
 The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$.
 The associated confusion matrices for one-by-one normalisation and reference based normalisation are shown in Supplementary Table \ref{tab:confusiondrugonebyone} and Supplementary Table \ref{tab:confusiondrugreference}, respectively.
-Again, the reference based approach yields superior agreement with classifcations using cohort based normalisation.
+Again, the reference based approach yields superior agreement with classifications using cohort based normalisation.
 
 
 \subsection{BAGS classification}
