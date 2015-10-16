@@ -60,16 +60,16 @@ In addition to current clinically used risk factor scoring systems several indep
 Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009}.
 
 \citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
-On the basis of gene expression profile analyses, DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
+On the basis of GEP analyses, DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
 The validity of this classification and its prognostic importance has been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Poulsen2005,Lenz2008a,Monti2012a}.
 Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier \citep{DybkaerBoegsted2015} capable of classifying DLBCL samples into $5$ different B-cell subtypes:
 Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
 For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015} which opens up for considering different treatment regimes in the GCB class of patients.
 In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
 Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
-However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a clinical setting.
+However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a routine clinical setting.
 
-The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the IPI for large cell lymphoma and FLIPI for follicular lymphoma (both derived from patient age, performance status, easy available blood tests, and disease stage).
+The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the international prognostic index (IPI, \citep{IPI}) for large cell lymphoma and the Follicular Lymphoma International Prognostic Index (FLIPI, \citep{FLIPI}), both derived from patient age, performance status, easy available blood tests, and disease stage.
 Risk stratification according to these algorithms have been systematised and made easily accessible for desktop, online, and even smart-phone use.
 However, easily accessible molecular classification methods are lacking behind and thereby delaying the translation of new molecular findings into clinical practice.
 A few methods exist for cancer types other than lymphoma, see e.g.\ \citep{Huang2009} for an AML application.
@@ -109,15 +109,15 @@ The workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 The interactive web application available at \url{hemaclass.org} was created using the statistical programming language \R{} \citep{RCoreTeam}, the software package \pkg{shiny} \citep{shiny}, and the accompanying Linux server software.
 All \hemaClass{} functionality, including the RMA normalisation and classification procedures, are available through the accompanying package \pkg{hemaClass} based on a number of packages from the Comprehensive R Archive Network \citep{RCoreTeam} and the Bioconductor environment \citep{Gentleman2004}.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
-The back end is in essence the \pkg{hemaclass} package which allows users to run \hemaClass{} locally and use the package functionalities programmatically.
+The back end is in essence the \pkg{hemaClass} package which allows users to run \hemaClass{} locally and use the package functionalities programmatically.
 The well-documented package can be utilized as a programmatical interface to the functionality of the website.
-However, it also features a local version of the website should users wishes to avoid uploading large files to our servers.
+However, it also features a local version of the website should users wish to avoid uploading large files to our servers.
 The development and latest version of \pkg{hemaClass} is freely available at \url{https://github.com/oncoclass/hemaclass}.
 All bug-reports, suggestions, and comments on the website or package are welcome following the latter link.
 
 The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
 Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
-The \pkg{hemaclass} package is open source and freely available for sharing, modification, and redistribution at \url{https://github.com/oncoclass/hemaclass}.
+The \pkg{hemaClass} package is open source and freely available for sharing, modification, and redistribution at \url{https://github.com/oncoclass/hemaclass}.
 
 
 
@@ -141,7 +141,7 @@ For validation the following four DLBCL cohorts are used:
   \item[4.] The Aalborg OCT (CHEPRETRO) cohort of $89$ Danish DLBCL patients undergoing first-line treatment at the university  hospital of Aalborg \citep{DybkaerBoegsted2015}.
   The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
   \item[5.] The International DLBCL Rituximab-CHOP Consortium MD Anderson (IDRC) cohort of $470$ DLBCL patients treated with R-CHOP first-line therapy.
-  Detailed information about the cohort can be found in \citep{Visco2012}.
+  Detailed information about the cohort can be found in \citep{Visco2012}. Note, that these samples are formalin-fixed, paraffin-embedded (FFPE).
   \item[6.] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (LLMPP R-CHOP) cohort of $233$ DLBCL patients treated with R-CHOP first-line therapy.
   Details about the dataset can be found in \citep{Lenz2008a}.
   \item[7.] The Mayo-Dana-Farber Cancer Institute (MDFCI) cohort of $90$ DLBCL patients treated with R-CHOP first-line therapy \citep{Monti2012a}.
@@ -345,8 +345,8 @@ Despite the addition of antibody therapy to conventional chemotherapy only $55\%
 Thus, the need for new therapeutic options in DLBCL is obvious.
 Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials have not been defined.
 These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \citep{Friedberg2011}.
-An important example is inhibition of the NF-$\kappa\beta$ pathway by proteasome inhibitors (i.e.\ bortezomib).
-Interestingly, the constitutive activation of the NF-$\kappa\beta$ pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib induces more activity in this subtype \citep{Nogai2013}.\todo{Check if sentence is factually correct. Bortezomib induces more activity or decreases it?}{}
+An important example is inhibition of the NF-$\kappa$B pathway by proteasome inhibitors (i.e.\ bortezomib).
+Interestingly, the constitutive activation of the NF-$\kappa$B pathway is characteristic for the ABC subtype of DLBCL and consistently bortezomib induces more activity in this subtype \citep{Nogai2013}.\todo{Check if sentence is factually correct. Bortezomib induces more activity or decreases it?}{}
 With the increasing number of new drugs likely to become available over the next years and the fact that their efficacy may vary between subsets of patients defined by gene expression profiles, the current treatment of patients based on disease stage and clinical information alone will not be sufficient.
 \hemaClass{} provides an example of fast processing of complex molecular information in a way that is simple and readily at hand for clinicians.
 
@@ -356,7 +356,7 @@ An important part of the calibration is that samples should be calibrated toward
 For the microarray technology this could be solved by inventing a central tissue bank of e.g.\ B-cell cancer cell-lines of varying subtypes which could be used as reference set for each individual microarray platform.
 
 The user reference dataset is important if one wish to use the conventionally used thresholds for classification.
-However without a user reference set, the high correlation coefficients demonstrate that equally high classification accuracies can be achieved if laboratory specific thresholds are carefully chosen.
+However, without a user reference set, the high correlation coefficients demonstrate that equally high classification accuracies can be achieved if laboratory specific thresholds are carefully chosen.
 
 Another limitation of the current web application is that it is only designed for one array type.
 The server works at the moment only on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
@@ -384,12 +384,12 @@ Although \hemaClass{} is still separated from the clinic we believe a web based 
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
 
 All material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
-Comments, suggest, bug reports, and other issues are warmly welcome at \url{https://github.com/oncoclass/hemaclass/issue}.
+Comments, suggest, bug reports, and other issues are warmly welcome at \url{https://github.com/oncoclass/hemaclass/issue} or by mail to the corresponding author.
 
 \phantomsection
 \addcontentsline{toc}{section}{Acknowledgements}
 \section*{Acknowledgements}
-We thank Mads Boye and Bo Bai at IT Services, Aalborg University, for their assistance on setting up the website.
+We thank Mads Boye and Bo Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
 The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, and CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
