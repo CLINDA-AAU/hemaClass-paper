@@ -133,13 +133,13 @@ The background correction in one-by-one RMA normalization is unaltered as it is 
 
 \subsection{Quantile normalization}
 
-Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as descrbied above. Similarly,  let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes.
+Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as described above. Similarly,  let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes.
 
-Furthermore, let G and H denote the ECDF of all the reference $\{x_{ijk}\}_{ijk}$ and user supplied data $\{y_{ijk}\}_{ijk}$, respectively. Finally, let $H^{-1}$ denote the sample quantile of type 4 based on the reference data set \citep{Hyndman1996}.
+Furthermore, let $H_i$ denote the ECDF of the user supplied data $\{y_{ijk}\}_{jk}$, respectively.
 
 As quantile normalizer the ECDF of the background corrected reference data is used in place of the ususally applied ECDF of the mean of the sample quantiles
 \begin{equation*}
-   \tilde{y}_{ijk} = H^{-1}(G(y_{ijk})).
+   \tilde{y}_{ijk} = F^{-1}(H_i(y_{ijk})).
 \end{equation*}
 This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \hemaClass{} package.
 
