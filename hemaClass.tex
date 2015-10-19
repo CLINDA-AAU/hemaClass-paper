@@ -59,7 +59,7 @@ Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Oncogenomics; Classification; C
 
 \section{Introduction}
 In addition to current clinically used risk factor scoring systems several independent gene expression profile (GEP) based risk stratifications have been proposed with biological and clinical significance in hematological cancers.
-Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009}.
+Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009, Sehn2014}.
 
 \citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
 On the basis of GEP analyses, DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
@@ -72,10 +72,11 @@ Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
 However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a routine clinical setting.
 
 The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the international prognostic index (IPI, \citep{IPI}) for large cell lymphoma and the Follicular Lymphoma International Prognostic Index (FLIPI, \citep{FLIPI}), both derived from patient age, performance status, easy available blood tests, and disease stage.
+Due to the simplicity of these clinical risk stratification algorithms they are still the most widely used risk scoring systems today.
 Risk stratification according to these algorithms have been systematised and made easily accessible for desktop, online, and even smart-phone use.
 However, easily accessible molecular classification methods are lacking behind and thereby delaying the translation of new molecular findings into clinical practice.
-A few methods exist for cancer types other than lymphoma, see e.g.\ \citep{Huang2009} for an AML application.
-But to our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
+A few methods exist for cancer types other than lymphoma, including acute myeloid leukemia (AML) \citep{Huang2009}.
+But to the best of our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
 An accessible Windows based application has been published for ABC/GCB classification \citep{Care2013}.
 Although \citet{Care2013} develops a new ABC/GCB classifier which is stable across microarray technologies and trial centres, the ABC/GCB classifier is potentially biased towards classes which differentiate the prognosis and not biology.
 This bias arises as the ensemble of classifiers are chosen on basis of their ability to separate survival.
@@ -252,7 +253,7 @@ From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and c
 The website is an easy-to-use, interactive interface for \pkg{hemaClass} with the desired RMA normalization and the classification methods selected by the user.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
 A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
-Users upload patient samples which then are one-by-one normalized and classified depending on settings set by the users.
+Users upload patient samples which are normalized and classified depending on settings chosen by the users.
 A text summary of the results and a plot of the predicted overall survival and progression free survival is optionally provided for each patient sample.
 These predictions are based on patient survival data from LLMPP, MDFCI, and IDRC using a Cox regression with IPI and a combination of the ABC/GCB and BAGS classes.
 
@@ -336,14 +337,16 @@ The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGS
 
 
 \section{Discussion}
-Despite the enormous resources spent on developing molecular based cancer classification systems there seems to be an inertial resistance to develop clinical applications.
+Despite the enormous resources spent on developing molecular based cancer classification systems,
+most of these are still not available in daily clinical practice.
+% there seems to be an inertial resistance to develop clinical applications.
 To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
 
 The classifications performed by \hemaClass{} were compared to those obtained using cohort based normalisation in four clinical cohorts.
-Even though gene expression data for the four cohorts was obtained through varying preparation kits and sample storage methods, the results show that a one-at-a-time array analysis approach is feasible and performed comparably with the whole cohort based method.
+Even though gene expression data for the four cohorts was obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach is feasible and performed comparably with the whole cohort based method.
 It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects and, after suitable standardisation and calibration, even for clinical use.
 
-The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for underlying tumour-biology \citep{Schmoll2012}.
+The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for underlying tumour-biology \citep{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
 The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (rituximab) \citep{Coiffier2002a}.
 Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
 Thus, the need for new therapeutic options in DLBCL is obvious.
