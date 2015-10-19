@@ -1,5 +1,21 @@
-% \input{preamble}
-% \begin{document}
+\documentclass{article}
+\input{preamble}
+\begin{document}
+
+% Prefix S to figures, tables, etc
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+% reset counters
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+
 
 \phantomsection
 \addcontentsline{toc}{section}{Supplementary Material}
@@ -9,7 +25,7 @@
 \end{center}
 
 \section{Supplementary figures and tables}
-%This section holds the supplementary figures and tables.
+This section holds the supplementary figures and tables.
 
 \begin{figure*}[htb]
 \begin{center}
@@ -164,4 +180,12 @@ where
 $\hat{x}_{\cdot j\cdot} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij\cdot}\}$ and $s_{\cdot j\cdot} = \std_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij\cdot}\}$.
 
 
-% \end{document}
+
+
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plainnat} %abbrvnat
+\bibliography{references}
+
+\end{document}
