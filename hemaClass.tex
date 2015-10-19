@@ -39,15 +39,18 @@
 \phantomsection
 \addcontentsline{toc}{section}{Abstract}
 \begin{abstract}
+\parttitle{Background} %if any
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
 This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into e.g.\ oncogenomic cell-of-origin and chemotherapeutic resistance classes.
 Laboratory specific effects cannot be accounted for in true one-by-one microarray normalisation, however.
 Hence, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications.
+\\\parttitle{Results}
 Classification results for one-by-one array pre-processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
 The website is essentially the \R{}-package \pkg{hemaClass} accompanied by a Shiny web application.
 The well-documented package can be used to run the website locally or to use the developed methods programatically.
+\\\parttitle{Conclusions}
 The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides reliable and swift methods for calculation of disease subclasses.
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
 \medskip\\
