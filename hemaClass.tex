@@ -98,6 +98,7 @@
 
 
 %%% Begin ...
+
 \begin{document}
 
 %%% Start of article front matter
@@ -155,6 +156,9 @@
    addressref={aff1}                  % id's of addresses, e.g. {aff1,aff2}
 ]{\inits{AS}\fnm{Alexander} \snm{Schmitz}}
 \author[
+   addressref={aff3}                  % id's of addresses, e.g. {aff1,aff2}
+]{\inits{KHY}\fnm{Ken H} \snm{Young}}
+\author[
    addressref={aff1,aff2}                  % id's of addresses, e.g. {aff1,aff2}
 ]{\inits{HEJ}\fnm{Hans E} \snm{Johnsen}}
 \author[
@@ -165,7 +169,6 @@
    corref={aff1},                       % id of corresponding address, if any
    email={mboegsted@dcm.aau.dk}
 ]{\inits{MB}\fnm{Martin} \snm{Bøgsted}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -190,6 +193,14 @@
   \city{Aalborg},                              % city
   \cny{DK}                                    % country
 }
+\address[id=aff3]{%
+  \orgname{Department of Hematopathology, The University of Texas, MD Anderson Cancer Center}
+  \street{1515 Holcombe Blvd},                     %
+  \postcode{77030}                                % post or zip code
+  \city{Houston, TX},                              % city
+  \cny{US}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -644,7 +655,7 @@ SF, AEB, and MB concieved hemaClass.org.
 All authors provided comments to manuscript.
 
 \section*{Acknowledgements}
-We thank Mads Boye and Bo Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
+We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
 The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, and CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
