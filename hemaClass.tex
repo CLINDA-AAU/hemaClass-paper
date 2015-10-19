@@ -1,44 +1,226 @@
-\documentclass{article}
+%% BioMed_Central_Tex_Template_v1.06
+%%                                      %
+%  bmc_article.tex            ver: 1.06 %
+%                                       %
 
-%%% PREAMBLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{preamble.tex}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%IMPORTANT: do not delete the first line of this template
+%%It must be present to enable the BMC Submission system to
+%%recognise this template!!
 
-\title{\hemaClassTitle{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                     %%
+%%  LaTeX template for BioMed Central  %%
+%%     journal article submissions     %%
+%%                                     %%
+%%          <8 June 2012>              %%
+%%                                     %%
+%%                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\author[1]{Steffen Falgreen\thanks{Shared first authorship}}
-\author[12]{Anders Ellern Bilgrau$^\ast$}
-\author[12]{Lasse Hjort Jakobsen}
-\author[12]{Jonas Have}
-\author[12]{Kasper Lindblad Nielsen}
-\author[1]{Tarec Christoffer El-Galaly}
-\author[1]{Julie St{\o}ve  B{\o}dker}
-\author[1]{Alexander Schmitz}
-\author[12]{Hans Erik Johnsen}
-\author[12]{Karen Dybk{\ae}r}
-\author[12]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed (\texttt{mboegsted@dcm.aau.dk})}}
 
-\affil[1]{Department of Haematology, Aalborg University Hospital}
-\affil[2]{Department of Clinical Medicine, Aalborg University}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% For instructions on how to fill out this Tex template           %%
+%% document please refer to Readme.html and the instructions for   %%
+%% authors page on the biomed central website                      %%
+%% http://www.biomedcentral.com/info/authors/                      %%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%% BioMed Central currently use the MikTex distribution of         %%
+%% TeX for Windows) of TeX and LaTeX.  This is available from      %%
+%% http://www.miktex.org                                           %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Steffen Falgreen - sfl@rn.dk
-% Anders Ellern Bilgrau - anders.ellern.bilgrau@gmail.com
-% Lasse Hjort Jakobsen - lasse.j@rn.dk
-% Jonas Have - jonas.have@rn.dk
-% Kasper Lindblad Nielsen - k.lindblad@rn.dk
-% Tarec Christoffer El-Galaly - tarec.galaly@gmail.com
-% Julie S.\  B\o dker - j.boedker@rn.dk
-% Alexander Schmitz - alex.schmitz@rn.dk
-% Hans E.\ Johnsen - haej@rn.dk
-% Karen Dybk\ae r - k.dybkaer@rn.dk
-% Martin B\o gsted - martin.boegsted@rn.dk
+%%% additional documentclass options:
+%  [doublespacing]
+%  [linenumbers]   - put the line numbers on margins
 
+%%% loading packages, author definitions
+
+%\documentclass[twocolumn]{bmcart}% uncomment this for twocolumn layout and comment line below
+\documentclass{bmcart}
+
+%%% Load packages
+\usepackage{amsthm,amsmath}
+\RequirePackage{natbib}
+% \RequirePackage[authoryear]{natbib}% uncomment this for author-year bibliography
+\RequirePackage[hypertexnames=false]{hyperref} % For urls and hyperlinks
+\usepackage[utf8]{inputenc} %unicode support
+%\usepackage[applemac]{inputenc} %applemac support if unicode package fails
+%\usepackage[latin1]{inputenc} %UNIX support if unicode package fails
+
+\usepackage[
+%  disable, %turn off todonotes
+  colorinlistoftodos, %enable a coloured square in the list of todos
+  textwidth=2cm, %set the width of the todonotes
+  textsize=scriptsize, %size of the text in the todonotes
+  ]{todonotes}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                             %%
+%%  If you wish to display your graphics for   %%
+%%  your own use using includegraphic or       %%
+%%  includegraphics, then comment out the      %%
+%%  following two lines of code.               %%
+%%  NB: These line *must* be included when     %%
+%%  submitting to BMC.                         %%
+%%  All figure files must be submitted as      %%
+%%  separate graphics through the BMC          %%
+%%  submission process, not included in the    %%
+%%  submitted article.                         %%
+%%                                             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\includegraphic{}
+\def\includegraphics{}
+
+
+
+%%% Put your definitions there:
+\startlocaldefs  %%% START
+
+\newcommand{\hemaClass}{\href{http://hemaClass.org}{\texttt{hemaClass.org}}}
+\newcommand{\R}{\textsf{R}}
+\newcommand{\pkg}[1]{\textbf{#1}}
+
+\DeclareMathOperator*{\median}{median}
+\DeclareMathOperator*{\std}{std}
+
+\endlocaldefs %% END
+
+
+%%% Begin ...
 \begin{document}
 
-\maketitle
-\phantomsection
-\addcontentsline{toc}{section}{Abstract}
-\begin{abstract}
+%%% Start of article front matter
+\begin{frontmatter}
+
+\begin{fmbox}
+\dochead{Research}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Enter the title of your article here     %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{hemaClass.org: Online one-by-one normalization and classification of hematological malignacies}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Enter the authors here                   %%
+%%                                          %%
+%% Specify information, if available,       %%
+%% in the form:                             %%
+%%   <key>={<id1>,<id2>}                    %%
+%%   <key>=                                 %%
+%% Comment or delete the keys which are     %%
+%% not used. Repeat \author command as much %%
+%% as required.                             %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\author[
+   addressref={aff1},                   % id's of addresses, e.g. {aff1,aff2}
+   noteref={n1}                       % id's of article notes, if any
+]{\inits{SF}\fnm{Steffen} \snm{Falgreen}}
+\author[
+   addressref={aff1,aff2},                   % id's of addresses, e.g. {aff1,aff2}
+   noteref={n1}                        % id's of article notes, if any
+]{\inits{AEB}\fnm{Anders E} \snm{Bilgrau}}
+\author[
+   addressref={aff1,aff2}                   % id's of addresses, e.g. {aff1,aff2}
+]{\inits{LHJ}\fnm{Lasse H} \snm{Jakobsen}}
+\author[
+   addressref={aff1,aff2}                   % id's of addresses, e.g. {aff1,aff2}
+]{\inits{JH}\fnm{Jonas} \snm{Have}}
+\author[
+   addressref={aff1,aff2}                   % id's of addresses, e.g. {aff1,aff2}
+]{\inits{KLN}\fnm{Kasper L} \snm{Nielsen}}
+\author[
+   addressref={aff1}                   % id's of addresses, e.g. {aff1,aff2}
+]{\inits{TCEG}\fnm{Tarec C} \snm{El-Galaly}}
+\author[
+   addressref={aff1}                  % id's of addresses, e.g. {aff1,aff2}
+]{\inits{JSB}\fnm{Julie S} \snm{Bødker}}
+\author[
+   addressref={aff1}                  % id's of addresses, e.g. {aff1,aff2}
+]{\inits{AS}\fnm{Alexander} \snm{Schmitz}}
+\author[
+   addressref={aff1,aff2}                  % id's of addresses, e.g. {aff1,aff2}
+]{\inits{HEJ}\fnm{Hans E} \snm{Johnsen}}
+\author[
+   addressref={aff1,aff2}                 % id's of addresses, e.g. {aff1,aff2}
+]{\inits{KD}\fnm{Karen} \snm{Dybkær}}
+\author[
+   addressref={aff1,aff2},
+   corref={aff1},                       % id of corresponding address, if any
+   email={mboegsted@dcm.aau.dk}
+]{\inits{MB}\fnm{Martin} \snm{Bøgsted}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Enter the authors' addresses here        %%
+%%                                          %%
+%% Repeat \address commands as much as      %%
+%% required.                                %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\address[id=aff1]{%                           % unique id
+  \orgname{Department of Haematology, Aalborg University Hospital}, % university, etc
+  \street{Søndre Skovvej 15},                     %
+  \postcode{9000}                                % post or zip code
+  \city{Aalborg},                              % city
+  \cny{DK}                                    % country
+}
+\address[id=aff2]{%
+  \orgname{Department of Clinical Medicine, Aalborg University},
+  \street{Søndre Skovvej 15},                     %
+  \postcode{9000}                                % post or zip code
+  \city{Aalborg},                              % city
+  \cny{DK}                                    % country
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Enter short notes here                   %%
+%%                                          %%
+%% Short notes will be after addresses      %%
+%% on first page.                           %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{artnotes}
+% \note{http://hemaclass.org}     % note to the article
+\note[id=n1]{Shared first authorship} % note, connected to author
+\end{artnotes}
+
+\end{fmbox}% comment this for two column layout
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% The Abstract begins here                 %%
+%%                                          %%
+%% Please refer to the Instructions for     %%
+%% authors on http://www.biomedcentral.com  %%
+%% and include the section headings         %%
+%% accordingly for your article type.       %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstractbox}
+
+\begin{abstract} % abstract
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
 This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into e.g.\ oncogenomic cell-of-origin and chemotherapeutic resistance classes.
@@ -50,11 +232,68 @@ The website is essentially the \R{}-package \pkg{hemaClass} accompanied by a Shi
 The well-documented package can be used to run the website locally or to use the developed methods programatically.
 The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides reliable and swift methods for calculation of disease subclasses.
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
-\medskip\\
-\textbf{Keywords:~}
-Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Oncogenomics; Classification; Chemoresistance; Microarray; Pre-processing; Robust Multichip Average; Gene expression profiling; Cell of origin
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% The keywords begin here                  %%
+%%                                          %%
+%% Put each keyword in separate \kwd{}.     %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{keyword}
+\kwd{Diffuse Large B-Cell Lymphoma}
+\kwd{Multiple Myeloma}
+\kwd{Oncogenomics}
+\kwd{Classification}
+\kwd{Chemoresistance}
+\kwd{Microarray}
+\kwd{Pre-processing}
+\kwd{Robust Multichip Average}
+\kwd{Gene expression profiling}
+\kwd{Cell of origin}
+\end{keyword}
+
+% MSC classifications codes, if any
+%\begin{keyword}[class=AMS]
+%\kwd[Primary ]{}
+%\kwd{}
+%\kwd[; secondary ]{}
+%\end{keyword}
+
+\end{abstractbox}
+%
+%\end{fmbox}% uncomment this for twcolumn layout
+
+\end{frontmatter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% The Main Body begins here                %%
+%%                                          %%
+%% Please refer to the instructions for     %%
+%% authors on:                              %%
+%% http://www.biomedcentral.com/info/authors%%
+%% and include the section headings         %%
+%% accordingly for your article type.       %%
+%%                                          %%
+%% See the Results and Discussion section   %%
+%% for details on how to create sub-sections%%
+%%                                          %%
+%% use \cite{...} to cite references        %%
+%%  \cite{koon} and                         %%
+%%  \cite{oreg,khar,zvai,xjon,schn,pond}    %%
+%%  \nocite{smith,marg,hunn,advi,koha,mouse}%%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% start of article main body
+% <put your article body there>
+
+%%%%%%%%%%%%%%%%
+%% Background %%
+%%
 
 
 \section{Introduction}
@@ -90,7 +329,10 @@ As already delineated, this paper primarily describes developed classification s
 A more extensive treatment of MM classification schemes is in preparation and will be implemented on \hemaClass{}.
 
 
+
 \section{Materials and Methods}
+
+
 
 \subsection{Classification workflow}
 The analysis workflow of \hemaClass{} can be divided into four parts:
@@ -100,13 +342,6 @@ The analysis workflow of \hemaClass{} can be divided into four parts:
 (4) the resulting classifications available for download and inspection via the user interface.
 The workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/Flowchart6.pdf}
-\end{center}
-\caption{Diagram of the workflow architecture.}
-\label{fig:webtooldiagram}
-\end{figure}
 
 
 \subsection{Software availability and technical details}
@@ -119,8 +354,6 @@ The development and latest version of \pkg{hemaClass} is open source and freely 
 All bug-reports, suggestions, and comments on the website or package are welcome following the latter link.
 The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
 Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
-
-
 
 
 
@@ -149,7 +382,7 @@ For validation the following four DLBCL cohorts are used:
 \end{enumerate}
 The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \citep{DLBCLdata}.
 
-\input{tables/table1.tex}
+
 
 
 
@@ -171,7 +404,10 @@ In this paper the reference datasets consisted of $30$ randomly selected samples
 The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalisation.
 
 
+
 \subsection{Classification methods}
+
+
 
 \subsubsection{Elastic nets}
 Logistic and multinomial regression are used in all classification methods available on \hemaClass{}.
@@ -187,6 +423,8 @@ The parameter $\alpha$ interpolates the elastic net penalty between the ridge an
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
 Regularised logistic and multinomial regression are performed with the \R{}-package \pkg{glmnet} \citep{Friedman2010}.
 
+
+
 \subsubsection{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
 Of the $181$ patients $74$ were ABC, $76$ were GCB, and $31$ were non-classified.
@@ -200,6 +438,8 @@ The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ r
 
 When a tumour sample is classified according to the ABC/GCB classifier using reference based normalisation the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
 In contrast, the one-by-one normalised data is used directly.
+
+
 
 \subsubsection{REGS classification}
 \label{sec:regsmethods}
@@ -225,6 +465,7 @@ This classifier was developed for multiple myeloma (MM) patients and thus based 
 A classifier for dexamethasone is still considered experimental and currently available only in the package.
 
 
+
 \subsubsection{BAGS classification}
 The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularised by an elastic net penalty.
 The classifier was trained on the Tonsil dataset in a manner similar to the ABC/GCB classifier.
@@ -232,6 +473,7 @@ The classifier was trained on the Tonsil dataset in a manner similar to the ABC/
 When a tumour sample is classified according to the BAGS classifier the associated gene expressions are rescaled probe-set wise by the standard deviation of the tonsil data divided by the standard deviation of the LLMPP CHOP dataset.
 If the user supplies a reference dataset this is used in place of LLMPP CHOP.
 The rescaling is performed to make the data comparable to the tonsil dataset.
+
 
 
 \subsection{Inter-method reproducibility assessments}
@@ -280,30 +522,6 @@ The accompanying confusion matrices are shown in the lower part of Supplementary
 Note, changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
-\input{tables/table2.tex}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.375\textwidth]{figures/figure2.pdf}
-\end{center}
-\caption{Comparison of logit probabilities for ABC/GCB and REGS classification obtained through cohort normalisation and \hemaClass{}.
-The areas marked with green indicate patients with similar classification between \hemaClass{} and cohort based normalisation.
-Contrary, the areas marked with red indicate complete misclassifications.
-For ABC/GCB and REGS the white areas indicate unclassified and intermediate resistance, respectively, in at least one of the classifiers.
-The dashed and solid line shows the identity and total least squares line, respectively.}
-\label{fig:ABCGCBDrug}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
-\end{center}
-\caption{Comparison of logit probabilities for the BAGS classifier obtained through one-by-one and reference based RMA normalization of \hemaClass{} against cohort RMA normalisation.
-The coloured regions in the figure correspond to a threshold probability of $0.5$.
-The dashed and solid line shows the identity and total least squares line, respectively.}
-\label{fig:Bagscorr}
-\end{figure}
-\newpage
 
 
 
@@ -333,7 +551,7 @@ Based on the probabilities estimated by means of each of the three normalisation
 The rate of agreement between the cohort based and \hemaClass{} classifications is shown in Table \ref{tab:classALL} along with the Cohen's weighted $\kappa$.
 The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGShemaclass}.
 
-\input{tables/table3.tex}
+
 
 
 \section{Discussion}
@@ -394,58 +612,152 @@ Hopefully, this work can also spawn interesting discussions on the clinical requ
 All material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
 Comments, suggest, bug reports, and other issues are warmly welcome at \url{https://github.com/oncoclass/hemaclass/issue} or by mail to the corresponding author.
 
-\phantomsection
-\addcontentsline{toc}{section}{Acknowledgements}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Backmatter begins here                   %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{backmatter}
+
+\section*{Competing interests}
+The authors declare that they have no competing interests.
+
+\section*{Author's contributions}
+SF and AEB drafted the original manuscript, created the hemaClass package and website,
+and conducted the analyses and intepretation.
+LHJ, JH, KLH contributed to the manuscript, package, and website.
+TCEG, JSB, AS, HEJ, KD, and MB provided data and aided in interpreation of the results.
+SF, AEB, and MB concieved hemaClass.org.
+All authors provided comments to manuscript.
+
 \section*{Acknowledgements}
 We thank Mads Boye and Bo Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
 The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, and CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                  The Bibliography                       %%
+%%                                                         %%
+%%  Bmc_mathpys.bst  will be used to                       %%
+%%  create a .BBL file for submission.                     %%
+%%  After submission of the .TEX file,                     %%
+%%  you will be prompted to submit your .BBL file.         %%
+%%                                                         %%
+%%                                                         %%
+%%  Note that the displayed Bibliography will not          %%
+%%  necessarily be rendered by Latex exactly as specified  %%
+%%  in the online Instructions for Authors.                %%
+%%                                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% if your bibliography is in bibtex format, use those commands:
+\bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
+\bibliography{references}      % Bibliography file (usually '*.bib' )
+% for author-year bibliography (bmc-mathphys or spbasic)
+% a) write to bib file (bmc-mathphys only)
+% @settings{label, options="nameyear"}
+% b) uncomment next line
+%\nocite{label}
+
+% or include bibliography directly:
+% \begin{thebibliography}
+% \bibitem{b1}
+% \end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Figures                       %%
+%%                               %%
+%% NB: this is for captions and  %%
+%% Titles. All graphics must be  %%
+%% submitted separately and NOT  %%
+%% included in the Tex document  %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+%% Do not use \listoffigures as most will included as separate files
+
+% \section*{Figures}
+%   \begin{figure}[h!]
+%   \caption{\csentence{Sample figure title.}
+%       A short description of the figure content
+%       should go here.}
+%       \end{figure}
+%
+% \begin{figure}[h!]
+%   \caption{\csentence{Sample figure title.}
+%       Figure legend text.}
+%       \end{figure}
+
+\begin{figure}[h!]
+% \begin{center}
+% \includegraphics[width=0.5\textwidth]{figures/Flowchart6.pdf}
+% \end{center}
+\caption{\csentence{Diagram of the workflow architecture.}}
+\label{fig:webtooldiagram}
+\end{figure}
+
+\begin{figure}[h!]
+% \begin{center}
+% \includegraphics[width=0.375\textwidth]{figures/figure2.pdf}
+% \end{center}
+\caption{\csentence{Comparison of logit probabilities for ABC/GCB and REGS classification obtained through cohort normalisation and \hemaClass{}.}
+The areas marked with green indicate patients with similar classification between \hemaClass{} and cohort based normalisation.
+Contrary, the areas marked with red indicate complete misclassifications.
+For ABC/GCB and REGS the white areas indicate unclassified and intermediate resistance, respectively, in at least one of the classifiers.
+The dashed and solid line shows the identity and total least squares line, respectively.}
+\label{fig:ABCGCBDrug}
+\end{figure}
+
+\begin{figure}[h!]
+% \begin{center}
+% \includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
+% \end{center}
+\caption{\csentence{Comparison of logit probabilities for the BAGS classifier obtained through one-by-one and reference based RMA normalization of \hemaClass{} against cohort RMA normalisation.}
+The coloured regions in the figure correspond to a threshold probability of $0.5$.
+The dashed and solid line shows the identity and total least squares line, respectively.}
+\label{fig:Bagscorr}
+\end{figure}
 
 
-\noindent\textit{Conflict of interest statement}: None declared.
-\phantomsection
-\addcontentsline{toc}{section}{References}
-\bibliographystyle{plainnat} %abbrvnat
-\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Tables                        %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Use of \listoftables is discouraged.
+%%
+
+\section*{Tables}
+% \begin{table}[h!]
+% \caption{Sample table title. This is where the description of the table should go.}
+%       \begin{tabular}{cccc}
+%         \hline
+%            & B1  &B2   & B3\\ \hline
+%         A1 & 0.1 & 0.2 & 0.3\\
+%         A2 & ... & ..  & .\\
+%         A3 & ..  & .   & .\\ \hline
+%       \end{tabular}
+% \end{table}
+\input{tables/table1.tex}
+\input{tables/table2.tex}
+\input{tables/table3.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Additional Files              %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Additional Files}
+  \subsection*{Supplementary}
+    Additional file containing supplementary text, tables, and figures.
 
 
-% Supplementary material
-\cleardoublepage
-
-% Prefix S to figures, tables, etc
-\renewcommand{\theequation}{S\arabic{equation}}
-\renewcommand{\thefigure}{S\arabic{figure}}
-\renewcommand{\thetable}{S\arabic{table}}
-\renewcommand{\thesection}{S\arabic{section}}
-
-% reset counters
-\setcounter{section}{0}
-\setcounter{subsection}{0}
-\setcounter{equation}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{page}{1}
-
-\input{supplementary.tex}
-
-\cleardoublepage
-\listoftodos
-
-
-
-
-
-
-
-
-
+\end{backmatter}
 \end{document}
-
-
-
-
-
-
-

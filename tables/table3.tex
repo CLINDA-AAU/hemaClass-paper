@@ -1,5 +1,5 @@
 %latex.default(table3, file = "tables/table3.tex", title = "",     rgroup = gsub("ABCGCB", "ABC/GCB", names(results)), cgroup = c("One-by-one pre-processing",         "Reference based pre-processing"), size = "scriptsize",     label = "tab:classALL", caption = caption)%
-\begin{table}[!tbp]
+\begin{table}[!h]%[!tbp]
 {\scriptsize
 \caption{Comparison of classifications obtained using cohort based
 normalisation and \hemaClass{}.
@@ -7,7 +7,7 @@ The classifications are compared in terms of rate of argreement (accuracy),
 Cohen's weighted $\kappa$, and Pearson's correlation coefficient $r$ all
 supplied with $95\%$ CIs. The comparisons in the first and last three columns
 are based on the one-by-one normalisation method and the reference based
-normalisation method, respectively.\label{tab:classALL}} 
+normalisation method, respectively.\label{tab:classALL}}
 \begin{center}
 \begin{tabular}{llllclll}
 \hline\hline
