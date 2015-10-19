@@ -770,31 +770,32 @@ The dashed and solid line shows the identity and total least squares line, respe
 
 %%% TABLE 1
 \begin{table}[!h]%[htb]
-\small
-\caption{Overview of used datasets and GEO accession numbers.}
+{\footnotesize
+\caption{Overview of datasets and GEO accession numbers used as reference (Ref.) or validation (Val.) data.}
 \label{table:01}%
 \begin{center}
 \begin{tabular}{rlclll}
 \hline
-No. & Dataset & $n$ & Usage & GEO number & Ref.
+No. & Dataset & $n$ & Usage & GEO no. & Ref.
 \\
 \hline
-1. & LLMPP CHOP & 181 & Reference & GSE10846 & \citep{Lenz2008a}
+1. & LLMPP CHOP & 181 & Ref. & GSE10846 & \citep{Lenz2008a}
 \\
-2. & Tonsil & 33 & Reference & GSE56315 & \citep{DybkaerBoegsted2015}
+2. & Tonsil & 33 & Ref. & GSE56315 & \citep{DybkaerBoegsted2015}
 \\
-3. & DLBCL14 & 14 & Reference & - & \citep{Falgreen2015}
+3. & DLBCL14 & 14 & Ref. & - & \citep{Falgreen2015}
 \\
-4. & CHEPRETRO & 89 & Validation & GSE56315 & \citep{DybkaerBoegsted2015}
+4. & CHEPRETRO & 89 & Val. & GSE56315 & \citep{DybkaerBoegsted2015}
 \\
-5. & IDRC & 470 & Validation & GSE31312 & \citep{Visco2012}
+5. & IDRC & 470 & Val. & GSE31312 & \citep{Visco2012}
 \\
-6. & LLMPP R-CHOP & 233 & Validation & GSE10846 & \citep{Lenz2008a}
+6. & LLMPP R-CHOP & 233 & Val. & GSE10846 & \citep{Lenz2008a}
 \\
-7. & MDFCI & 90 & Validation & GSE34171 & \citep{Monti2012a}\\
+7. & MDFCI & 90 & Val. & GSE34171 & \citep{Monti2012a}\\
 \hline
 \end{tabular}
 \end{center}
+}
 \end{table}
 
 
@@ -823,8 +824,8 @@ LLMPP R-CHOP&$0.91~(0.86, 0.94)$&$0.90~(0.85, 0.96)$\tabularnewline
 
 
 % TABLE 3
-\begin{table}[!h]%[!tbp]
-{\scriptsize
+\begin{table*}[!h]%[!tbp]
+{\footnotesize
 \caption{Comparison of classifications obtained using cohort based
 normalisation and \hemaClass{}.
 The classifications are compared in terms of rate of argreement (accuracy),
@@ -859,7 +860,7 @@ normalisation method, respectively.\label{tab:classALL}}
 \hline
 \end{tabular}\end{center}}
 
-\end{table}
+\end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
