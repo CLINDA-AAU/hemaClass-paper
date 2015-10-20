@@ -640,7 +640,7 @@ for (i in seq_len(nrow(table2))) {
 
 caption <- "Comparison of ABC/GCB classification performed using Wright's naive
 Bayes classifier \\citep{Wright2003} and the established elastic net classifier
-based on cohort normalisation
+based on cohort normalization
 for both. The second column shows the rate of agreement (accuracy) between the
 classifiers with $95\\%$ CI. The third column shows the Cohen's weighted
 $\\kappa$ with $95\\%$ CI."
@@ -670,12 +670,12 @@ for (study in studies.vec[-5]) {
 tableS1 <- do.call(cbind, lapply(confuseABCGCB, function(l) do.call(rbind, l)))
 
 caption <- "Confusion tables for the ABC/GCB classifiers.
-The columns represent cohort based normalisation using the ABC/GCB classifier
+The columns represent cohort based normalisztion using the ABC/GCB classifier
 based on elastic net.
 The first part of the table compares Wright's method for ABC/GCB classification
 with the elastic net based.
-In the second and third part one-by-one and reference based normalisation is
-compared to cohort based normalisation using the ABC/GCB classifier based on
+In the second and third part one-by-one and reference based normalization is
+compared to cohort based normalization using the ABC/GCB classifier based on
 elastic net."
 
 w <- latex(tableS1,
@@ -780,11 +780,11 @@ colnames(table3) <- rep(c(colnames(table2), "Pearson's $r$"), 2)
 rownames(table3) <- rep(names(studies.vec[-5]), 3)
 
 caption <- "Comparison of classifications obtained using cohort based
-normalisation and \\hemaClass{}.
+normalization and one-by-one normalization as well as reference based normalization.
 The classifications are compared in terms of rate of argreement (accuracy),
 Cohen's weighted $\\kappa$, and Pearson's correlation coefficient $r$ all
 supplied with $95\\%$ CIs. The comparisons in the first and last three columns
-are based on the one-by-one normalisation method and the reference based
+are based on the one-by-one normalization method and the reference based
 normalisation method, respectively."
 
 # Remove leading zeros:
@@ -830,14 +830,14 @@ flip <- function(x) {
 }
 
 caption <- "Confusion tables for the BAGS classifier. One-by-one and reference
-based normalisation are shown in the columns and cohort normalisation in the
+based normalization are shown in the columns and cohort normalization in the
 rows."
 
 w <- latex(tableS2,
            file = "tables/tableS2.tex",
            title = "",
            rgroup = flip(studies.vec)[names(subtab)],
-           cgroup = c("One-by-one normalisation", "Reference based"),
+           cgroup = c("One-by-one normalization", "Reference based normalization"),
            size = "small",
            label = "tab:BAGShemaclass",
            caption = caption)
@@ -872,11 +872,11 @@ colnames(tableS3) <- abbrev2[colnames(tableS3)]
 colnames(tableS4) <- abbrev2[colnames(tableS4)]
 
 captionS3 <- "Confusion tables for the REGS classifiers.
-One-by-one normalisation are shown in the rows and cohort normalisation in the
+One-by-one normalization are shown in the rows and cohort normalization in the
 columns."
 
 captionS4 <- "Confusion tables for the REGS classifiers.
-Reference based normalisation are shown in the rows and cohort normalisation in
+Reference based normalization are shown in the rows and cohort normalization in
 the columns. Note, 30 samples were used as reference data and hence not present
 in this table."
 
