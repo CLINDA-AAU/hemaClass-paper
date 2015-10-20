@@ -255,8 +255,8 @@ The website is an easy-to-use, interactive interface for \pkg{hemaClass} with th
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
 A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
 Users upload patient samples which are normalized and classified depending on settings chosen by the users.
-A text summary of the results and a plot of the predicted overall survival and progression free survival is optionally provided for each patient sample.
-These predictions are based on patient survival data from LLMPP, MDFCI, and IDRC using a Cox regression with IPI and a combination of the ABC/GCB and BAGS classes.
+A text summary of the results and a plot of the predicted progression free survival and overall survival is optionally provided for each patient sample.
+These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \citep{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
 
 
 
@@ -274,7 +274,7 @@ However, the probabilities estimated under one-by-one normalization are slightly
 By normalizing to a reference set of $30$ randomly selected samples from CHEPRETRO this error and bias is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B.
 
 For both methods, patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
-In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for the four validation datasets.
+In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for one-by-one normalization and four validation datasets normalized to 30 internally sampled reference samples.
 CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP all show a high Cohen's weighted $\kappa$ and good rate of agreement, considering that misclassifications involving unclassified samples count as errors.
 The reduced rate of agreement and Cohen's weighted $\kappa$ using one-by-one pre-processing in IDRC may be due to the samples being FFPE although this seems to be remedied by reference based pre-processing.
 The accompanying confusion matrices are shown in the lower part of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
@@ -310,7 +310,7 @@ The dashed and solid line shows the identity and total least squares line, respe
 
 \subsection{REGS classification}
 The probability of resistance towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalization.
-The logit probabilities of resistance are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug}.
+The logit probabilities of resistance are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
 Panels C, E, G, and I show the plots based on one-by-one normalization and panels D, F, H, and J show the plots for the reference based normalization.
 The probabilities obtained by one-by-one and cohort based normalization are comparable. However, similar to the other classifiers the one-by-one normalization leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
 The probabilities obtained by the reference based normalization resembles the cohort based to a great extent indicating that similar well-calibrated probabilities are obtainable for different laboratories by supplying a reference set.
