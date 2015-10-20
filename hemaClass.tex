@@ -45,7 +45,7 @@
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
 \\\parttitle{Results}
-This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into oncogenomic cell-of-origin and chemotherapeutic resistance classes.
+This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into oncogenomic cell-of-origin and chemotherapeutic sensitivity classes.
 As laboratory specific effects cannot be accounted for in true one-by-one microarray normalization, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications. Classification results for one-by-one array pre-processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
 Overall, \hemaClass{} yields satisfactory inter-method agreements across all datasets.
 The website is essentially the \R{}-package \pkg{hemaClass} accompanied by a Shiny web application.
@@ -55,7 +55,7 @@ The website and \R{}-package is relevant for biological and clinical lymphoma re
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
 \medskip\\
 \textbf{Keywords:~}
-Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Oncogenomics; Classification; Chemoresistance; Microarray; Pre-processing; Robust Multichip Average; Gene expression profiling; Cell of origin
+Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Oncogenomics; Classification; Chemosensitivity; Microarray; Pre-processing; Robust Multichip Average; Gene expression profiling; Cell of origin
 \end{abstract}
 
 
@@ -70,7 +70,7 @@ The validity of this classification and its prognostic importance has been confi
 Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier \citep{DybkaerBoegsted2015} capable of classifying DLBCL samples into $5$ different B-cell subtypes:
 Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
 For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015} which opens up for considering different treatment regimes in the GCB class of patients.
-In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
+In another study \citep{Falgreen2015} we developed classification based sensitivity gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
 Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
 However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a routine clinical setting.
 
@@ -290,7 +290,7 @@ Direct disagreements between the classifiers are seemingly rare and only occurs 
 \caption{Comparison of logit probabilities for the ABC/GCB and REGS classifiers obtained through one-by-one and reference based RMA normalization against cohort normalization.
 The areas marked with green indicate patients with similar classification between \hemaClass{} and cohort based normalization.
 Contrary, the areas marked with red indicate complete misclassifications.
-For ABC/GCB and REGS the white areas indicate unclassified and intermediate resistance, respectively, in at least one of the classifiers.
+For ABC/GCB and REGS the white areas indicate unclassified and intermediate sensitivity, respectively, in at least one of the classifiers.
 The dashed and solid line shows the identity and total least squares line, respectively.}
 \label{fig:ABCGCBDrug}
 \end{figure}
@@ -309,8 +309,8 @@ The dashed and solid line shows the identity and total least squares line, respe
 
 
 \subsection{REGS classification}
-The probability of resistance towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalization.
-The logit probabilities of resistance are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
+The probability of sensitivity towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalization.
+The logit probabilities of sensitivity are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
 Panels C, E, G, and I show the plots based on one-by-one normalization and panels D, F, H, and J show the plots for the reference based normalization.
 The probabilities obtained by one-by-one and cohort based normalization are comparable. However, similar to the other classifiers the one-by-one normalization leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
 The probabilities obtained by the reference based normalization resembles the cohort based to a great extent indicating that similar well-calibrated probabilities are obtainable for different laboratories by supplying a reference set.
@@ -341,7 +341,7 @@ The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGS
 Despite the enormous resources spent on developing molecular based cancer classification systems,
 most of these are still not available in daily clinical practice.
 % there seems to be an inertial resistance to develop clinical applications.
-To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
+To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug sensitivity classification on their own datasets.
 
 The one-by-one and referece based classifications performed by \hemaClass{} were compared to those obtained using cohort based normalization in four clinical cohorts.
 Even though gene expression data for the four cohorts was obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach is feasible and performed comparably with the whole cohort based method.
