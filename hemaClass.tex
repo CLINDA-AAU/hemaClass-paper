@@ -127,13 +127,13 @@ Core functions for the one-by-one and reference based RMA pre-processing are wri
 
 
 \subsection{Data overview}
-The seven gene expression datasets used in this paper are summarised in Table \ref{table:01}.
+The seven gene expression datasets used in this paper are summarized in Table \ref{table:01}.
 All GEP data are on the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) \citep{Barrett2013} website (\url{http://www.ncbi.nlm.nih.gov/geo/}).
 To establish the classifiers the following datasets are used:
 \begin{enumerate}
   \item Gene expression data from $181$ CHOP treated DLBCL patients are used to establish the ABC/GCB classifier.
   This cohort will be referred to as the \emph{LLMPP CHOP} (Lymphoma/Leukemia Molecular Profiling Project CHOP) cohort \citep{Lenz2008a}.
-  The cohort is also used as a reference set for normalization of arrays.
+  The cohort is also used as a default reference set throughout the paper for normalization of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
   This dataset will be referred to as the \emph{tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
   \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines.
@@ -159,11 +159,11 @@ The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \citep{D
 Recall that robust multichip average (RMA) pre-processing consists of three steps in order:
 (1) Background correction,
 (2) quantile normalization, and
-(3) summarisation of probes to probe-sets \citep{Irizarry2003}.
+(3) summarization of probes to probe-sets \citep{Irizarry2003}.
 Confer \citet{Bolstad2004} for a comprehensive account on RMA.
-Both the quantile normalization and summarisation procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme.
+Both the quantile normalization and summarization procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme.
 As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \citep{Bolstad2003}.
-To mimic the summarisation procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
+To mimic the summarization procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
 The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
 Finally, before classification the median of each probe-set in the LLMPP CHOP is subtracted from the corresponding probe-set in the user data.
 This ensures identical classification probabilities whether data is supplied as a cohort or one-by-one.
@@ -176,7 +176,7 @@ The three pre-processing methods will be referred to as \emph{cohort}, \emph{one
 \subsection{Classification methods}
 
 \subsubsection{Elastic nets}
-Logistic and multinomial regression are used in all classification methods available on \hemaClass{}.
+Logistic and multinomial regression are used in all classification methods available at \hemaClass{}.
 However, in GEP experiments, the number of probe-sets present on the microarray always outnumbers the sample size.
 Collinearity present among the features further aggravates the problem of identifying genes responsible for the underlying biological mechanism.
 Regression under these ill-posed circumstances is typically handled by so-called regularisation.
@@ -197,11 +197,10 @@ Using the $150$ patients classified as either ABC or GCB the dichotomous classif
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
 The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
-The results of the cross validation are shown in Supplementary Figure \ref{fig:crossval}.
+The results of the cross validations are shown in Supplementary Figure \ref{fig:crossval}.
 The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
 
-When a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
-In contrast, the one-by-one normalized data is used directly.
+When a tumour sample is classified according to the ABC/GCB classifier using one-by-one normalization the data is used directly when classifying. However, when a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
 
 \subsubsection{REGS classification}
 \label{sec:regsmethods}
@@ -210,11 +209,11 @@ The classifiers were established on BCELL26 using regularised logistic regressio
 
 The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward the each of three drugs $p_C$, $p_H$, and $p_O$, respectively.
 This probability is calculated by a formula derived as the posterior probability of being resistant given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
-The formula is also known as Graham's formula:
+The formula is also known as Graham's formula,
 \begin{equation*}
   p_{CHO} = \frac{p_C p_H p_O}{p_C p_H p_O + (1 - p_C)(1 - p_H)(1 - p_O)},
 \end{equation*}
-derived in supplementary section \ref{sec:graham}.
+and derived in supplementary section \ref{sec:graham}.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
 
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
@@ -243,9 +242,9 @@ Total least squares regression was used as errors are present in both classifica
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
 The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath $0.1$, and unclassified otherwise.
-For the BAGS classifier a tumour was classified as N, CB, CC, M, or PB if the associated probability exceeded $0.5$ and unclassified when this threshold was not met for any subtype.
-For the REGS classifiers, C, H, O, and CHO combined, the threshold used were the $33\%$ and $66\%$ percentile of the estimated probabilities, found to be $[0.46, 0.67]$, $[0.1, 0.86]$, $[0.38, 0.54]$, and $[0.07, 0.91]$, respectively.
-The classifiers were applied to the datasets using the cohort, one-by-one, and reference based RMA normalization.
+For the BAGS classifier a tumour was classified as the class N, CB, CC, M, or PB with the highest probablity, if the associated probability exceeded $0.5$ and unclassified when this threshold was not met for any subtype.
+For the REGS classifiers, C, H, O, and CHO combined, the threshold used were the $33\%$ and $66\%$ percentile of the estimated probabilities.
+The classifiers were applied to datasets using the cohort, one-by-one, and reference based RMA normalization.
 After thresholding the class probabilities confusion matrices were created.
 From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
 
