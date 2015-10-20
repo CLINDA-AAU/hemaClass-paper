@@ -256,7 +256,7 @@ The usage of the website is largely self-explanatory with context-dependent boxe
 A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
 Users upload patient samples which are normalized and classified depending on settings chosen by the users.
 A text summary of the results and a plot of the predicted progression free survival and overall survival is optionally provided for each patient sample.
-These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \citep{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
+These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \citet{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and a factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
 
 
 
@@ -343,7 +343,7 @@ most of these are still not available in daily clinical practice.
 % there seems to be an inertial resistance to develop clinical applications.
 To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
 
-The classifications performed by \hemaClass{} were compared to those obtained using cohort based normalization in four clinical cohorts.
+The one-by-one and referece based classifications performed by \hemaClass{} were compared to those obtained using cohort based normalization in four clinical cohorts.
 Even though gene expression data for the four cohorts was obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach is feasible and performed comparably with the whole cohort based method.
 It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects and, after suitable standardisation and calibration, even for clinical use.
 
@@ -370,7 +370,7 @@ However, without a user reference set, the high correlation coefficients demonst
 Another limitation of the current web application is that it is only designed for one array type.
 The server works at the moment only on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
 This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \citet{Care2013} or by re-annotated chip definition files as suggested by \citep{Dai2005}.
-At the moment we are working on extending the web application to other array types along these lines of \citep{Dai2005}.
+At the moment we are working on extending the web application to other array types along these line of \citep{Dai2005}.
 
 Traditionally ABC/GCB classification has been achieved using the naive Bayes classifier of \citet{Wright2003} which is based on cohorts, MAS5.0 normalized arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
 However, a classifier based on logistic regression regularised by an elastic net penalty was implemented to make the classification more adaptable to RMA normalization, one-by-one processing, and stable towards varying amounts of ABC/GCB patients.
@@ -388,7 +388,7 @@ To our knowledge only a few other classification methods from other cancer types
 Hopefully, this research will inspire bioinformaticians and statisticians to make their cancer classification methods easily accessible for usage, speedy validation, critical reviews, and mutual inspiration.
 
 \section{Conclusion}
-Despite high throughput molecular biology has been around for more than a decade, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \citep{Chen2012a}.
+Despite high throughput molecular biology has been around for almost two decades, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \citep{Chen2012a}.
 It is our hope that making our own findings publicly available in this way will speed up validation and testing of BAGS and REGS by other researchers without having to delve into extensive bioinformatics implementations.
 Although \hemaClass{} is still separated from the clinic we believe a web based tool and suggestion for a clinical reference sample will bring cancer classification closer to the clinic.
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
@@ -401,7 +401,7 @@ Comments, suggest, bug reports, and other issues are warmly welcome at \url{http
 \section*{Acknowledgements}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
-The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, and CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation as well as Karen Elise Jensen Fonden.
+The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
 
 
