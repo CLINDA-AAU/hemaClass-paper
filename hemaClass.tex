@@ -204,11 +204,11 @@ When a tumour sample is classified according to the ABC/GCB classifier using one
 
 \subsubsection{REGS classification}
 \label{sec:regsmethods}
-In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
+In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of sensitivity to the drugs C, H, and O.
 The classifiers were established on BCELL26 using regularised logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
-The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward the each of three drugs $p_C$, $p_H$, and $p_O$, respectively.
-This probability is calculated by a formula derived as the posterior probability of being resistant given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
+The probability of sensitivity to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug sensitivity toward each of the three drugs $p_C$, $p_H$, and $p_O$, respectively.
+This probability is calculated by a formula derived as the posterior probability of being sensitive given sensitivity towards each of the individual drugs under the assumption of conditional independence and uniform priors.
 The formula is also known as Graham's formula,
 \begin{equation*}
   p_{CHO} = \frac{p_C p_H p_O}{p_C p_H p_O + (1 - p_C)(1 - p_H)(1 - p_O)},
@@ -219,9 +219,9 @@ If a drug is left out in the combination therapy the drug is simply removed from
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
-Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
-The Rituximab resistance classifier of \citet{Laursen2014} is based upon an elastic net approach, like above, however using three classes.
-The Melphalan resistance classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
+Sensitvity classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
+The Rituximab sensitivity classifier of \citet{Laursen2014} is based upon an elastic net approach, like above, however using three classes.
+The Melphalan sensitivity classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
 This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.
 A classifier for dexamethasone is still considered experimental and currently available only in the package.
 
