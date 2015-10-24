@@ -325,7 +325,7 @@ plotCoef <- function(cv.fit,
         #if(labels & !is.null(array))
         #  text(x2.cords, y2.cords[i], genes[i], pos = 4)
         #if(labels & is.null(array))
-        text(x2.cords, y2.cords[i], genes[i], pos = 4)
+        text(x2.cords, y2.cords[i], genes[i], pos = 4, cex = 0.8)
       }
     }
   }
