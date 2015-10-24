@@ -331,7 +331,7 @@ plotCoef <- function(cv.fit,
   }
   if(is.null(main))
     main <- paste("Regularisation Curves for", beta.which)
-  title(main, line = 3)
+  title(main, font.main = 1, line = 3)
 }
 
 plotCV <- function(x, y, lo, up,
@@ -1214,20 +1214,15 @@ pdf(file.path("figures/FigureS1.pdf"),
 }
 dev.off()
 
+# The coefficients are created for the hemaclass package
 coef <- coef(ABCGCB.fit, s = "lambda.min")
 ABCGCB.coef <- as.matrix(coef)[as.matrix(coef) != 0, , drop = FALSE]
 ABCGCB.coef <- ABCGCB.coef * c(1, LLMPPCHOP.sd[rownames(ABCGCB.coef)[-1]])
 nrow(ABCGCB.coef) - 1
 
-
+# The established coefficients are saved
 dir.create("hemaclass.org/ABCGCB", showWarnings = FALSE, recursive = TRUE)
 saveRDS(ABCGCB.coef, file = "hemaclass.org/ABCGCB/ABCGCB.coef.rds")
-
-int <- intersect(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
-setdiff(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
-setdiff(rownames(ABCGCB.coef), rownames(readABCGCBCoef()))
-
-plot(data.frame(readABCGCBCoef()[int, ], (ABCGCB.coef)[int, ]))
 
 ################################################################################
 # Write session info
