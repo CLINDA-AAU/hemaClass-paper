@@ -152,7 +152,10 @@ The background correction in one-by-one RMA normalization is unaltered as it is 
 
 \subsection{Quantile normalization}
 
-Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as described above. Similarly,  let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Furthermore, let $H_i$ denote the ECDF of the user supplied data $\{y_{ijk}\}_{jk}$.
+Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$ index the probe-sets, and $k=1,\dots,K_j$ index the probes.
+Assume $x_{ijk}$ has been RMA normalized as described above.
+Similarly, let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes.
+Furthermore, let $H_i$ denote the ECDF of the user supplied data $\{y_{ijk}\}_{jk}$.
 
 As quantile normalizer the ECDF of the background corrected reference data is used in place of the ususally applied ECDF of the mean of the sample quantiles
 \begin{equation*}
@@ -179,8 +182,8 @@ To ensure identical classification probabilities whether data is supplied as a c
   (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
 \end{equation*}
 where
-$\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and $s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
-
+$\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
+$s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
 
 
 

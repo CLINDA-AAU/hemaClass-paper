@@ -352,7 +352,6 @@ The analysis workflow of \hemaClass{} can be divided into four parts:
 The workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 
 
-
 \subsection{Software availability and technical details}
 The interactive web application available at \url{hemaclass.org} was created using the statistical programming language \R{} \cite{RCoreTeam}, the software package \pkg{shiny} \cite{shiny}, and the accompanying Linux server software.
 All \hemaClass{} functionality, including the RMA normalization and classification procedures, are available through the accompanying package \pkg{hemaClass} based on a number of packages from the Comprehensive R Archive Network \cite{RCoreTeam} and the Bioconductor environment \cite{Gentleman2004}.
@@ -434,6 +433,7 @@ Regularized logistic and multinomial regression are performed with the \R{}-pack
 
 
 
+
 \subsubsection{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
 Of the $181$ patients $74$ were ABC, $76$ were GCB, and $31$ were non-classified.
@@ -459,15 +459,16 @@ The formula is also known as Graham's formula,
 \begin{equation*}
   P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)},
 \end{equation*}
-and derived in Supplementary Section S2. If a drug is left out in the combination therapy the drug is simply removed from the formula.
-This appoach to resistance to the combination therapy was used in Falgreen et al. \cite{Falgreen2015}.
+and derived in Supplementary Section S2. %\ref{sec:graham}.
+If a drug is left out in the combination therapy the drug is simply removed from the formula.
+This appoach to resistance to the combination therapy was used in Falgreen et al.\ \cite{Falgreen2015}.
 
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
-Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \cite{Boegsted2011,Bogsted2013,Laursen2014,Laursen2015}.
-The Rituximab sensitivity classifier \cite{Laursen2014, Laursen2015} is based upon an elastic net approach, like above, however using three classes.
-The Melphalan sensitivity classifier \cite{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
+Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \cite{Boegsted2011,Bogsted2013,Laursen2014}.
+The Rituximab resistance classifier \cite{Laursen2014,Laursen2015} is based upon an elastic net approach, like above, however using three classes.
+The Melphalan resistance classifier \cite{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
 This classifier was developed for multiple myeloma (MM) patients and thus based on other data \cite{Boegsted2011}.
 A classifier for dexamethasone is still considered experimental and currently available only in the package.
 
@@ -538,7 +539,9 @@ The probabilities obtained by the reference based normalization resembles the co
 
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
 The classes obtained by one-by-one and reference based normalization are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$.
-The associated confusion matrices for one-by-one normalization and reference based normalization are shown in Supplementary Table S3 and Supplementary Table S4, respectively.
+The associated confusion matrices for one-by-one normalization and reference based normalization are shown in
+Supplementary Table S3 and %\ref{tab:confusiondrugonebyone} and
+Supplementary Table S4, respectively. %\ref{tab:confusiondrugreference}, respectively.
 Again, the reference based approach yields superior agreement with classifications using cohort based normalization.
 
 
@@ -553,9 +556,7 @@ The reference based normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
 The rate of agreement between the cohort based and one-by-one as well as reference based classifications is shown in Table \ref{tab:classALL} along with the Cohen's weighted $\kappa$.
-The associated confusion matrices are shown in Supplementary Table S2.%\ref{tab:BAGShemaclass}.
-
-
+The associated confusion matrices are shown in Supplementary Table S2. %\ref{tab:BAGShemaclass}.
 
 
 \section{Discussion}
@@ -647,6 +648,7 @@ LHJ, JH, KLH contributed to the manuscript, package, and website.
 TCEG, KHY, JSB, AS, HEJ, KD, and MB provided data and aided in interpreation of
 the results.
 All authors provided comments and approved the manuscript before submission.
+
 
 \section*{Acknowledgements}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
