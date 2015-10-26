@@ -224,7 +224,7 @@ plotCoef <- function(cv.fit,
     # xlim <- xlim2
   }
   if(is.null(xlab))
-    xlab <- expression(paste("Regularisation Parameter - log(", lambda, ")"))
+    xlab <- expression(paste("Regularization Parameter - log(", lambda, ")"))
   if(is.null(ylab) & !is.null(beta.which))
     ylab <- as.expression(substitute(paste("Coefficients: Response ", a),
                                      list(a= beta.which)))
@@ -330,7 +330,7 @@ plotCoef <- function(cv.fit,
     }
   }
   if(is.null(main))
-    main <- paste("Regularisation Curves for", beta.which)
+    main <- paste("Regularization Curves for", beta.which)
   title(main, line = 3)
 }
 
@@ -1208,7 +1208,7 @@ pdf(file.path("figures/FigureS1.pdf"),
 
   plotCoef(ABCGCB.fit,
            label.pct = 35,
-           main = paste("Regularisation Curves"),
+           main = paste("Regularization Curves"),
            ylab = "Coeffecients: ABC")
   mtext(LETTERS[3], 3, line = 1.5, adj = -0.145, cex = 10/pointsize)
 }

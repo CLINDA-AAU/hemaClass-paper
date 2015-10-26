@@ -86,23 +86,23 @@ From the distributional assumption on $B$, $P(B=0) = P(B=1) = 1/2$, and the abov
           {P(C=1, H=1 | B=1) + P(H=1, C=1 | B=0)}.
 \end{equation*}
 For notational convenience, we abbreviate
-$p_C = P(C=1 | B=1)$,
-$p_H = P(H=1 | B=1)$,
-$p_{CH} = P(B=1 | H=1, C=1)$.
+$P_C = P(C=1 | B=1)$,
+$P_H = P(H=1 | B=1)$,
+$P_{CH} = P(B=1 | H=1, C=1)$.
 The distributional assumptions then imply:
 \begin{align*}
-  p_{CH}
-  &= \frac{p_C p_H}
-          {p_C p_H + P(C=1 | B=0) P(H=1 | B=0)}
+  P_{CH}
+  &= \frac{P_C P_H}
+          {P_C P_H + P(C=1 | B=0) P(H=1 | B=0)}
   \\
-  &= \frac{p_C p_H}
-          {p_C p_H + P(B=0 | C=1) P(B=0 | H=1)}
+  &= \frac{P_C P_H}
+          {P_C P_H + P(B=0 | C=1) P(B=0 | H=1)}
   \\
-  &= \frac{p_C p_H}
-          {p_C p_H + \bigl(1 - P(B=1 | C=1)\bigr)\bigl(1 - P(B=1 | H=1)\bigr)}
+  &= \frac{P_C P_H}
+          {P_C P_H + \bigl(1 - P(B=1 | C=1)\bigr)\bigl(1 - P(B=1 | H=1)\bigr)}
   \\
-  &= \frac{p_C p_H}
-          {p_C p_H + (1 - p_C)(1 - p_H)},
+  &= \frac{P_C P_H}
+          {P_C P_H + (1 - P_C)(1 - P_H)},
 \end{align*}
 which is the two-drug equivalent to the used formula.
 

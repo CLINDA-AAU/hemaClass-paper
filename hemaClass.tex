@@ -453,11 +453,11 @@ When a tumour sample is classified according to the ABC/GCB classifier using one
 In the paper by Falgreen et al.~\cite{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
 The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
-The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward each of the three drugs $p_C$, $p_H$, and $p_O$, respectively.
+The probability of resistance to the combination therapy $P_{CHO}$ is estimated based on the probabilities of drug resistance toward each of the three drugs $P_C$, $P_H$, and $P_O$, respectively.
 This probability is calculated by a formula derived as the posterior probability of being resistance given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
 The formula is also known as Graham's formula,
 \begin{equation*}
-  p_{CHO} = \frac{p_C p_H p_O}{p_C p_H p_O + (1 - p_C)(1 - p_H)(1 - p_O)},
+  P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)},
 \end{equation*}
 and derived in Supplementary Section S2. If a drug is left out in the combination therapy the drug is simply removed from the formula.
 This appoach to resistance to the combination therapy was used in Falgreen et al. \cite{Falgreen2015}.
