@@ -1115,16 +1115,16 @@ for (type in c("ABCGCB", "BAGS", "REGS")) {
 # In order to make the LLMPP CHOP data comparable to other datasets
 # it is median centered.
 GEPLLMPPCHOP.med <- microarrayScale(exprs(dat$GSE10846$es$CHOP), scale = FALSE)
-file.ABCGCB.class.cv <- file.path("GeneratedData", "ABCGCB.class.cv.RData")
+file.ABCGCB.class.cv <- "GeneratedData/ABCGCB.class.cv.RData"
 
 alphas <- seq(0.1, 1, 0.025)
 
 if (file.exists(file.ABCGCB.class.cv)) {
+
   load(file.ABCGCB.class.cv)
+
 } else {
 
-  dir.create(dirname(file.ABCGCB.class.cv),
-             showWarnings = FALSE, recursive = TRUE)
   mat <- matrix(NaN, ncol = 4, nrow = length(alphas))
   colnames(mat) <- c("ABCGCB", "ABCGCB.lo", "ABCGCB.up", "ABCGCB.n")
   row.names(mat) <- alphas
@@ -1222,8 +1222,7 @@ ABCGCB.coef <- ABCGCB.coef * c(1, LLMPPCHOP.sd[rownames(ABCGCB.coef)[-1]])
 nrow(ABCGCB.coef) - 1
 
 # The established coefficients are saved
-dir.create("hemaclass.org/ABCGCB", showWarnings = FALSE, recursive = TRUE)
-saveRDS(ABCGCB.coef, file = "hemaclass.org/ABCGCB/ABCGCB.coef.rds")
+saveRDS(ABCGCB.coef, file = "GeneratedData/ABCGCB.coef.rds")
 
 ################################################################################
 # Write session info
