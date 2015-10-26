@@ -251,16 +251,17 @@ plotCoef <- function(cv.fit,
 
   #unique((at.x <- round(axTicks(side=1, usr=xlim2,
   #                       axp=c(get_axp(xlim2), n=6), log=FALSE, nintLog=5))))
-  at.x <- axTicks(side=1, usr=xlim2,
-                  axp=c(get_axp(xlim2), n=6), log=FALSE, nintLog=5)
+  at.x <- axTicks(side = 1, usr = xlim2,
+                  axp = c(get_axp(xlim2), n = 6), log = FALSE, nintLog = 5)
   at.x <- unique( round(at.x ,1))
   (at.y <- axTicks(side=2))
   axis(side = 1, at = at.x)
   axis(side = 2, las = 2)
   q <- cv.fit$nzero
   q.round <- vector()
-  for(a in 1:length(at.x))
+  for (a in 1:length(at.x)) {
     q.round[a] <- round(q)[which.min(abs(index - at.x[a]))]
+  }
   #axis(side = 3, at = index[seq(1, length(index), length.out = 5)],
   #     labels = round(q)[seq(1, length(index), length.out = 5)])
   axis(side = 3, at = at.x,
@@ -325,13 +326,14 @@ plotCoef <- function(cv.fit,
         #if(labels & !is.null(array))
         #  text(x2.cords, y2.cords[i], genes[i], pos = 4)
         #if(labels & is.null(array))
-        text(x2.cords, y2.cords[i], genes[i], pos = 4)
+        text(x2.cords, y2.cords[i], genes[i], pos = 4, cex = 0.8)
       }
     }
   }
-  if(is.null(main))
+  if (is.null(main)) {
     main <- paste("Regularization Curves for", beta.which)
-  title(main, line = 3)
+  }
+  title(main, font.main = 1, line = 3)
 }
 
 plotCV <- function(x, y, lo, up,
@@ -1214,20 +1216,15 @@ pdf(file.path("figures/FigureS1.pdf"),
 }
 dev.off()
 
+# The coefficients are created for the hemaclass package
 coef <- coef(ABCGCB.fit, s = "lambda.min")
 ABCGCB.coef <- as.matrix(coef)[as.matrix(coef) != 0, , drop = FALSE]
 ABCGCB.coef <- ABCGCB.coef * c(1, LLMPPCHOP.sd[rownames(ABCGCB.coef)[-1]])
 nrow(ABCGCB.coef) - 1
 
-
+# The established coefficients are saved
 dir.create("hemaclass.org/ABCGCB", showWarnings = FALSE, recursive = TRUE)
 saveRDS(ABCGCB.coef, file = "hemaclass.org/ABCGCB/ABCGCB.coef.rds")
-
-int <- intersect(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
-setdiff(rownames(readABCGCBCoef()), rownames(ABCGCB.coef))
-setdiff(rownames(ABCGCB.coef), rownames(readABCGCBCoef()))
-
-plot(data.frame(readABCGCBCoef()[int, ], (ABCGCB.coef)[int, ]))
 
 ################################################################################
 # Write session info
