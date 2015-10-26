@@ -1182,7 +1182,7 @@ if (file.exists(file.ABCGCB.class.cv)) {
 
 # Plot the result
 
-pdf(file.path("figures/FigureS1.pdf"),
+pdf(file.path("figures/figureS1.pdf"),
     pointsize = pointsize ,
     width = twocol, height = twocol/3)
 {
