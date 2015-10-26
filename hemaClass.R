@@ -780,12 +780,13 @@ colnames(table3) <- rep(c(colnames(table2), "Pearson's $r$"), 2)
 rownames(table3) <- rep(names(studies.vec[-5]), 3)
 
 caption <- "Comparison of classifications obtained using cohort based
-normalization and one-by-one normalization as well as reference based normalization.
+normalization and one-by-one normalization as well as reference based
+normalization.
 The classifications are compared in terms of rate of argreement (accuracy),
 Cohen's weighted $\\kappa$, and Pearson's correlation coefficient $r$ all
 supplied with $95\\%$ CIs. The comparisons in the first and last three columns
 are based on the one-by-one normalization method and the reference based
-normalisation method, respectively."
+normalization method, respectively."
 
 # Remove leading zeros:
 table3 <- gsub("0\\.", ".", table3)
