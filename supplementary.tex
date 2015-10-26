@@ -121,9 +121,8 @@ where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are 
 
 The RMA normalized cohort data are then given by
 \begin{equation*}
-   \hat{x}_{ij\cdot} = \hat{\mu}_{ij},
+   \hat{x}_{ij} = \hat{\mu}_{ij}.
 \end{equation*}
-where the dot notation indicate the mean across the index.
 This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} package.
 
 
@@ -153,22 +152,22 @@ This step is performed by the \texttt{RMA\_norm} function with options \texttt{g
 
 To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
 \begin{equation*}
-   \hat{y}_{ijk} = \tilde{y}_{ijk} - \hat{\alpha}_{jk},
+   \hat{y}_{ijk} = \tilde{y}_{ijk} - \hat{\alpha}_{jk}.
 \end{equation*}
-in place of the usual estimated probe effects from the cohort.
 The pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
 \begin{equation*}
-   \hat{y}_{ij\cdot} = \median_{k \in \{1,\dots,n_j \}} \{ \hat{y}_{ijk} \}.
+   \hat{y}_{ij} = \median_{k \in \{1,\dots,n_j \}} \{ \hat{y}_{ijk} \}.
 \end{equation*}
 
 
 \section{Classification}
 To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
 \begin{equation*}
-  (\hat{y}_{ij\cdot} - \hat{x}_{\cdot j\cdot})/s_{\cdot j\cdot},
+  (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
 \end{equation*}
 where
-$\hat{x}_{\cdot j\cdot} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij\cdot}\}$ and $s_{\cdot j\cdot} = \std_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij\cdot}\}$.
+$\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
+$s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
 
 
 % \end{document}
