@@ -5,15 +5,15 @@
 \newcommand{\hemaClassTitle}{\hemaClass{}: Submission summary}
 
 % Load packages
-\usepackage{fullpage} % Larger margins
+\usepackage{fullpage}
 \usepackage{amssymb,amsmath}
-\usepackage{authblk}  % For author affiliations
-\usepackage[hypertexnames=false]{hyperref} % For urls and hyperlinks
+\usepackage{authblk}  
+\usepackage[hypertexnames=false]{hyperref}
 \usepackage{graphicx}
-%\usepackage[numbers,sort]{natbib}
-\usepackage{cite} % Make references as [1-4], not [1,2,3,4]
+\usepackage{cite} 
 \usepackage{fancyhdr}
-%\usepackage[sectionbib]{natbib}
+\usepackage{titling}
+\setlength{\droptitle}{-2em}  
 
 
 % Macros
@@ -27,14 +27,16 @@
 \fancyhead[C]{This website is free and open to all users and there is no login requirement.}
 \fancyfoot[C]{}
 \renewcommand{\headrulewidth}{0pt}
-
 \makeatletter
 \let\ps@plain\ps@fancy 
 \makeatother
 
+% Change the thanks symbols to letters
 \makeatletter
 \let\@fnsymbol\@alph
 \makeatother
+
+% Change the bibliography header to section
 \renewcommand{\bibsection}{%
 \section*{\bibname}
 \prebibhook}

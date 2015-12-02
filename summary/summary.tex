@@ -2,7 +2,7 @@
 \input{preamble.tex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{\hemaClassTitle{}}
+\title{\hemaClassTitle{}\vspace{-2ex}}
 
 \author[1]{\small Steffen Falgreen\thanks{\texttt{sfl@rn.dk}}}
 \author[12]{Anders Ellern Bilgrau\thanks{\texttt{anders.ellern.bilgrau@gmail.com}}}
@@ -20,7 +20,7 @@
 \affil[1]{Department of Haematology, Aalborg University Hospital}
 \affil[2]{Department of Clinical Medicine, Aalborg University}
 \affil[3]{Department of Hematopathology, MD Anderson Cancer Center}
-\date{\small \today}
+\date{\small \today\vspace{-2ex}}
 
 
 \begin{document}
@@ -38,10 +38,18 @@ Users upload patient samples which are normalized and classified depending on se
 (3) REGS \cite{Falgreen2015} which is a classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients.
 The results are presented on the webserver, and is available for download. An optional text summary of the results and a plot of the predicted progression free survival and overall survival is provided for each patient sample.
 
-The server has been running since August 2014, and has been validated satisfactory on four different DLBCL cohorts with a total of 882 patients, e.g. the ABC/GCB classification shows an approximate 90\% intermethod agreement on all four validation sets. None of the validation sets have been used in the training of the classifiers. The server has been in routine use in our lab for classification since it was initiated, e.g. the paper by Marquez et al. \cite{}.
+The server has been running since August 2014, and has been validated satisfactory on four different DLBCL cohorts with a total of 882 patients, e.g. the ABC/GCB classification shows an approximate 90\% intermethod accuracy on all four validation sets. None of the validation sets have been used in the training of the classifiers. The server has been in routine use in our lab for classification since it was initiated, e.g. the paper by Marquez et al. \cite{Marquez2015}.
 
-\newpage
+
+\begingroup
+\renewcommand{\section}[2]{}%
 \bibliographystyle{plain}
 \bibliography{references}
+\endgroup
 \end{document}
 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
