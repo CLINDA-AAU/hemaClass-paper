@@ -30,9 +30,10 @@
 Diffuse Large B-Cell Lymphoma; Classification; Chemosensitivity; Gene expression profiling \\
 
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
-However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to use in a personalized clinical setting. This prompted us to create \hemaClass{}, available at \url{http://hemaclass.org}, which is an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) into cell-of-origin and chemotherapeutic sensitivity classes.
+However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to use in a personalized clinical setting. 
+This prompted us to create \hemaClass{}, available at \url{http://hemaclass.org}, which is an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) into cell-of-origin and chemotherapeutic sensitivity classes.
 
-Users upload patient samples which are normalized and classified depending on settings chosen by the users. 
+Users upload patient samples which are RMA normalized and classified depending on settings chosen by the users. 
 The server accepts samples profiled by the Affymetrix GeneChip HG-U133 Plus 2.0 array. 
 Three methods of RMA normalization are available: cohort based, reference based, and one-by-one normalization. 
 The classifications available on \hemaClass{} are:
@@ -41,6 +42,8 @@ The classifications available on \hemaClass{} are:
 (3) REGS which is a classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients \cite{Falgreen2015}.
 The results are presented on the webserver and are available for download. 
 An optional text summary of the results and a plot of the predicted progression free survival and overall survival are provided for each patient sample.
+The methods are implemented in an open-source software package for the programming language \textsf{R} which allows users to run a local instance of the server and thereby avoiding uploading large amounts of data. 
+Additionally, the package provides a programmatric interface to the server functionalities. 
 
 The server has been running since August 2014 and validated satisfactorily on four different DLBCL cohorts with a total of 882 patients, e.g.\ the ABC/GCB classifications shows an approximate $90 \%$ inter-method agreement in all four validation sets. 
 None of the validation sets have been used in the training of the classifiers. 
