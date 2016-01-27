@@ -377,7 +377,7 @@ Using the $150$ patients classified as either ABC or GCB the dichotomous classif
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
 The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
-The results of the cross validations are shown in Supplementary Figure \ref{fig:crossval}.
+The results of the cross validations are shown in the figure in \nameref{fig:crossval}.
 The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
 
 When a tumour sample is classified according to the ABC/GCB classifier using one-by-one normalization the data is used directly when classifying. However, when a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
@@ -393,7 +393,7 @@ The formula is also known as Graham's formula,
 \begin{equation*}
   P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)},
 \end{equation*}
-and derived in Supplementary Section \nameref{sec:graham}.
+and derived in \nameref{sec:graham}.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
 This appoach to resistance to the combination therapy was used in \cite{Falgreen2015}.
 
@@ -445,10 +445,10 @@ These predictions are based on the patient survival data from LLMPP - RCHOP , MD
 \subsection*{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalization method a classifier based on the regularised logistic regression was established.
 The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \cite{Wright2003,Lenz2008a}.
-The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
+The rate of agreement between the two classifiers are shown in the table in \nameref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, were misclassifications involving the unclassified group are weighted by $1/2$.
-The accompanying confusion matrices are shown in the first rows of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices are shown in the first rows of the table in \nameref{tab:confusionABCGCBHEMA}.
 
 The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the one-by-one based classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The probabilities estimated through the two methods are very similar.
@@ -459,7 +459,7 @@ For both methods, patients are classified as ABC when the estimated probability 
 In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for one-by-one normalization and four validation datasets normalized to 30 internally sampled reference samples.
 CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP all show a high Cohen's weighted $\kappa$ and good rate of agreement, considering that misclassifications involving unclassified samples count as errors.
 The reduced rate of agreement and Cohen's weighted $\kappa$ using one-by-one pre-processing in IDRC may be due to the samples being FFPE although this seems to be remedied by reference based pre-processing.
-The accompanying confusion matrices are shown in the lower part of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices are shown in the lower part of the table in \nameref{tab:confusionABCGCBHEMA}.
 Note, changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
@@ -497,8 +497,8 @@ The probabilities obtained by the reference based normalization resembles the co
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
 The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$.
 The associated confusion matrices for one-by-one normalization and reference based normalization are shown in
-Supplementary Table \ref{tab:confusiondrugonebyone} and
-Supplementary Table \ref{tab:confusiondrugreference}, respectively.
+the tables in \nameref{tab:confusiondrugonebyone} and
+\nameref{tab:confusiondrugreference}, respectively.
 Again, the reference based approach yields superior agreement with classifications using cohort based normalization.
 
 
@@ -513,7 +513,7 @@ The reference based normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
 The rate of agreement between the cohort based and one-by-one as well as reference based classifications is shown in Table \ref{tab:classALL} along with the Cohen's weighted $\kappa$.
-The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGShemaclass}.
+The associated confusion matrices are shown in the table in \nameref{tab:BAGShemaclass}.
 
 \input{tables/table3.tex}
 
@@ -589,140 +589,46 @@ Comments, suggestions, bug reports, and other issues are warmly welcome at \url{
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thesection}{S\arabic{section}}
 
-\subsection*{S1 Supplementary figures and tables}
-%This section holds the supplementary figures and tables.
-
-\begin{figure*}[!ht]
-\caption{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.
+\subsection*{S1 Figure}
+\label{fig:crossval}
+\textbf{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.}
 In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
 In Panel C the regularization curves are shown.
 Black and grey curves represent selected and non-selected probe-sets, respectively.
 Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
 The red line indicates the model chosen through $10$ fold cross validation.
-The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.}
-\label{fig:crossval}
-\end{figure*}
-
-\input{tables/tableS1.tex}
-\input{tables/tableS2.tex}
-\input{tables/tableS3.tex}
-\input{tables/tableS4.tex}
-\clearpage
+The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.
 
 
+\subsection*{S1 Table}\label{tab:confusionABCGCBHEMA}
+\textbf{Confusion tables for the ABC/GCB classifiers.}
+The columns represent cohort based normalisztion using the ABC/GCB classifier
+based on elastic net.
+The first part of the table compares Wright's method for ABC/GCB classification
+with the elastic net based.
+In the second and third part one-by-one and reference based normalization is
+compared to cohort based normalization using the ABC/GCB classifier based on
+elastic net
 
-\subsection*{S2 Graham's formula}
+\subsection*{S2 Table}\label{tab:BAGShemaclass}
+\textbf{Confusion tables for the BAGS classifier.} One-by-one and reference
+based normalization are shown in the columns and cohort normalization in the
+rows.
+
+\subsection*{S3 Table}\label{tab:confusiondrugonebyone}
+\textbf{Confusion tables for the REGS classifiers.}
+One-by-one normalization are shown in the rows and cohort normalization in the
+columns.
+
+\subsection*{S4 Table}\label{tab:confusiondrugreference}
+\textbf{Confusion tables for the REGS classifiers.}
+Reference based normalization are shown in the rows and cohort normalization in
+the columns. Note, 30 samples were used as reference data and hence not present
+in this table.
+
+\subsection*{S1 Text}
 \label{sec:graham}
-This section derives Graham's formula which, in our context, yields the posterior probability of being resistance to the combination of two drugs, given resistance to the individual drugs. For simplicity, the formula is derived for two drugs. The formula straightforwardly generalizes to three or more drugs.
-
-Let $C$, $H$, and $B$ be Bernoulli distributed random variables with probability parameter $1/2$, where $C = 1$ indicates resistance to Cyclophosphamide $C$, $H = 1$ indicates resistance to Doxorubicin $H$, and $B = 1$ indicates resistance to the combination of $H$ and $C$. Conversely, $C,H,$ and $B = 0$ indicate sensitivity towards $C,H,$ and $B$, respectively. Under an assumption of conditional drug independence 
-\begin{equation*}
-   P(C=1, H=1| B=1) = P(C=1 | B=1) P(H=1 | B=1),
-\end{equation*}
-and
-\begin{equation*}
- P(C=1, H=1| B=0) = P(C=1 | B=0) P(H=1 | B=0)  
-\end{equation*}
-we have that
-\begin{align*}
-  &P(B=1 | H=1, C=1)
-  \\&\qquad
-   = \frac{P(C=1, H=1, B=1)}
-          {P(C=1, H=1)}
-  \\&\qquad
-   = \frac{P(C=1, H=1 | B=1) P(B=1)}
-          {P(C=1, H=1, B=1) + P(C=1, H=1, B=0)}
-  \\&\qquad
-   = \frac{P(C=1 | B=1) P(H=1 | B=1) P(B=1)}
-          {P(C=1, H=1 | B=1) P(B=1) + P(H=1, C=1| B=0) P(B=0)},
-\end{align*}
-by the definition of conditional probabilities, the law of total probability, and the assumptions. From the distributional assumption on $B$, $P(B=0) = P(B=1) = 1/2$, and the above then simplifies to:
-\begin{equation*}
-  P(B=1 | H=1, C=1)
-   = \frac{P(C=1 | B=1) P(H=1 | B=1)}
-          {P(C=1, H=1 | B=1) + P(H=1, C=1 | B=0)}.
-\end{equation*}
-For notational convenience, we abbreviate $P_C = P(C=1 | B=1)$, $P_H = P(H=1 | B=1)$, $P_{CH} = P(B=1 | H=1, C=1)$. The distributional assumptions then imply:
-\begin{align*}
-  P_{CH}
-  &= \frac{P_C P_H}
-          {P_C P_H + P(C=1 | B=0) P(H=1 | B=0)}
-  \\
-  &= \frac{P_C P_H}
-          {P_C P_H + P(B=0 | C=1) P(B=0 | H=1)}
-  \\
-  &= \frac{P_C P_H}
-          {P_C P_H + \bigl(1 - P(B=1 | C=1)\bigr)\bigl(1 - P(B=1 | H=1)\bigr)}
-  \\
-  &= \frac{P_C P_H}
-          {P_C P_H + (1 - P_C)(1 - P_H)},
-\end{align*}
-which is the two-drug equivalent to the used formula.
-
-\subsection*{S3 RMA normalization}
-Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \cite{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
-
-\paragraph{Backgroud correction}
-In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
-\cite{Irizarry2003b,Bolstad2004}.
-
-
-\paragraph{Quantile normalization}
-Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
-
-Furthermore, let $G_i$ denote the empirical cumulative distribution function (ECDF) of the probes $\{x_{ijk}\}_{jk}$ on the $i$'th cohort array and $F$ the ECDF of the across array averaged sample quantiles $\{\bar{x}_{\cdot (jk)}\}_{ij}$, where $\{x_{i(jk)}\}_{jk}$ is the order statistic of all probes on the $i$'th cohort array based on the lexicographic ordering of the indices $\{jk\}$. Then each data point is quantile normalized in the following way
-\begin{equation*}
-     \tilde{x}_{ijk} = F^{-1}(G_i(x_{ijk})),
-\end{equation*}
-where $F^{-1}$ is calculated as the quantiles of type 2 \cite{Hyndman1996}.
-This step is performed by the \texttt{RMA\_norm} function with option \texttt{generateQuan} equal to one in the \pkg{hemaClass} package.
-
-\paragraph{Summarisation}
-For each probe-set $j$ we let $\mu_{ij}$ represent the $\log_2$-scale expression level for array $i$ and probeset $j$, $\alpha_{jk}$ the probe affinity effect, and the $\epsilon_{ijk}$'s are independent identically distributed  error terms with mean 0 and formulate the following linear additive model
-\begin{equation*}
-   \tilde{x}_{ijk} = \mu_{ij} + \alpha_{jk}+ \epsilon_{ijk},
-\end{equation*}
-where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are estimated by median polish \cite{Holder2001}. The probe affinity estimates are denoted by $\hat{\alpha}_{jk}$. The RMA normalized cohort data are then given by
-\begin{equation*}
-   \hat{x}_{ij} = \hat{\mu}_{ij}.
-\end{equation*}
-This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} package.
-
-
-\subsection*{S4 One-by-one RMA normalization of user supplied data}
-\paragraph{Backgroud correction}
-The background correction in one-by-one RMA normalization is unaltered as it is already works in a one-by-one fashion.
-
-\paragraph{Quantile normalization}
-Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$ index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as described above. Similarly, let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Furthermore, let $H_i$ denote the ECDF of the user supplied data $\{y_{ijk}\}_{jk}$.
-
-As quantile normalizer the ECDF of the background corrected reference data is used in place of the ususally applied ECDF of the mean of the sample quantiles
-\begin{equation*}
-   \tilde{y}_{ijk} = F^{-1}(H_i(y_{ijk})).
-\end{equation*}
-This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \pkg{hemaClass} package.
-
-
-\paragraph{Summarization}
-To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
-\begin{equation*}
-   \hat{y}_{ijk} = \tilde{y}_{ijk} - \hat{\alpha}_{jk}.
-\end{equation*}
-The pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
-\begin{equation*}
-   \hat{y}_{ij} = \median_{k \in \{1,\dots,n_j \}} \{ \hat{y}_{ijk} \}.
-\end{equation*}
-
-
-\subsection*{S5 Classification}
-To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
-\begin{equation*}
-  (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
-\end{equation*}
-where
-$\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
-$s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
-
+d
 
 \section*{Acknowledgments}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
