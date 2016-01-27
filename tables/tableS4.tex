@@ -1,5 +1,6 @@
 %latex.default(tableS4, file = "tables/tableS4.tex", title = "",     rgroup = names(subtab$refbased), cgroup = flip(studies.vec)[names(subtab$refbased[[1]])],     size = "small", label = "tab:confusiondrugreference", caption = captionS4)%
 \begin{table}[!tbp]
+\begin{adjustwidth}{-1in}{0in}
 {\small
 \caption{Confusion tables for the REGS classifiers.
 Reference based normalization are shown in the rows and cohort normalization in
@@ -33,5 +34,5 @@ in this table.\label{tab:confusiondrugreference}}
 ~~Resistant&$ 0$&$ 0$&$21$&&$ 0$&$ 0$&$21$&&$  0$&$  6$&$146$&&$ 0$&$ 0$&$71$\tabularnewline
 \hline
 \end{tabular}\end{center}}
-
+\end{adjustwidth}
 \end{table}

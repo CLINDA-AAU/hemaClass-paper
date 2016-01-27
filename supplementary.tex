@@ -1,14 +1,4 @@
-% \input{preamble}
-% \begin{document}
-
-\phantomsection
-\addcontentsline{toc}{section}{Supplementary Material}
-\begin{center}
-{\huge SUPPLEMENTARY MATERIAL}\bigskip \\
-{\bf \hemaClassTitle{}}
-\end{center}
-
-\section{Supplementary figures and tables}
+\subsection*{S1 Supplementary figures and tables}
 %This section holds the supplementary figures and tables.
 
 \begin{figure*}[htb]
@@ -33,7 +23,7 @@ The gene symbols for the $20$ probe-sets associated with the largest absolute co
 
 
 
-\section{Graham's formula}
+\subsection*{S2 Graham's formula}
 \label{sec:graham}
 This section derives Graham's formula which, in our context, yields the posterior probability of being resistance to the combination of two drugs, given resistance to the individual drugs.
 For simplicity, the formula is derived for two drugs.
@@ -93,31 +83,31 @@ which is the two-drug equivalent to the used formula.
 
 
 
-\section{RMA normalization}
-Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \citep{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
+\subsection*{S3 RMA normalization}
+Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \cite{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
 
-\subsection{Backgroud correction}
+\subsubsection*{Backgroud correction}
 In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
-\citep{Irizarry2003b,Bolstad2004}.
+\cite{Irizarry2003b,Bolstad2004}.
 
 
-\subsection{Quantile normalization}
+\subsubsection*{Quantile normalization}
 Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
 
 Furthermore, let $G_i$ denote the empirical cumulative distribution function (ECDF) of the probes $\{x_{ijk}\}_{jk}$ on the $i$'th cohort array and $F$ the ECDF of the across array averaged sample quantiles $\{\bar{x}_{\cdot (jk)}\}_{ij}$, where $\{x_{i(jk)}\}_{jk}$ is the order statistic of all probes on the $i$'th cohort array based on the lexicographic ordering of the indices $\{jk\}$. Then each data point is quantile normalized in the following way
 \begin{equation*}
      \tilde{x}_{ijk} = F^{-1}(G_i(x_{ijk})),
 \end{equation*}
-where $F^{-1}$ is calculated as the quantiles of type 2 \citep{Hyndman1996}.
+where $F^{-1}$ is calculated as the quantiles of type 2 \cite{Hyndman1996}.
 This step is performed by the \texttt{RMA\_norm} function with option \texttt{generateQuan} equal to one in the \pkg{hemaClass} package.
 
-\subsection{Summarisation}
+\subsubsection*{Summarisation}
 
 For each probe-set $j$ we let $\mu_{ij}$ represent the $\log_2$-scale expression level for array $i$ and probeset $j$, $\alpha_{jk}$ the probe affinity effect, and the $\epsilon_{ijk}$'s are independent identically distributed  error terms with mean 0 and formulate the following linear additive model
 \begin{equation*}
    \tilde{x}_{ijk} = \mu_{ij} + \alpha_{jk}+ \epsilon_{ijk},
 \end{equation*}
-where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are estimated by median polish \citep{Holder2001}. The probe affinity estimates are denoted by $\hat{\alpha}_{jk}$.
+where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are estimated by median polish \cite{Holder2001}. The probe affinity estimates are denoted by $\hat{\alpha}_{jk}$.
 
 The RMA normalized cohort data are then given by
 \begin{equation*}
@@ -128,13 +118,13 @@ This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} pac
 
 
 
-\section{One-by-one RMA normalization of user supplied data}
-\subsection{Backgroud correction}
+\subsection*{S4 One-by-one RMA normalization of user supplied data}
+\subsubsection*{Backgroud correction}
 
 The background correction in one-by-one RMA normalization is unaltered as it is already works in a one-by-one fashion.
 
 
-\subsection{Quantile normalization}
+\subsubsection*{Quantile normalization}
 
 Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$ index the probe-sets, and $k=1,\dots,K_j$ index the probes.
 Assume $x_{ijk}$ has been RMA normalized as described above.
@@ -148,7 +138,7 @@ As quantile normalizer the ECDF of the background corrected reference data is us
 This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \pkg{hemaClass} package.
 
 
-\subsection{Summarization}
+\subsubsection*{Summarization}
 
 To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
 \begin{equation*}
@@ -160,7 +150,7 @@ The pre-processed expression value for each probe-set is then estimated as the m
 \end{equation*}
 
 
-\section{Classification}
+\subsection*{S5 Classification}
 To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
 \begin{equation*}
   (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
@@ -168,6 +158,3 @@ To ensure identical classification probabilities whether data is supplied as a c
 where
 $\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
 $s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
-
-
-% \end{document}

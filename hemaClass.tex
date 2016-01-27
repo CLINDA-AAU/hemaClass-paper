@@ -1,46 +1,234 @@
-\documentclass{article}
+% Template for PLoS
+% Version 3.1 February 2015
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+%
+% % % % % % % % % % % % % % % % % % % % % %
+%
+% -- IMPORTANT NOTE
+%
+% This template contains comments intended 
+% to minimize problems and delays during our production 
+% process. Please follow the template instructions
+% whenever possible.
+%
+% % % % % % % % % % % % % % % % % % % % % % % 
+%
+% Once your paper is accepted for publication, 
+% PLEASE REMOVE ALL TRACKED CHANGES in this file and leave only
+% the final text of your manuscript.
+%
+% There are no restrictions on package use within the LaTeX files except that 
+% no packages listed in the template may be deleted.
+%
+% Please do not include colors or graphics in the text.
+%
+% Please do not create a heading level below \subsection. For 3rd level headings, use \paragraph{}.
+%
+% % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- FIGURES AND TABLES
+%
+% Please include tables/figure captions directly after the paragraph where they are first cited in the text.
+%
+% DO NOT INCLUDE GRAPHICS IN YOUR MANUSCRIPT
+% - Figures should be uploaded separately from your manuscript file. 
+% - Figures generated using LaTeX should be extracted and removed from the PDF before submission. 
+% - Figures containing multiple panels/subfigures must be combined into one image file before submission.
+% For figure citations, please use "Fig." instead of "Figure".
+% See http://www.plosone.org/static/figureGuidelines for PLOS figure guidelines.
+%
+% Tables should be cell-based and may not contain:
+% - tabs/spacing/line breaks within cells to alter layout or alignment
+% - vertically-merged cells (no tabular environments within tabular environments, do not use \multirow)
+% - colors, shading, or graphic objects
+% See http://www.plosone.org/static/figureGuidelines#tables for table guidelines.
+%
+% For tables that exceed the width of the text column, use the adjustwidth environment as illustrated in the example table in text below.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
+%
+% -- EQUATIONS, MATH SYMBOLS, SUBSCRIPTS, AND SUPERSCRIPTS
+%
+% IMPORTANT
+% Below are a few tips to help format your equations and other special characters according to our specifications. For more tips to help reduce the possibility of formatting errors during conversion, please see our LaTeX guidelines at http://www.plosone.org/static/latexGuidelines
+%
+% Please be sure to include all portions of an equation in the math environment.
+%
+% Do not include text that is not math in the math environment. For example, CO2 will be CO\textsubscript{2}.
+%
+% Please add line breaks to long display equations when possible in order to fit size of the column. 
+%
+% For inline equations, please do not include punctuation (commas, etc) within the math environment unless this is part of the equation.
+%
+% % % % % % % % % % % % % % % % % % % % % % % % 
+%
+% Please contact latex@plos.org with any questions.
+%
+% % % % % % % % % % % % % % % % % % % % % % % %
 
-%%% PREAMBLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{preamble.tex}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
 
-\title{\hemaClassTitle{}}
+% Use adjustwidth environment to exceed column width (see example table in text)
+\usepackage{changepage}
 
-\author[1]{Steffen Falgreen\thanks{Shared first authorship}}
-\author[12]{Anders Ellern Bilgrau$^\ast$}
-\author[12]{Lasse Hjort Jakobsen}
-\author[12]{Jonas Have}
-\author[12]{Kasper Lindblad Nielsen}
-\author[1]{Tarec Christoffer El-Galaly}
-\author[1]{Julie St{\o}ve  B{\o}dker}
-\author[1]{Alexander Schmitz}
-\author[3]{Ken H. Young}
-\author[12]{Hans Erik Johnsen}
-\author[12]{Karen Dybk{\ae}r}
-\author[12]{Martin B{\o}gsted\thanks{To whom correspondence should be addressed (\texttt{mboegsted@dcm.aau.dk})}}
+% Use Unicode characters when possible
+\usepackage[utf8]{inputenc}
 
-\affil[1]{Department of Haematology, Aalborg University Hospital}
-\affil[2]{Department of Clinical Medicine, Aalborg University}
-\affil[3]{Department of Hematopathology, MD Anderson Cancer Center}
+% textcomp package and marvosym package for additional characters
+\usepackage{textcomp,marvosym}
 
-% Steffen Falgreen - sfl@rn.dk
-% Anders Ellern Bilgrau - anders.ellern.bilgrau@gmail.com
-% Lasse Hjort Jakobsen - lasse.j@rn.dk
-% Jonas Have - jonas.have@rn.dk
-% Kasper Lindblad Nielsen - k.lindblad@rn.dk
-% Tarec Christoffer El-Galaly - tarec.galaly@gmail.com
-% Julie S.\  B\o dker - j.boedker@rn.dk
-% Alexander Schmitz - alex.schmitz@rn.dk
-% Hans E.\ Johnsen - haej@rn.dk
-% Karen Dybk\ae r - k.dybkaer@rn.dk
-% Martin B\o gsted - martin.boegsted@rn.dk
+% fixltx2e package for \textsubscript
+\usepackage{fixltx2e}
+
+% amsmath and amssymb packages, useful for mathematical formulas and symbols
+\usepackage{amsmath,amssymb}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+% Use nameref to cite supporting information files (see Supporting Information section for more info)
+\usepackage{nameref,hyperref}
+
+% line numbers
+\usepackage[right]{lineno}
+
+% ligatures disabled
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+% rotating package for sideways tables
+\usepackage{rotating}
+
+
+\usepackage{amssymb,amsmath}
+\usepackage{cite} % Make references as [1-4], not [1,2,3,4]
+
+
+% Remove comment for double spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+% Text layout
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in 
+\textheight 8.75in
+
+% Bold the 'Figure #' in the caption and separate it from the title/caption with a period
+% Captions will be left justified
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+
+% Use the PLoS provided BiBTeX style
+\bibliographystyle{plos2015}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+% Leave date blank
+\date{}
+
+% Header and Footer with logo
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+\pagestyle{myheadings}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\includegraphics[width=2.0in]{figures/PLOS-submission.eps}}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\sf PLOS}
+
+%% Include all macros below
+
+\newcommand{\lorem}{{\bf LOREM}}
+\newcommand{\ipsum}{{\bf IPSUM}}
+\newcommand{\hemaClass}{\href{http://hemaClass.org}{\texttt{hemaClass.org}}}
+\newcommand{\R}{\textsf{R}}
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\parttitle}[1]{\noindent\textbf{#1}~~}
+
+
+\DeclareMathOperator*{\median}{median}
+\DeclareMathOperator*{\sd}{sd}
+
+\hyphenation{Chemo-resistance}
+
+%% END MACROS SECTION
+
 
 \begin{document}
+\vspace*{0.35in}
 
-\maketitle
-\phantomsection
-\addcontentsline{toc}{section}{Abstract}
-\begin{abstract}
+% Title must be 250 characters or less.
+% Please capitalize all terms in the title except conjunctions, prepositions, and articles.
+\begin{flushleft}
+{\Large
+\textbf\newline{\hemaClass{}: Online one-by-one microarray normalization and classification of hematological cancers for precision medicine}
+}
+\newline
+% Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
+\\
+Steffen Falgreen\textsuperscript{1,\Yinyang},
+Anders Ellern Bilgrau\textsuperscript{2,\Yinyang},
+Lasse Hjort Jakobsen\textsuperscript{2,\textcurrency a},
+Jonas Have\textsuperscript{2,\ddag},
+Kasper Lindblad Nielsen\textsuperscript{2,\ddag},
+Tarec Christoffer El-Galaly\textsuperscript{2},
+Julie St{\o}ve B{\o}dker\textsuperscript{3,*},
+Alexander Schmitz\textsuperscript{\textpilcrow},
+Ken H. Young\textsuperscript{\textpilcrow},
+Hans Erik Johnsen\textsuperscript{\textpilcrow},
+Karen Dybk{\ae}r\textsuperscript{\textpilcrow},
+Martin B{\o}gsted\textsuperscript{*}
+\\
+\bigskip
+\bf{1} Department of Haematology, Aalborg University Hospital
+\\
+\bf{2} Department of Clinical Medicine, Aalborg University
+\\
+\bf{3} Department of Hematopathology, MD Anderson Cancer Center
+\\
+\bigskip
+
+% Insert additional author notes using the symbols described below. Insert symbol callouts after author names as necessary.
+% 
+% Remove or comment out the author notes below if they aren't used.
+%
+% Primary Equal Contribution Note
+\Yinyang These authors contributed equally to this work.
+
+% Additional Equal Contribution Note
+% Also use this double-dagger symbol for special authorship notes, such as senior authorship.
+\ddag These authors also contributed equally to this work.
+
+% Current address notes
+\textcurrency a Insert current address of first author with an address update
+% \textcurrency b Insert current address of second author with an address update
+% \textcurrency c Insert current address of third author with an address update
+
+% Deceased author note
+\dag Deceased
+
+% Group/Consortium Author Note
+\textpilcrow Membership list can be found in the Acknowledgments section.
+
+% Use the asterisk to denote corresponding authorship and provide email address in note below.
+* @institute.edu
+
+\end{flushleft}
+% Please keep the abstract below 300 words
+\section*{Abstract}
 \parttitle{Background} %if any
 Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
@@ -54,34 +242,32 @@ The well-documented package can be used to run the website locally or to use the
 The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides reliable and swift methods for calculation of disease subclasses.
 The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
 \medskip\\
-\textbf{Keywords:~}
-Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Classification; Chemosensitivity; Microarray; Pre-processing; Robust Multichip Average; Gene expression profiling; Cell of origin; Affymetrix Human Genome U133 Plus 2 microarrays
-\end{abstract}
 
 
+\linenumbers
 
-\section{Background}
+\section*{Introduction}
 In addition to current clinically used risk factor scoring systems several independent gene expression profile (GEP) based risk stratifications have been proposed with biological and clinical significance in hematological cancers.
-Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009, Sehn2014}.
+Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \cite{Jaffe2009, Sehn2014}.
 
-\citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
+\cite{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
 On the basis of GEP analyses, DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
-The validity of this classification and its prognostic importance have been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Poulsen2005,Lenz2008a,Monti2012a}.
-Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier \citep{DybkaerBoegsted2015} capable of classifying DLBCL samples into $5$ different B-cell subtypes:
+The validity of this classification and its prognostic importance have been confirmed in a number of later studies \cite{Rosenwald2002a,Hans2004,Poulsen2005,Lenz2008a,Monti2012a}.
+Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier \cite{DybkaerBoegsted2015} capable of classifying DLBCL samples into $5$ different B-cell subtypes:
 Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
-For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015}, which opens up for considering different treatment regimes in the GCB class of patients.
-In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
+For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \cite{DybkaerBoegsted2015}, which opens up for considering different treatment regimes in the GCB class of patients.
+In another study \cite{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
 Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
 However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a routine clinical setting.
 
-The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the international prognostic index (IPI, \citep{IPI}) for large cell lymphoma and the Follicular Lymphoma International Prognostic Index (FLIPI, \citep{FLIPI}), both derived from patient age, performance status, easy available blood tests, and disease stage.
+The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the international prognostic index (IPI, \cite{IPI}) for large cell lymphoma and the Follicular Lymphoma International Prognostic Index (FLIPI, \cite{FLIPI}), both derived from patient age, performance status, easy available blood tests, and disease stage.
 Due to the simplicity of these clinical risk stratification algorithms they are still the most widely used risk scoring systems today.
 Risk stratification according to these algorithms has been systematized and made easily accessible for desktop, online, and even smart-phone use.
 However, easily accessible molecular classification methods are lacking behind and thereby delaying the translation of new molecular findings into clinical practice.
-A few methods exist for cancer types other than lymphoma, including acute myeloid leukemia (AML) \citep{Huang2009}.
+A few methods exist for cancer types other than lymphoma, including acute myeloid leukemia (AML) \cite{Huang2009}.
 To the best of our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
-An accessible Windows based application has been published for ABC/GCB classification \citep{Care2013}.
-Although \citet{Care2013} develop a new ABC/GCB classifier which is stable across microarray technologies and trial centres, the ABC/GCB classifier is potentially biased towards classes which differentiate the prognosis and not biology.
+An accessible Windows based application has been published for ABC/GCB classification \cite{Care2013}.
+Although \cite{Care2013} develop a new ABC/GCB classifier which is stable across microarray technologies and trial centres, the ABC/GCB classifier is potentially biased towards classes which differentiate the prognosis and not biology.
 This bias arises as the ensemble of classifiers are chosen on basis of their ability to separate survival.
 
 In clinical settings, the methods need to be applicable for a single patient sample and straightforward to use.
@@ -91,10 +277,13 @@ We believe that \hemaClass{} will provide a novel and user-friendly concept for 
 As already delineated, this paper primarily describes developed classification schemes for DLBCL although MM classification is currently also featured on the website.
 A more extensive treatment of MM classification schemes is in preparation and will be implemented on \hemaClass{}.
 
+% You may title this section "Methods" or "Models". 
+% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
+% authors may use "Analysis"
+ 
+\section*{Methods}
+\subsection*{Classification workflow}
 
-\section{Implementation}
-
-\subsection{Classification workflow}
 The analysis workflow of \hemaClass{} can be divided into four parts:
 (1) Three reference datasets which have been pre-processed and prepared offline are loaded upon server start,
 (2) a graphical user interface with upload and input facilities,
@@ -102,68 +291,60 @@ The analysis workflow of \hemaClass{} can be divided into four parts:
 (4) the resulting classifications available for download and inspection via the user interface.
 The workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/figure1.pdf}
-\end{center}
+\begin{figure}[!ht]
 \caption{Diagram of the workflow architecture.}
 \label{fig:webtooldiagram}
 \end{figure}
 
-
-\subsection{Software availability and technical details}
-The interactive web application available at \url{hemaclass.org} was created using the statistical programming language \R{} \citep{RCoreTeam}, the software package \pkg{shiny} \citep{shiny}, and the accompanying Linux server software.
-All \hemaClass{} functionality, including the RMA normalization and classification procedures, are available through the accompanying package \pkg{hemaClass} based on a number of packages from the Comprehensive R Archive Network \citep{RCoreTeam} and the Bioconductor environment \citep{Gentleman2004}.
+\subsection*{Software availability and technical details}
+The interactive web application available at \url{hemaclass.org} was created using the statistical programming language \R{} \cite{RCoreTeam}, the software package \pkg{shiny} \cite{shiny}, and the accompanying Linux server software.
+All \hemaClass{} functionality, including the RMA normalization and classification procedures, are available through the accompanying package \pkg{hemaClass} based on a number of packages from the Comprehensive R Archive Network \cite{RCoreTeam} and the Bioconductor environment \cite{Gentleman2004}.
 The Shiny server handles the interaction between the front end web application and the back end \R{} processing.
 The back end is essentially the well-documented \pkg{hemaClass} package which can be utilized as a programmatical interface to the functionality of the website.
 However, the package also allows users to run a local instance of the website if one wishes to avoid uploading large files to our server.
 The development and latest version of \pkg{hemaClass} is open source and freely available at \url{https://github.com/oncoclass/hemaclass} for sharing, modification, and redistribution.
 All bug-reports, suggestions, and comments on the website or package are welcome following the latter link.
-The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
-Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
+The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \cite{Gautier2004}.
+Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \cite{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
 
-
-
-
-
-\subsection{Data overview}
+\subsection*{Data overview}
 The seven gene expression datasets used in this paper are summarized in Table \ref{table:01}.
-All GEP data are on the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) \citep{Barrett2013} website (\url{http://www.ncbi.nlm.nih.gov/geo/}).
+All GEP data are on the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) \cite{Barrett2013} website (\url{http://www.ncbi.nlm.nih.gov/geo/}).
 To establish the classifiers the following datasets are used:
 \begin{enumerate}
   \item Gene expressions from $181$ CHOP treated DLBCL patients are used to establish the ABC/GCB classifier.
-  This cohort will be referred to as the \emph{LLMPP CHOP} (Lymphoma/Leukemia Molecular Profiling Project CHOP) cohort \citep{Lenz2008a}.
+  This cohort will be referred to as the \emph{LLMPP CHOP} (Lymphoma/Leukemia Molecular Profiling Project CHOP) cohort \cite{Lenz2008a}.
   The cohort is also used as a default reference set throughout the paper for normalization of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
-  This dataset will be referred to as the \emph{Tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
+  This dataset will be referred to as the \emph{Tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \cite{DybkaerBoegsted2015}.
   \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines.
   This panel will be referred to as \emph{BCELL26}.
-  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as   \emph{DLBCL14} \citep{Falgreen2015}.
+  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as   \emph{DLBCL14} \cite{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
-  \item[4.] The Aalborg OCT cohort (\emph{CHEPRETRO}) of $89$ Danish DLBCL patients undergoing first-line treatment at Aalborg University Hospital \citep{DybkaerBoegsted2015}.
-  The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
-  \item[5.] The International DLBCL Rituximab-CHOP Consortium MD Anderson (\emph{IDRC}) cohort of $470$ DLBCL patients treated with R-CHOP first-line therapy \citep{Visco2012}.
+  \item[4.] The Aalborg OCT cohort (\emph{CHEPRETRO}) of $89$ Danish DLBCL patients undergoing first-line treatment at Aalborg University Hospital \cite{DybkaerBoegsted2015}.
+  The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \cite{Gang2012}.
+  \item[5.] The International DLBCL Rituximab-CHOP Consortium MD Anderson (\emph{IDRC}) cohort of $470$ DLBCL patients treated with R-CHOP first-line therapy \cite{Visco2012}.
   Note, that these samples are formalin-fixed, paraffin-embedded (FFPE).
-  \item[6.] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (\emph{LLMPP R-CHOP}) cohort of $233$ DLBCL patients treated with R-CHOP first-line therapy \citep{Lenz2008a}.
-  \item[7.] The Mayo-Dana-Farber Cancer Institute (\emph{MDFCI}) cohort of $90$ DLBCL patients treated with R-CHOP first-line therapy \citep{Monti2012a}.
+  \item[6.] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (\emph{LLMPP R-CHOP}) cohort of $233$ DLBCL patients treated with R-CHOP first-line therapy \cite{Lenz2008a}.
+  \item[7.] The Mayo-Dana-Farber Cancer Institute (\emph{MDFCI}) cohort of $90$ DLBCL patients treated with R-CHOP first-line therapy \cite{Monti2012a}.
 \end{enumerate}
-The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \citep{DLBCLdata}.
+The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \cite{DLBCLdata}.
 
 \input{tables/table1.tex}
 
 
 
-\subsection{One-by-one RMA normalization}
+\subsection*{One-by-one RMA normalization}
 Recall that robust multichip average (RMA) pre-processing consists of three steps in the order:
 (1) Background correction,
 (2) quantile normalization, and
-(3) summarization of probes to probe-sets \citep{Irizarry2003,Irizarry2003b}.
-Confer \citet{Bolstad2004} for a comprehensive account on RMA.
+(3) summarization of probes to probe-sets \cite{Irizarry2003,Irizarry2003b}.
+Confer \cite{Bolstad2004} for a comprehensive account on RMA.
 Both the quantile normalization and summarization procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme.
-As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \citep{Bolstad2003}.
-To mimic the summarization procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
+As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \cite{Bolstad2003}.
+To mimic the summarization procedure of RMA \cite{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
 The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
 Finally, before classification the median of each probe-set in the LLMPP CHOP is subtracted from the corresponding probe-set in the user data.
 This ensures identical classification probabilities whether data is supplied as a cohort or one-by-one.
@@ -173,23 +354,23 @@ In this paper the reference datasets consisted of $30$ randomly selected samples
 The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalization.
 
 
-\subsection{Classification methods}
+\subsection*{Classification methods}
 
-\subsubsection{Elastic nets}
+\paragraph{Elastic nets}
 Logistic and multinomial regression are used in all classification methods available at \hemaClass{}.
 However, in GEP experiments, the number of probe-sets present on the microarray always outnumbers the sample size.
 Collinearity present among the features further aggravates the problem of identifying genes responsible for the underlying biological mechanism.
 Regression under these ill-posed circumstances is typically handled by so-called regularization.
-Here the elastic net penalty \citep{Friedman2010, Zou2005} is used which is a combination of the lasso \citep{Tibshirani1996} and ridge regression \citep{Hoerl1970}.
+Here the elastic net penalty \cite{Friedman2010, Zou2005} is used which is a combination of the lasso \cite{Tibshirani1996} and ridge regression \cite{Hoerl1970}.
 Similar to the lasso, this penalty ensures simultaneous variable selection and model estimation by forcing small coefficients to be zero, yielding sparse solutions.
 In contrast to the lasso, the elastic net penalty is capable of selecting more variables than samples.
 
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
 The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of $0$ and $1$, respectively.
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
-Regularized logistic and multinomial regression are performed with the \R{}-package \pkg{glmnet} \citep{Friedman2010}.
+Regularized logistic and multinomial regression are performed with the \R{}-package \pkg{glmnet} \cite{Friedman2010}.
 
-\subsubsection{ABC/GCB classification}
+\paragraph{ABC/GCB classification}
 The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
 Of the $181$ patients $74$ were ABC, $76$ were GCB, and $31$ were non-classified.
 Using the $150$ patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
@@ -202,9 +383,9 @@ The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ r
 
 When a tumour sample is classified according to the ABC/GCB classifier using one-by-one normalization the data is used directly when classifying. However, when a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
 
-\subsubsection{REGS classification}
+\paragraph{REGS classification}
 \label{sec:regsmethods}
-In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
+In the paper by \cite{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
 The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
 
 The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward each of the three drugs $P_C$, $P_H$, and $P_O$, respectively.
@@ -213,22 +394,22 @@ The formula is also known as Graham's formula,
 \begin{equation*}
   P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)},
 \end{equation*}
-and derived in Supplementary Section \ref{sec:graham}.
+and derived in Supplementary Section \nameref{sec:graham}.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
-This appoach to resistance to the combination therapy was used in \citet{Falgreen2015}.
+This appoach to resistance to the combination therapy was used in \cite{Falgreen2015}.
 
 When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
 Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
 
-Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
-The Rituximab sensitivity classifier of \citet{Laursen2014} and \citet{Laursen2015} is based upon an elastic net approach, like above, however using three classes.
-The Melphalan sensitivity classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
-This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.
+Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \cite{Boegsted2011,Bogsted2013,Laursen2014}.
+The Rituximab sensitivity classifier of \cite{Laursen2014} and \cite{Laursen2015} is based upon an elastic net approach, like above, however using three classes.
+The Melphalan sensitivity classifier of \cite{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
+This classifier was developed for multiple myeloma (MM) patients and thus based on other data \cite{Boegsted2011}.
 A classifier for dexamethasone is still considered experimental and currently available only in the package.
 
 
-\subsubsection{BAGS classification}
-The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularized by an elastic net penalty.
+\paragraph{BAGS classification}
+The BAGS classifier established by \cite{DybkaerBoegsted2015} was based on multinomial regression regularized by an elastic net penalty.
 The classifier was trained on the Tonsil dataset in a manner similar to the ABC/GCB classifier.
 
 When a tumour sample is classified according to the BAGS classifier the associated gene expressions are rescaled probe-set wise by the standard deviation of the Tonsil data divided by the standard deviation of the LLMPP CHOP dataset.
@@ -236,9 +417,9 @@ If the user supplies a reference dataset this is used in place of LLMPP CHOP.
 The rescaling is performed to make the data comparable to the Tonsil dataset.
 
 
-\subsection{Inter-method reproducibility assessments}
+\subsection*{Inter-method reproducibility assessments}
 To evaluate the reproducibility of the class probabilities obtained through cohort based normalization and one-by-one as well as reference based normalization, Pearson's correlation coefficient for the logit-transformed probabilities and $95\%$ confidence interval (CI) were calculated for each classifier and dataset.
-The identity and \emph{total} least square regression lines were compared to assess bias in the estimated probabilities \citep{CHEN1989}.
+The identity and \emph{total} least square regression lines were compared to assess bias in the estimated probabilities \cite{CHEN1989}.
 Total least squares regression was used as errors are present in both classification probabilities.
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
@@ -250,20 +431,21 @@ After thresholding the class probabilities confusion matrices were created.
 From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
 
 
-\section{Results}
-\subsection{Using \hemaClass{}}
+% Results and Discussion can be combined.
+\section*{Results}
+\subsection*{Using \hemaClass{}}
 The website is an easy-to-use, interactive interface for the \pkg{hemaClass} package with the desired RMA normalization and the classification methods selected by the user.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
 A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
 Users upload patient samples which are normalized and classified depending on settings chosen by the users.
 A text summary of the results and a plot of the predicted progression free survival and overall survival is optionally provided for each patient sample.
-These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \citet{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and a factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
+These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \cite{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and a factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
 
 
 
-\subsection{ABC/GCB classification}
+\subsection*{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalization method a classifier based on the regularised logistic regression was established.
-The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \citep{Wright2003,Lenz2008a}.
+The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \cite{Wright2003,Lenz2008a}.
 The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, were misclassifications involving the unclassified group are weighted by $1/2$.
@@ -284,10 +466,7 @@ Direct disagreements between the classifiers are seemingly rare and only occurs 
 
 \input{tables/table2.tex}
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.375\textwidth]{figures/figure2.pdf}
-\end{center}
+\begin{figure}[!ht]
 \caption{
 Comparison of logit probabilities for the ABC/GCB and REGS classifiers obtained through one-by-one and reference based normalization against cohort normalization.
 The areas marked with green indicate patients with similar classification between cohort based normalization and one-by-one normalization (A, C, E, G, I)  and reference based RMA normalization (B, D, F, H, J) .
@@ -298,10 +477,7 @@ The dashed and solid line show the identity and total least squares line, respec
 \label{fig:ABCGCBDrug}
 \end{figure}
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
-\end{center}
+\begin{figure}[!ht]
 \caption{
 Comparison of logit probabilities for the BAGS classifier obtained through one-by-one and reference based normalization against cohort normalization.
 The coloured regions in the figure correspond to a threshold probability of $0.5$.
@@ -309,11 +485,10 @@ The dashed and solid line show the identity and total least squares line, respec
 }
 \label{fig:Bagscorr}
 \end{figure}
-\newpage
 
 
 
-\subsection{REGS classification}
+\subsection*{REGS classification}
 The probability of sensitivity towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalization.
 The logit probabilities of sensitivity are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
 Panels C, E, G, and I show the plots based on one-by-one normalization and panels D, F, H, and J show the plots for the reference based normalization.
@@ -328,7 +503,7 @@ Supplementary Table \ref{tab:confusiondrugreference}, respectively.
 Again, the reference based approach yields superior agreement with classifications using cohort based normalization.
 
 
-\subsection{BAGS classification}
+\subsection*{BAGS classification}
 The BAGS classifier was evaluated in a manner similar to the ABC/GCB classifier.
 The logit probability of a patient's tumour originating from one of the five subpopulations is again estimated by means of cohort, one-by-one, and reference based normalization.
 The logit probabilities estimated by the one-by-one normalization is plotted against that of the cohort based normalization in Figure \ref{fig:Bagscorr} panels A, C, E, G, and I for CHEPRETRO.
@@ -344,24 +519,24 @@ The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGS
 \input{tables/table3.tex}
 
 
-\section{Discussion}
+\section*{Discussion}
 Despite the enormous resources spent on developing molecular based cancer classification systems,
 most of these are still not available in daily clinical practice.
 % there seems to be an inertial resistance to develop clinical applications.
-To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
+To allow for fast validation of our recent findings \cite{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
 
 The one-by-one and referece based classifications performed by \hemaClass{} were compared to those obtained using cohort based normalization in four clinical cohorts.
 Even though gene expression data for the four cohorts were obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach is feasible and performed comparably with the whole cohort based method.
 It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects and, after suitable standardisation and calibration, even for clinical use.
 
-The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for underlying tumour-biology \citep{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
-The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (Rituximab) \citep{Coiffier2002a}.
-Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
+The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for underlying tumour-biology \cite{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
+The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (Rituximab) \cite{Coiffier2002a}.
+Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \cite{Ziepert2010}.
 Thus, the need for new therapeutic options in DLBCL is obvious.
 Currently a number of new drugs have shown promising activity in DLBCL, but their role outside clinical trials have not been defined.
-These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \citep{Friedberg2011}.
+These drugs are different from conventional chemotherapeutic compounds by targeting specific deregulated cell-cycle pathways \cite{Friedberg2011}.
 An important example is inhibition of the NF-$\kappa$B pathway by proteasome inhibitors (i.e.\ bortezomib).
-Interestingly, the constitutive activation of the NF-$\kappa$B pathway is characteristic for the ABC subtype of DLBCL which consequently enhances the effect of bortezomib in this subtype \citep{Dunleavy2009}.
+Interestingly, the constitutive activation of the NF-$\kappa$B pathway is characteristic for the ABC subtype of DLBCL which consequently enhances the effect of bortezomib in this subtype \cite{Dunleavy2009}.
 
 With the increasing number of new drugs likely to become available over the next years and the fact that their efficacy may vary between subsets of patients defined by gene expression profiles, the current treatment of patients based on disease stage and clinical information alone will not be sufficient.
 \hemaClass{} provides an example of fast processing of complex molecular information in a way that is simple and readily at hand for clinicians.
@@ -376,10 +551,10 @@ However, without a user reference set, the high correlation coefficients demonst
 
 Another limitation of the current web application is that it is only designed for one array type.
 The server works at the moment only on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
-This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \citet{Care2013} or by re-annotated chip definition files as suggested by \citep{Dai2005}.
-At the moment we are working on extending the web application to other array types along these line of \citep{Dai2005}.
+This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \cite{Care2013} or by re-annotated chip definition files as suggested by \cite{Dai2005}.
+At the moment we are working on extending the web application to other array types along these line of \cite{Dai2005}.
 
-Traditionally ABC/GCB classification has been achieved using the naive Bayes classifier of \citet{Wright2003} which is based on cohorts, MAS5.0 normalized arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
+Traditionally ABC/GCB classification has been achieved using the naive Bayes classifier of \cite   {Wright2003} which is based on cohorts, MAS5.0 normalized arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
 However, a classifier based on logistic regression regularized by an elastic net penalty was implemented to make the classification more adaptable to RMA normalization, one-by-one processing, and stable towards varying amounts of ABC/GCB patients.
 This classifier proved to be quite comparable with the naive Bayes classifier over the four studied datasets confirming the strong and stable signal of the ABC/GBC subclasses of DLBCL.
 
@@ -389,13 +564,13 @@ The latter approach seems reasonable as changing classifications to unclassified
 Despite the disputed properties of Cohen's $\kappa$ the conservative approach is retained and the issue is addressed using a Cohen's weighted $\kappa$ approach.
 Given that an idealised approach is problematic to formulate, readers are encouraged to consider the confusion matrices in the supplementary material to make an overall evaluation of the performance.
 
-ABC/GCB, BAGS, and REGS are only a part of the GEP-based armamentarium of methods for stratifying lymphoma patients into risk groups \citep{Shipp2002, Lossos2004a, Malumbres2008} and it would be interesting to extend the tool to include other classification systems.
-For a comprehensive review see \citep{Coutinho2013}.
+ABC/GCB, BAGS, and REGS are only a part of the GEP-based armamentarium of methods for stratifying lymphoma patients into risk groups \cite{Shipp2002, Lossos2004a, Malumbres2008} and it would be interesting to extend the tool to include other classification systems.
+For a comprehensive review see \cite{Coutinho2013}.
 To our knowledge only a few other classification methods from other cancer types have been made easily accessible as either web or desktop applications.
 Hopefully, this research will inspire bioinformaticians and statisticians to make their cancer classification methods easily accessible for usage, speedy validation, critical reviews, and mutual inspiration.
 
-\section{Conclusion}
-Despite high throughput molecular biology has been around for almost two decades, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \citep{Chen2012a}.
+\section*{Conclusion}
+Despite high throughput molecular biology has been around for almost two decades, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \cite{Chen2012a}.
 It is our hope that making our own findings publicly available in this way will speed up validation and testing of BAGS and REGS by other researchers without having to delve into extensive bioinformatics implementations.
 Although \hemaClass{} is still separated from the clinic we believe a web based tool and suggestion for a clinical reference sample will bring cancer classification closer to the clinic.
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
@@ -403,58 +578,516 @@ Hopefully, this work can also spawn interesting discussions on the clinical requ
 All material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
 Comments, suggestions, bug reports, and other issues are warmly welcome at \url{https://github.com/oncoclass/hemaclass/issues} or by mail to the corresponding author.
 
-\phantomsection
-\addcontentsline{toc}{section}{Acknowledgements}
-\section*{Acknowledgements}
-We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
-SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
-The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as Karen Elise Jensen Fonden.
-The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
-
-
-
-\noindent\textit{Conflict of interest statement}: None declared.
-\phantomsection
-\addcontentsline{toc}{section}{References}
-\bibliographystyle{plainnat} %abbrvnat
-\bibliography{references}
-
-
-% Supplementary material
-\cleardoublepage
-
+\section*{Supporting Information}
 % Prefix S to figures, tables, etc
 \renewcommand{\theequation}{S\arabic{equation}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thesection}{S\arabic{section}}
 
-% reset counters
-\setcounter{section}{0}
-\setcounter{subsection}{0}
-\setcounter{equation}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{page}{1}
+\subsection*{S1 Supplementary figures and tables}
+%This section holds the supplementary figures and tables.
 
-\input{supplementary.tex}
+\begin{figure*}[!ht]
+\caption{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.
+In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
+In Panel C the regularization curves are shown.
+Black and grey curves represent selected and non-selected probe-sets, respectively.
+Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
+The red line indicates the model chosen through $10$ fold cross validation.
+The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.}
+\label{fig:crossval}
+\end{figure*}
 
-% \cleardoublepage
-% \listoftodos
+\input{tables/tableS1.tex}
+\input{tables/tableS2.tex}
+\input{tables/tableS3.tex}
+\input{tables/tableS4.tex}
+\clearpage
 
 
 
+\subsection*{S2 Graham's formula}
+\label{sec:graham}
+This section derives Graham's formula which, in our context, yields the posterior probability of being resistance to the combination of two drugs, given resistance to the individual drugs. For simplicity, the formula is derived for two drugs. The formula straightforwardly generalizes to three or more drugs.
+
+Let $C$, $H$, and $B$ be Bernoulli distributed random variables with probability parameter $1/2$, where $C = 1$ indicates resistance to Cyclophosphamide $C$, $H = 1$ indicates resistance to Doxorubicin $H$, and $B = 1$ indicates resistance to the combination of $H$ and $C$. Conversely, $C,H,$ and $B = 0$ indicate sensitivity towards $C,H,$ and $B$, respectively. Under an assumption of conditional drug independence
+
+\begin{align*}
+  P(C=1, H=1| B=1) &= P(C=1 | B=1) P(H=1 | B=1), \text{ and } \\
+  P(C=1, H=1| B=0) &= P(C=1 | B=0) P(H=1 | B=0)
+\end{align*}
+
+we have that
+
+\begin{align*}
+  &P(B=1 | H=1, C=1)
+  \\&\qquad
+   = \frac{P(C=1, H=1, B=1)}
+          {P(C=1, H=1)}
+  \\&\qquad
+   = \frac{P(C=1, H=1 | B=1) P(B=1)}
+          {P(C=1, H=1, B=1) + P(C=1, H=1, B=0)}
+  \\&\qquad
+   = \frac{P(C=1 | B=1) P(H=1 | B=1) P(B=1)}
+          {P(C=1, H=1 | B=1) P(B=1) + P(H=1, C=1| B=0) P(B=0)},
+\end{align*}
+
+by the definition of conditional probabilities, the law of total probability, and the assumptions. From the distributional assumption on $B$, $P(B=0) = P(B=1) = 1/2$, and the above then simplifies to:
+
+\begin{equation*}
+  P(B=1 | H=1, C=1)
+   = \frac{P(C=1 | B=1) P(H=1 | B=1)}
+          {P(C=1, H=1 | B=1) + P(H=1, C=1 | B=0)}.
+\end{equation*}
+
+For notational convenience, we abbreviate $P_C = P(C=1 | B=1)$, $P_H = P(H=1 | B=1)$, $P_{CH} = P(B=1 | H=1, C=1)$. The distributional assumptions then imply:
+
+\begin{align*}
+  P_{CH}
+  &= \frac{P_C P_H}
+          {P_C P_H + P(C=1 | B=0) P(H=1 | B=0)}
+  \\
+  &= \frac{P_C P_H}
+          {P_C P_H + P(B=0 | C=1) P(B=0 | H=1)}
+  \\
+  &= \frac{P_C P_H}
+          {P_C P_H + \bigl(1 - P(B=1 | C=1)\bigr)\bigl(1 - P(B=1 | H=1)\bigr)}
+  \\
+  &= \frac{P_C P_H}
+          {P_C P_H + (1 - P_C)(1 - P_H)},
+\end{align*}
+
+which is the two-drug equivalent to the used formula.
+
+\subsection*{S3 RMA normalization}
+Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \cite{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
+
+\paragraph{Backgroud correction}
+In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
+\cite{Irizarry2003b,Bolstad2004}.
 
 
+\paragraph{Quantile normalization}
+Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
+
+Furthermore, let $G_i$ denote the empirical cumulative distribution function (ECDF) of the probes $\{x_{ijk}\}_{jk}$ on the $i$'th cohort array and $F$ the ECDF of the across array averaged sample quantiles $\{\bar{x}_{\cdot (jk)}\}_{ij}$, where $\{x_{i(jk)}\}_{jk}$ is the order statistic of all probes on the $i$'th cohort array based on the lexicographic ordering of the indices $\{jk\}$. Then each data point is quantile normalized in the following way
+
+\begin{equation*}
+     \tilde{x}_{ijk} = F^{-1}(G_i(x_{ijk})),
+\end{equation*}
+
+where $F^{-1}$ is calculated as the quantiles of type 2 \cite{Hyndman1996}.
+This step is performed by the \texttt{RMA\_norm} function with option \texttt{generateQuan} equal to one in the \pkg{hemaClass} package.
+
+\paragraph{Summarisation}
+For each probe-set $j$ we let $\mu_{ij}$ represent the $\log_2$-scale expression level for array $i$ and probeset $j$, $\alpha_{jk}$ the probe affinity effect, and the $\epsilon_{ijk}$'s are independent identically distributed  error terms with mean 0 and formulate the following linear additive model
+
+\begin{equation*}
+   \tilde{x}_{ijk} = \mu_{ij} + \alpha_{jk}+ \epsilon_{ijk},
+\end{equation*}
+
+where $\sum_{k=0}^{n_j} \alpha_{jk} = 0$ for all probe-sets. The parameters are estimated by median polish \cite{Holder2001}. The probe affinity estimates are denoted by $\hat{\alpha}_{jk}$. The RMA normalized cohort data are then given by
+
+\begin{equation*}
+   \hat{x}_{ij} = \hat{\mu}_{ij}.
+\end{equation*}
+
+This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} package.
 
 
+\subsection*{S4 One-by-one RMA normalization of user supplied data}
+\paragraph{Backgroud correction}
+The background correction in one-by-one RMA normalization is unaltered as it is already works in a one-by-one fashion.
+
+\paragraph{Quantile normalization}
+Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$ index the probe-sets, and $k=1,\dots,K_j$ index the probes. Assume $x_{ijk}$ has been RMA normalized as described above. Similarly, let $y_{ijk}$ be the log2-transformed and background corrected user supplied data, where $i = 1,\dots,I_U$ index the arrays of the user supplied data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes. Furthermore, let $H_i$ denote the ECDF of the user supplied data $\{y_{ijk}\}_{jk}$.
+
+As quantile normalizer the ECDF of the background corrected reference data is used in place of the ususally applied ECDF of the mean of the sample quantiles
+
+\begin{equation*}
+   \tilde{y}_{ijk} = F^{-1}(H_i(y_{ijk})).
+\end{equation*}
+
+This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \pkg{hemaClass} package.
+
+
+\paragraph{Summarization}
+
+To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
+
+\begin{equation*}
+   \hat{y}_{ijk} = \tilde{y}_{ijk} - \hat{\alpha}_{jk}.
+\end{equation*}
+
+The pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
+
+\begin{equation*}
+   \hat{y}_{ij} = \median_{k \in \{1,\dots,n_j \}} \{ \hat{y}_{ijk} \}.
+\end{equation*}
+
+
+\subsection*{S5 Classification}
+To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
+
+\begin{equation*}
+  (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
+\end{equation*}
+
+where
+$\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
+$s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
+
+
+\section*{Acknowledgments}
+We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
+SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
+The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as Karen Elise Jensen Fonden.
+The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
+
+%\section*{References}
+% Either type in your references using
+% \begin{thebibliography}{}
+% \bibitem{}
+% Text
+% \end{thebibliography}
+%
+% OR
+%
+% Compile your BiBTeX database using our plos2015.bst
+% style file and paste the contents of your .bbl file
+% here.
+% 
+\begin{thebibliography}{10}
+
+\bibitem{Jaffe2009}
+Jaffe ES.
+\newblock The 2008 {WHO} Classification of Lymphomas: Implications for Clinical
+  Practice and Translational Research.
+\newblock Hematology. 2009 Jan;2009(1):523--531.
+
+\bibitem{Sehn2014}
+Sehn LH, Gascoyne RD.
+\newblock Diffuse Large {B}-Cell Lymphoma: Optimizing Outcome in the Context of
+  Clinical and Biologic Heterogeneity.
+\newblock Blood. 2014;125(1):22--32.
+
+\bibitem{Alizadeh2000}
+Alizadeh AA, Eisen MB, Davis RE, Ma C, Lossos IS, Rosenwald A, et~al.
+\newblock Distinct Types of Diffuse Large {B}-Cell Lymphoma Identified by Gene
+  Expression Profiling.
+\newblock Nature. 2000 Feb;403(6769):503--511.
+
+\bibitem{Rosenwald2002a}
+Rosenwald A, Wright G, Chan WC, Connors JM, Campo E, Fisher RI, et~al.
+\newblock The Use of Molecular Profiling to Predict Survival after Chemotherapy
+  for Diffuse Large-{B}-Cell Lymphoma.
+\newblock New England Journal of Medicine. 2002 Jun;346(25):1937--1947.
+
+\bibitem{Hans2004}
+Hans CP, Weisenburger DD, Greiner TC, Gascoyne RD, Delabie J, Ott G, et~al.
+\newblock Confirmation of the Molecular Classification of Diffuse Large
+  {B}-Cell Lymphoma by Immunohistochemistry using a Tissue Microarray.
+\newblock Blood. 2004 Jan;103(1):275--282.
+
+\bibitem{Poulsen2005}
+Poulsen CB, Borup R, Nielsen FC, Borregaard N, Hansen M, Gr{\o}nb{\ae}k K,
+  et~al.
+\newblock Microarray-based classification of diffuse large {B}-cell lymphoma.
+\newblock European Journal of Haematology. 2005;74(6):453--465.
+
+\bibitem{Lenz2008a}
+Lenz G, Wright G, Dave SS, Xiao W, Powell J, Zhao H, et~al.
+\newblock Stromal Gene Signatures in Large-{B}-Cell Lymphomas.
+\newblock New England Journal of Medicine. 2008 Nov;359(22):2313--23.
+
+\bibitem{Monti2012a}
+Monti S, Chapuy B, Takeyama K, Rodig SJ, Hao Y, Yeda KT, et~al.
+\newblock Integrative Analysis Reveals an Outcome-Associated and Targetable
+  Pattern of {p53} and Cell Cycle Deregulation in Diffuse Large {B}-Cell
+  Lymphoma.
+\newblock Cancer Cell. 2012 Sep;22(3):359--372.
+
+\bibitem{DybkaerBoegsted2015}
+Dybk\ae{}r K, B\o{}gsted M, Falgreen S, B\o{}dker JS, Kjeldsen MK, Schmitz A,
+  et~al.
+\newblock Diffuse Large {B}-Cell Lymphoma Classification System That Associates
+  Normal {B}-cell Subset Phenotypes with Prognosis.
+\newblock Journal Of Clinical Oncology. 2015;33(12):1379--1388.
+
+\bibitem{Falgreen2015}
+Falgreen S, Dybk{\ae}r K, Young KH, Xu-Monette ZY, El-Galaly TC, Laursen MB,
+  et~al.
+\newblock Predicting Response to Multidrug Regimens in Cancer Patients using
+  Cell Line Experiments and Regularised Regression Models.
+\newblock BMC Cancer. 2015;15(235):1--15.
+
+\bibitem{IPI}
+{The International Non-Hodgkin's Lymphoma Prognostic Factors Project}.
+\newblock A Predictive Model for Aggressive Non-Hodgkin's Lymphoma.
+\newblock New England Journal of Medicine. 1993;329(14):987--994.
+
+\bibitem{FLIPI}
+Solal-C{\'e}ligny P, Roy P, Colombat P, White J, Armitage JO, Arranz-Saez R,
+  et~al.
+\newblock Follicular lymphoma international prognostic index.
+\newblock Blood. 2004;104(5):1258--1265.
+
+\bibitem{Huang2009}
+Huang LT.
+\newblock An Integrated Method for Cancer Classification and Rule Extraction
+  from Microarray Data.
+\newblock Journal of Biomedical Science. 2009 Jan;16(1):1--25.
+
+\bibitem{Care2013}
+Care MA, Barrans S, Worrillow L, Jack A, Westhead DR, Tooze RM.
+\newblock A Microarray Platform-Independent Classification Tool for Cell of
+  Origin Class Allows Comparative Analysis of Gene Expression in Diffuse Large
+  {B}-Cell Lymphoma.
+\newblock PLOS ONE. 2013 Jan;8(2):e55895.
+
+\bibitem{RCoreTeam}
+{\R{} Core Team}. {\R}: A Language and Environment for Statistical Computing.
+\newblock Vienna, Austria; 2015.
+\newblock Available from: \url{http://www.R-project.org/}.
+
+\bibitem{shiny}
+Chang W, Cheng J, Allaire J, Xie Y, McPherson J. \pkg{shiny}: Web Application
+  Framework for R; 2015.
+\newblock \R{} package version 0.12.2.
+\newblock Available from: \url{http://CRAN.R-project.org/package=shiny}.
+
+\bibitem{Gentleman2004}
+Gentleman RC, Carey VJ, Bates DM, Bolstad B, Dettling M, Dudoit S, et~al.
+\newblock Bioconductor: Open Software Development for Computational Biology and
+  Bioinformatics.
+\newblock Genome Biology. 2004 Jan;5(10):R80.
+
+\bibitem{Gautier2004}
+Gautier L, Cope L, Bolstad BM, Irizarry RA.
+\newblock \pkg{affy}--Analysis of Affymetrix GeneChip Data at the Probe Level.
+\newblock Bioinformatics. 2004;20(3):307--315.
+
+\bibitem{Rcpp2013}
+Eddelbuettel D.
+\newblock Seamless {\R} and \texttt{C++} Integration with \texttt{Rcpp}.
+\newblock 1st ed. New York: {Springer-Verlag}; 2013.
+
+\bibitem{Eddelbuettel2011}
+Eddelbuettel D, Fran\c{c}ois R.
+\newblock \texttt{Rcpp}: Seamless {\R} and \texttt{C++} Integration.
+\newblock Journal of Statistical Software. 2011;40(8):1--18.
+
+\bibitem{RcppArmadillo}
+Eddelbuettel D, Sanderson C.
+\newblock \texttt{RcppArmadillo}: Accelerating \textsf{R} with high-performance
+  \textsf{{C}++} linear algebra.
+\newblock Computational Statistics and Data Analysis. 2014 March;71:1054--1063.
+
+\bibitem{Sanderson2010}
+Sanderson C. \texttt{Armadillo}: An Open Source \texttt{C++} Linear Algebra
+  Library for Fast Prototyping and Computationally Intensive Experiments.;
+  2010.
+\newblock Available from: \url{http://arma.sourceforge.net}.
+
+\bibitem{Barrett2013}
+Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, et~al.
+\newblock {NCBI GEO}: {A}rchive for functional genomics data sets—update.
+\newblock Nucleic Acids Research. 2013;41(D1):D991--D995.
+
+\bibitem{Gang2012}
+Gang AO, Str{\o}m C, Pedersen M, D'Amore F, Pedersen LM, Bukh A, et~al.
+\newblock {R-CHOEP-14} Improves Overall Survival in Young High-Risk Patients
+  with Diffuse Large {B}-Cell Lymphoma Compared with {R-CHOP-14}. A
+  Population-Based Investigation from the Danish Lymphoma Group.
+\newblock Annals of Oncologi. 2012 Jan;23(1):147--153.
+
+\bibitem{Visco2012}
+Visco C, Li Y, Xu-Monette ZY, Miranda RN, Green TM, Li Y, et~al.
+\newblock Comprehensive Gene Expression Profiling and Immunohistochemical
+  Studies Support Application of Immunophenotypic Algorithm for Molecular
+  Subtype Classification in Diffuse Large {B}-Cell Lymphoma: A Report from the
+  International {DLBCL} Rituximab-{CHOP} Consortium.
+\newblock Leukemia. 2012;26(9):2103--2113.
+
+\bibitem{DLBCLdata}
+Bilgrau AE, Larsen SF. DLBCLdata: Automated and reproducible download and
+  preprocessing of DLBCL data; 2015.
+\newblock R package version 1.0.
+\newblock Available from: \url{http://github.com/AEBilgrau/DLBCLdata}.
+
+\bibitem{Irizarry2003}
+Irizarry RA, Hobbs B, Collin F, Beazer-Barclay YD, Antonellis KJ, Scherf U,
+  et~al.
+\newblock Exploration, Normalization, and Summaries of High Density
+  Oligonucleotide Array Probe Level Data.
+\newblock Biostatistics. 2003;4(2):249--264.
+
+\bibitem{Irizarry2003b}
+Irizarry RA, Bolstad BM, Collin F, Cope LM, Hobbs B, Speed TP.
+\newblock Summaries of {Affymetrix GeneChip} Probe Level Data.
+\newblock Nucleic Acids Research. 2003;31(4):e15.
+
+\bibitem{Bolstad2004}
+Bolstad BM.
+\newblock Low-level Analysis of High-Density Oligonucleotide Array Data:
+  Background, Normalization and Summarization.
+\newblock University of California, Berkeley; 2004.
+
+\bibitem{Bolstad2003}
+Bolstad BM, Irizarry RA, Astrand M, Speed TP.
+\newblock A Comparison of Normalization Methods for High Density
+  Oligonucleotide Array Data Based on Variance and Bias.
+\newblock Bioinformatics. 2003 Jan;19(2):185--193.
+
+\bibitem{Friedman2010}
+Friedman J, Hastie T, Tibshirani R.
+\newblock Regularization Paths for Generalized Linear Models via Coordinate
+  Descent.
+\newblock Journal Statistical Software. 2010;33(1):1--24.
+
+\bibitem{Zou2005}
+Zou H, Hastie T.
+\newblock Regularization and Variable Selection via the Elastic Net.
+\newblock Journal of the Royal Statistical Society Series B. 2005
+  Apr;67(2):301--320.
+
+\bibitem{Tibshirani1996}
+Tibshirani R.
+\newblock Regression Shrinkage and Selection via the Lasso.
+\newblock Journal of the Royal Statistical Society Series B.
+  1996;58(1):267--288.
+
+\bibitem{Hoerl1970}
+Hoerl AE, Kennard RW.
+\newblock Ridge Regression: Biased Estimation for Nonorthogonal Problems.
+\newblock Technometrics. 1970;12(1):55--67.
+
+\bibitem{Boegsted2011}
+B{\o}gsted M, Holst JM, Fogd K, Falgreen S, S{\o}rensen S, Schmitz A, et~al.
+\newblock Generation of A Predictive Melphalan Resistance Index by Drug Screen
+  of {B}-cell Cancer Cell Lines.
+\newblock PLOS ONE. 2011;6(4):e19322.
+
+\bibitem{Bogsted2013}
+B{\o}gsted M, Bilgrau AE, Wardell CP, Bertsch U, Schmitz A, B{\o}dker JS,
+  et~al.
+\newblock Proof of the Concept to Use a Malignant {B} Cell Line Drug Screen
+  Strategy for Identification and Weight of Melphalan Resistance Genes in
+  Multiple Myeloma.
+\newblock PLOS ONE. 2013;8(12):e83252.
+
+\bibitem{Laursen2014}
+Laursen MB, Falgreen S, B{\o}dker JS, Schmitz A, Kjeldsen MK, S{\o}rensen S,
+  et~al.
+\newblock Human {B}-cell Cancer Cell Lines as a Preclinical Model for Studies
+  of Drug Effect in Diffuse Large {B}-Cell Lymphoma and Multiple Myeloma.
+\newblock Experimental Hematology. 2014;42(11):927--938.
+
+\bibitem{Laursen2015}
+Laursen MB, S{\o}rensen S, Falgreen S, Reinholt LR, Schmitz A, B{\o}dker JS,
+  et~al.
+\newblock Studies of Anti-{CD20} Antibody Mediated Complement Dependent
+  Cytotoxicity in a Preclinical Cell Line Model of Diffuse Large {B}-Cell
+  Lymphoma.
+\newblock \textit{Submitted}. 2015;.
+
+\bibitem{CHEN1989}
+Chen S, Billings SA, Luo W.
+\newblock Orthogonal Least Squares Methods and their Application to Non-Linear
+  System Identification.
+\newblock International Journal of Control. 1989 Nov;50(5):1873--1896.
+
+\bibitem{Wright2003}
+Wright G, Tan B, Rosenwald A, Hurt EH, Wiestner A, Staudt LM.
+\newblock A Gene Expression-Based Method to Diagnose Clinically Distinct
+  Subgroups of Diffuse Large {B} Cell Lymphoma.
+\newblock PNAS. 2003 Aug;100(17):9991--9996.
+
+\bibitem{Schmoll2012}
+Schmoll HJ, {Van Cutsem} E, Stein A, Valentini V, Glimelius B, Haustermans K,
+  et~al.
+\newblock {ESMO} Consensus Guidelines for Management of Patients with Colon and
+  Rectal Cancer. {A} Personalized Approach to Clinical Decision Making.
+\newblock Annals of Oncology. 2012 Oct;23(10):2479--2516.
+
+\bibitem{Coiffier2002a}
+Coiffier B, Lepage E, Briere J, Herbrecht R, Tilly H, Bouabdallah R, et~al.
+\newblock {CHOP} Chemotherapy Plus Rituximab Compared with {CHOP} Alone in
+  Elderly Patients with Diffuse Large-{B}-Cell Lymphoma.
+\newblock New England Journal of Medicine. 2002 Jan;346(4):235--242.
+
+\bibitem{Ziepert2010}
+Ziepert M, Hasenclever D, Kuhnt E, Glass B, Schmitz N, Pfreundschuh M, et~al.
+\newblock Standard International Prognostic Index Remains a Valid Predictor of
+  Outcome for Patients with Aggressive {CD20+} {B}-Cell Lymphoma in the
+  Rituximab Era.
+\newblock Journal of Clinical Oncology. 2010 May;28(14):2373--2380.
+
+\bibitem{Friedberg2011}
+Friedberg JW.
+\newblock New strategies in Diffuse Large {B}-Cell Lymphoma: Translating
+  Findings from Gene Expression Analyses Into Clinical Practice.
+\newblock Clinical Cancer Research. 2011 Oct;17(19):6112--6117.
+
+\bibitem{Dunleavy2009}
+Dunleavy K, Pittaluga S, Czuczman MS, Dave SS, Wright G, Grant N, et~al.
+\newblock Differential Efficacy of Bortezomib Plus Chemotherapy Within
+  Molecular Subtypes of Diffuse Large {B}-Cell Lymphoma.
+\newblock Blood. 2009;113(24):6069--6076.
+
+\bibitem{Dai2005}
+Dai M, Wang P, Boyd AD, Kostov G, Athey B, Jones EG, et~al.
+\newblock Evolving {Gene/Transcript} Definitions Significantly Alter the
+  Interpretation of {GeneChip} Data.
+\newblock Nucleic Acids Research. 2005 Jan;33(20):e175.
+
+\bibitem{Shipp2002}
+Shipp MA, Ross KN, Tamayo P, Weng AP, Kutok JL, Aguiar RCT, et~al.
+\newblock Diffuse Large {B}-Cell Lymphoma Outcome Prediction by Gene-Expression
+  Profiling and Supervised Machine Learning.
+\newblock Nature Medicine. 2002 Jan;8(1):68--74.
+
+\bibitem{Lossos2004a}
+Lossos IS, Czerwinski DK, Alizadeh AA, Wechser MA, Tibshirani R, Botstein D,
+  et~al.
+\newblock Prediction of Survival in Diffuse Large-{B}-Cell Lymphoma Based on
+  the Expression of Six Genes.
+\newblock New England Journal of Medicine. 2004 Apr;350(18):1828--1837.
+
+\bibitem{Malumbres2008}
+Malumbres R, Chen J, Tibshirani R, Johnson NA, Sehn LH, Natkunam Y, et~al.
+\newblock Paraffin-Based 6-Gene Model Predicts Outcome in Diffuse Large
+  {B}-cell Lymphoma Patients Treated with {R-CHOP}.
+\newblock Blood. 2008 Jun;111(12):5509--5514.
+
+\bibitem{Coutinho2013}
+Coutinho R, Gribben J.
+\newblock Biomarkers of Diffuse Large {B}-Cell Lymphoma: Impact on Diagnosis,
+  Treatment, and Prognosis.
+\newblock Current Biomarker Finding. 2013;3:17--34.
+
+\bibitem{Chen2012a}
+Chen X, Andersson R, Cho WC, Christiani D, Coico R, Drazen J, et~al.
+\newblock The International Effort: Building the Bridge for Translational
+  Medicine: Report of the 1st International Conference of Translational
+  Medicine {(ICTM)}.
+\newblock Clinical and Translational Medicine. 2012 Jan;1(1):1--15.
+
+\bibitem{Hyndman1996}
+Hyndman RJ, Fan Y.
+\newblock Sample Quantiles in Statistical Packages.
+\newblock The American Statistician. 1996;50(4):361--365.
+
+\bibitem{Holder2001}
+Holder D, Raubertas RF, Pikounis VB, Svetnik V, Soper K.
+\newblock Statistical Analysis of High Density Oligonucleotide Arrays: A SAFER
+  Approach.
+\newblock In: GeneLogic Workshop on Low Level Analysis of Affymetrix GeneChip
+  Data; 2001. .
+
+\end{thebibliography}
 
 
 \end{document}
-
-
-
-
-
-
 

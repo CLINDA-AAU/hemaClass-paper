@@ -1,5 +1,6 @@
 %latex.default(tableS3, file = "tables/tableS3.tex", title = "",     rgroup = names(subtab$onebyone), cgroup = flip(studies.vec)[names(subtab$onebyone[[1]])],     size = "small", label = "tab:confusiondrugonebyone", caption = captionS3)%
 \begin{table}[!tbp]
+\begin{adjustwidth}{-1in}{0in}
 {\small
 \caption{Confusion tables for the REGS classifiers.
 One-by-one normalization are shown in the rows and cohort normalization in the
@@ -32,5 +33,5 @@ columns.\label{tab:confusiondrugonebyone}}
 ~~Resistant&$ 0$&$13$&$16$&&$ 3$&$13$&$14$&&$  0$&$ 27$&$135$&&$ 16$&$42$&$18$\tabularnewline
 \hline
 \end{tabular}\end{center}}
-
+\end{adjustwidth}
 \end{table}

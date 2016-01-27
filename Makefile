@@ -19,7 +19,6 @@ results: figures/figure2.pdf figures/figure3.pdf tables/table1.tex
 
 pdf:
 	pdflatex --synctex=1 hemaclass.tex
-	bibtex hemaclass
 	pdflatex --synctex=1 hemaclass.tex
 	pdflatex --synctex=1 hemaclass.tex
 

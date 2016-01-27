@@ -1,5 +1,6 @@
 %latex.default(tableS2, file = "tables/tableS2.tex", title = "",     rgroup = flip(studies.vec)[names(subtab)], cgroup = c("One-by-one normalization",         "Reference based normalization"), size = "small", label = "tab:BAGShemaclass",     caption = caption)%
 \begin{table}[!tbp]
+\begin{adjustwidth}{-1in}{0in}
 {\small
 \caption{Confusion tables for the BAGS classifier. One-by-one and reference
 based normalization are shown in the columns and cohort normalization in the
@@ -44,5 +45,5 @@ rows.\label{tab:BAGShemaclass}}
 ~~Unclassified&$0$&$ 2$&$  0$&$0$&$27$&$ 6$&&$ 7$&$ 1$&$  0$&$ 1$&$ 0$&$21$\tabularnewline
 \hline
 \end{tabular}\end{center}}
-
+\end{adjustwidth}
 \end{table}
