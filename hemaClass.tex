@@ -377,7 +377,7 @@ Using the $150$ patients classified as either ABC or GCB the dichotomous classif
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
 The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
-The results of the cross validations are shown in the figure in \nameref{fig:crossval}.
+The results of the cross validations are shown in \nameref{fig:crossval}.
 The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
 
 When a tumour sample is classified according to the ABC/GCB classifier using one-by-one normalization the data is used directly when classifying. However, when a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
@@ -445,10 +445,10 @@ These predictions are based on the patient survival data from LLMPP - RCHOP , MD
 \subsection*{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalization method a classifier based on the regularised logistic regression was established.
 The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \cite{Wright2003,Lenz2008a}.
-The rate of agreement between the two classifiers are shown in the table in \nameref{tab:ABCGCBclassifier}.
+The rate of agreement between the two classifiers are shown in \nameref{tab:ABCGCBclassifier}.
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, were misclassifications involving the unclassified group are weighted by $1/2$.
-The accompanying confusion matrices are shown in the first rows of the table in \nameref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices are shown in the first rows of \nameref{tab:confusionABCGCBHEMA}.
 
 The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the one-by-one based classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The probabilities estimated through the two methods are very similar.
@@ -459,7 +459,7 @@ For both methods, patients are classified as ABC when the estimated probability 
 In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for one-by-one normalization and four validation datasets normalized to 30 internally sampled reference samples.
 CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP all show a high Cohen's weighted $\kappa$ and good rate of agreement, considering that misclassifications involving unclassified samples count as errors.
 The reduced rate of agreement and Cohen's weighted $\kappa$ using one-by-one pre-processing in IDRC may be due to the samples being FFPE although this seems to be remedied by reference based pre-processing.
-The accompanying confusion matrices are shown in the lower part of the table in \nameref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices are shown in the lower part of the \nameref{tab:confusionABCGCBHEMA}.
 Note, changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
@@ -496,8 +496,7 @@ The probabilities obtained by the reference based normalization resembles the co
 
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
 The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$.
-The associated confusion matrices for one-by-one normalization and reference based normalization are shown in
-the tables in \nameref{tab:confusiondrugonebyone} and
+The associated confusion matrices for one-by-one normalization and reference based normalization are shown in \nameref{tab:confusiondrugonebyone} and
 \nameref{tab:confusiondrugreference}, respectively.
 Again, the reference based approach yields superior agreement with classifications using cohort based normalization.
 
@@ -513,7 +512,7 @@ The reference based normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
 The rate of agreement between the cohort based and one-by-one as well as reference based classifications is shown in Table \ref{tab:classALL} along with the Cohen's weighted $\kappa$.
-The associated confusion matrices are shown in the table in \nameref{tab:BAGShemaclass}.
+The associated confusion matrices are shown in \nameref{tab:BAGShemaclass}.
 
 \input{tables/table3.tex}
 
@@ -561,7 +560,7 @@ Under the validation of the one-by-one method one should notice that the unclass
 This implies a lower accuracy compared to an approach where the unclassified are left out of the validations.
 The latter approach seems reasonable as changing classifications to unclassified is less serious than changing real classes.
 Despite the disputed properties of Cohen's $\kappa$ the conservative approach is retained and the issue is addressed using a Cohen's weighted $\kappa$ approach.
-Given that an idealised approach is problematic to formulate, readers are encouraged to consider the confusion matrices in the supplementary material to make an overall evaluation of the performance.
+Given that an idealised approach is problematic to formulate, readers are encouraged to consider the confusion matrices in the supporting information to make an overall evaluation of the performance.
 
 ABC/GCB, BAGS, and REGS are only a part of the GEP-based armamentarium of methods for stratifying lymphoma patients into risk groups \cite{Shipp2002, Lossos2004a, Malumbres2008} and it would be interesting to extend the tool to include other classification systems.
 For a comprehensive review see \cite{Coutinho2013}.
@@ -589,7 +588,7 @@ Comments, suggestions, bug reports, and other issues are warmly welcome at \url{
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thesection}{S\arabic{section}}
 
-\subsection*{S1 Figure}
+\subsection*{S1 Fig}
 \label{fig:crossval}
 \textbf{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.}
 In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
@@ -626,9 +625,9 @@ Reference based normalization are shown in the rows and cohort normalization in
 the columns. Note, 30 samples were used as reference data and hence not present
 in this table.
 
-\subsection*{S1 Text}
+\subsection*{S1 Supplementary Material}
 \label{sec:graham}
-d
+{\bf Supplementary material on Graham's formula and RMA normalization.}
 
 \section*{Acknowledgments}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
