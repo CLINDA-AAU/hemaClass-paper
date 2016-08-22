@@ -630,7 +630,7 @@ ABCGCB.weights <- matrix(c(0,1,2,1,0,1,2,1,0), 3)/2
 
 table2 <- matrix(nrow = 4, ncol = 2)
 rownames(table2) <- names(studies.vec[-5])
-colnames(table2) <- c("Agreement", "Cohen's $\\kappa$")
+colnames(table2) <- c("Accuracy", "Cohen's $\\kappa$")
 
 for (i in seq_len(nrow(table2))) {
   table2[i, ] <-
@@ -641,7 +641,7 @@ for (i in seq_len(nrow(table2))) {
 caption <- "Comparison of ABC/GCB classification performed using Wright's naive
 Bayes classifier \\citep{Wright2003} and the established elastic net classifier
 both based on cohort normalization.
-The second column shows the rate of agreement (accuracy) between the
+The second column shows the accuracy of the
 classifiers with $95\\%$ CI. The third column shows the Cohen's weighted
 $\\kappa$ with $95\\%$ CI."
 
@@ -674,7 +674,7 @@ The columns represent cohort based normalisztion using the ABC/GCB classifier
 based on elastic net.
 The first part of the table compares Wright's method for ABC/GCB classification
 with the elastic net based.
-In the second and third part one-by-one and reference based normalization is
+In the second and third part ExLab and InLab reference based normalization is
 compared to cohort based normalization using the ABC/GCB classifier based on
 elastic net."
 
@@ -682,7 +682,7 @@ w <- latex(tableS1,
            file = "tables/tableS1.tex",
            title = "",
            cgroup = names(studies.vec[-5]),
-           rgroup = c("Wright's method", "One-by-one", "Reference based"),
+           rgroup = c("Wright's method", "ExLab Normalization", "InLab Normalization"),
            size = "footnotesize",
            label = "tab:confusionABCGCBHEMA",
            caption = caption)
@@ -694,7 +694,7 @@ par(mfrow = c(4,2))
 for (study in studies.vec[-5]) {
   res <- results[["ABCGCB"]][[study]]
   with(res, {
-    # ONE BY ONE
+    # ExLab
     plot(logit(cohort.prob), logit(onebyone.prob), main = study)
     abline(0, 1, lty = 2, lwd = 2)
     abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
@@ -703,7 +703,7 @@ for (study in studies.vec[-5]) {
               logit(cohort.prob), logit(onebyone.prob), weight = ABCGCB.weights)
     plotline(logit(cohort.prob), logit(onebyone.prob), col = "red")
 
-    # REF BASED
+    # InLab
     plot(logit(cohort.prob), logit(refbased.prob), main = study)
     abline(0, 1, lty = 2, lwd = 2)
     abline(h = logit(c(0.1,0.9)), v = logit(c(0.1,0.9)), col = "darkgrey",
@@ -730,6 +730,8 @@ weights[["BAGS"]]   <- weightFun(6)
 weights[["REGS"]]   <- matrix(c(0,1,2,1,0,1,2,1,0), 3)/2
 
 subtab <- list()
+subtab[["ABCGCB_w"]][["onebyone"]] <- comp.matrix
+subtab[["ABCGCB_w"]][["refbased"]] <- comp.matrix
 subtab[["ABCGCB"]][["onebyone"]] <- comp.matrix
 subtab[["ABCGCB"]][["refbased"]] <- comp.matrix
 subtab[["BAGS"]][["onebyone"]] <- comp.matrix
@@ -738,6 +740,16 @@ subtab[["REGS"]][["onebyone"]] <- comp.matrix
 subtab[["REGS"]][["refbased"]] <- comp.matrix
 
 for (study in studies.vec[-5]) {
+  # ABC/GCB Wright
+  res <- results[["ABCGCB"]][[study]]
+  
+  subtab[["ABCGCB_w"]][["onebyone"]][study, -3] <-
+    with(res, summclasses(wright.class, onebyone.class,
+                          weight = weights$ABCGCB))
+  subtab[["ABCGCB_w"]][["refbased"]][study, -3] <-
+    with(res, summclasses(wright.class, refbased.class,
+                          weight = weights$ABCGCB))
+  
   # ABC/GCB
   res <- results[["ABCGCB"]][[study]]
 
@@ -777,16 +789,18 @@ for (study in studies.vec[-5]) {
 
 table3 <- do.call(rbind, lapply(subtab, function(x) do.call(cbind, x)))
 colnames(table3) <- rep(c(colnames(table2), "Pearson's $r$"), 2)
-rownames(table3) <- rep(names(studies.vec[-5]), 3)
+rownames(table3) <- rep(names(studies.vec[-5]), 4)
 
 caption <- "Comparison of classifications obtained using cohort based
-normalization and one-by-one normalization as well as reference based
-normalization.
-The classifications are compared in terms of rate of argreement (accuracy),
+normalization against Exlab and InLab reference based normalization.
+The classifications are compared in terms of accuracy,
 Cohen's weighted $\\kappa$, and Pearson's correlation coefficient $r$ all
 supplied with $95\\%$ CIs. The comparisons in the first and last three columns
-are based on the one-by-one normalization method and the reference based
-normalization method, respectively."
+are based on the ExLab and InLab reference based
+normalization method, respectively. For ABC/GCB classification, results
+from InLab or Exlab classification with the elasitic net classifier is 
+compared against ABC/GCB classes for cohort normalized data obtained using both
+Wrights Bayes classifier and the elastic net classifier"
 
 # Remove leading zeros:
 table3 <- gsub("0\\.", ".", table3)
@@ -795,8 +809,8 @@ table3 <- gsub("1\\.0", "1.", table3)
 w <- latex(table3,
            file = "tables/table3.tex",
            title = "",
-           rgroup = gsub("ABCGCB", "ABC/GCB", names(results)),
-           cgroup = c("One-by-one pre-processing", "Reference based pre-processing"),
+           rgroup = c("ABC/GCB (Wright)", gsub("ABCGCB", "ABC/GCB", names(results))),
+           cgroup = c("ExLab RMA pre-processing", "InLab RMA pre-processing"),
            size = "scriptsize",
            label = "tab:classALL",
            caption = caption)
@@ -830,7 +844,7 @@ flip <- function(x) {
   return(ans)
 }
 
-caption <- "Confusion tables for the BAGS classifier. One-by-one and reference
+caption <- "Confusion tables for the BAGS classifier. ExLab and InLab reference
 based normalization are shown in the columns and cohort normalization in the
 rows."
 
@@ -838,7 +852,7 @@ w <- latex(tableS2,
            file = "tables/tableS2.tex",
            title = "",
            rgroup = flip(studies.vec)[names(subtab)],
-           cgroup = c("One-by-one normalization", "Reference based normalization"),
+           cgroup = c("ExLab normalization", "InLab normalization"),
            size = "small",
            label = "tab:BAGShemaclass",
            caption = caption)
@@ -873,11 +887,11 @@ colnames(tableS3) <- abbrev2[colnames(tableS3)]
 colnames(tableS4) <- abbrev2[colnames(tableS4)]
 
 captionS3 <- "Confusion tables for the REGS classifiers.
-One-by-one normalization are shown in the rows and cohort normalization in the
+ExLab normalization is shown in the rows and cohort normalization in the
 columns."
 
 captionS4 <- "Confusion tables for the REGS classifiers.
-Reference based normalization are shown in the rows and cohort normalization in
+InLab normalization is shown in the rows and cohort normalization in
 the columns. Note, 30 samples were used as reference data and hence not present
 in this table."
 
@@ -962,7 +976,11 @@ myplot <- function(x1, y1, x2, y2, panel = c("A", "B"),
 #
 
 f <- 0.5
-pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
+
+#pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
+tiff("figures/figure2.tiff", height = 5*7*f, width = 2*7*f, units="in", res=300, compression="lzw")
+#setEPS()
+#postscript("figures/figure2.eps", height = 5*7*f, width = 2*7*f)
 {
 
   par(mfrow = c(5, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
@@ -993,8 +1011,8 @@ pdf("figures/figure2.pdf", height = 5*7*f, width = 2*7*f)
   }
 
   mtext("Cohort based classification", side = 1, outer = TRUE)
-  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -1.5)
-  mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
+  mtext("ExLab based classification", side = 2, outer = TRUE, line = -1.5)
+  mtext("InLab based classification", side = 2, outer = TRUE, line = -28)
 }
 dev.off()
 
@@ -1004,7 +1022,8 @@ dev.off()
 # BAGS
 #
 
-pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
+tiff("figures/figure3.tiff", height = 5*7*f, width = 2*7*f, units="in", res=300, compression="lzw")
+#pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
 {
 
   par(mfrow = c(5, 2), mar = c(2,4,2.2,0.2) + 0.1, oma = c(2,0,0,0))
@@ -1027,12 +1046,12 @@ pdf("figures/figure3.pdf", height = 5*7*f, width = 2*7*f)
            col1 = paste0(col.data$col, "60")[col.data$cell == subtype],
            col2 = "White", asp = 1,
            cut.x = cut.x, cut.y1 = cut.y1, cut.y2 = cut.y2)
-    i <- i + 1
+    i <- i + 2
   }
 
   mtext("Cohort based classification", side = 1, outer = TRUE)
-  mtext("One-by-one based classification", side = 2, outer = TRUE, line = -1.5)
-  mtext("Reference based classification", side = 2, outer = TRUE, line = -28)
+  mtext("ExLab based classification", side = 2, outer = TRUE, line = -1.5)
+  mtext("InLab based classification", side = 2, outer = TRUE, line = -28)
 }
 dev.off()
 
@@ -1101,8 +1120,8 @@ for (type in c("ABCGCB", "BAGS", "REGS")) {
          main = "LLMPP R-CHOP", asp = 1)
 
   mtext("Cohort based Pre-processing", side = 1, outer = TRUE)
-  mtext("One-by-one based Pre-processing", side = 2, outer = TRUE, line = -1.5)
-  mtext("Reference based Pre-processing", side = 2, outer = TRUE, line = -28)
+  mtext("ExLab based Pre-processing", side = 2, outer = TRUE, line = -1.5)
+  mtext("InLab based Pre-processing", side = 2, outer = TRUE, line = -28)
 
 
   dev.off()
@@ -1182,10 +1201,16 @@ if (file.exists(file.ABCGCB.class.cv)) {
 
 # Plot the result
 
-pdf(file.path("figures/figureS1.pdf"),
-    pointsize = pointsize ,
-    width = twocol, height = twocol/3)
-{
+#pdf(file.path("figures/figureS1.pdf"),
+#    pointsize = pointsize ,
+#    width = twocol, height = twocol/3)
+#{
+tiff(file.path("figures/figureS1.tiff"),
+      pointsize = pointsize ,
+      width = twocol, height = twocol/3, 
+     units="in", res=300, compression="lzw")
+  {
+    
   par(mfrow = c(1, 3))
   plotCValpha(x  = as.numeric(row.names(mat)),
               y  = mat[,"ABCGCB"],

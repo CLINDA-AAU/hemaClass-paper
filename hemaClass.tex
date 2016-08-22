@@ -1,13 +1,15 @@
 \documentclass{article}
 
 %%% PREAMBLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{preamble.tex}
+\input{preamble}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{\hemaClassTitle{}}
 
 \author[1]{Steffen Falgreen\thanks{Shared first authorship}}
 \author[12]{Anders Ellern Bilgrau$^\ast$}
+\author[1]{Rasmus Froberg Br{\o}ndum}
 \author[12]{Lasse Hjort Jakobsen}
 \author[12]{Jonas Have}
 \author[12]{Kasper Lindblad Nielsen}
@@ -26,6 +28,7 @@
 % Steffen Falgreen - sfl@rn.dk
 % Anders Ellern Bilgrau - anders.ellern.bilgrau@gmail.com
 % Lasse Hjort Jakobsen - lasse.j@rn.dk
+% Rasmus Froberg Br{\o}ndum - rfb@rn.dk
 % Jonas Have - jonas.have@rn.dk
 % Kasper Lindblad Nielsen - k.lindblad@rn.dk
 % Tarec Christoffer El-Galaly - tarec.galaly@gmail.com
@@ -42,17 +45,17 @@
 \addcontentsline{toc}{section}{Abstract}
 \begin{abstract}
 \parttitle{Background} %if any
-Dozens of genomics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
+Dozens of omics based cancer classification systems have been introduced with prognostic, diagnostic, and predictive capabilities.
 However, they often employ complex algorithms and are only applicable on whole cohorts of patients, making them difficult to apply in a personalized clinical setting.
 \\\parttitle{Results}
-This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one microarray based risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into cell-of-origin and chemotherapeutic sensitivity classes.
-As laboratory specific effects cannot be accounted for in true one-by-one microarray normalization, \hemaClass{} optionally allows the user to supply a reference dataset to increase the accuracy of the classifications. Classification results for one-by-one array pre-processing with and without a user supplied reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
-Overall, one-by-one and reference based normalization yield satisfactory inter-method agreements across all datasets.
+This prompted us to create \hemaClass{}, an online web application providing an easy interface to one-by-one RMA normalization of microarrays and subsequent risk classifications of diffuse large B-cell lymphoma (DLBCL) and multiple myeloma (MM) into cell-of-origin and chemotherapeutic sensitivity classes.
+Classification results for one-by-one array pre-processing with and without a laboratory specific RMA reference dataset were compared to cohort based classifiers in $4$ publicly available datasets.
+Classifications showed high agreement between one-by-one and whole cohort pre-processsed data when a laboratory specific reference set was supplied.
 The website is essentially the \R{}-package \pkg{hemaClass} accompanied by a Shiny web application.
-The well-documented package can be used to run the website locally or to use the developed methods programatically.
+The well-documented package can be used to run the website locally or to use the developed methods programmatically.
 \\\parttitle{Conclusions}
-The website and \R{}-package is relevant for biological and clinical lymphoma researchers as it provides reliable and swift methods for calculation of disease subclasses.
-The proposed one-by-one pre-processing methods are relevant for all researchers using microarrays.
+The website and \R{}-package is relevant for biological and clinical lymphoma researchers using affymetrix U-133 Plus 2 arrays, as it provides reliable and swift methods for calculation of disease subclasses.
+The proposed one-by-one pre-processing method is relevant for all researchers using microarrays.
 \medskip\\
 \textbf{Keywords:~}
 Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Classification; Chemosensitivity; Microarray; Pre-processing; Robust Multichip Average; Gene expression profiling; Cell of origin; Affymetrix Human Genome U133 Plus 2 microarrays
@@ -61,52 +64,41 @@ Diffuse Large B-Cell Lymphoma; Multiple Myeloma; Classification; Chemosensitivit
 
 
 \section{Background}
-In addition to current clinically used risk factor scoring systems several independent gene expression profile (GEP) based risk stratifications have been proposed with biological and clinical significance in hematological cancers.
-Although drug targetable genes which are only expressed in subtypes of the e.g.\ DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to lack of available routine diagnostic tests \citep{Jaffe2009, Sehn2014}.
+In addition to current clinically used risk factor scoring systems, several independent gene expression profile (GEP) based risk stratifications have been proposed, with biological and clinical significance in hematological cancers.
+Although drug targetable genes, which are only expressed in subtypes of e.g. DLBCL tumours have been identified, they are not readily applicable in clinical research and routine settings due to a lack of available routine diagnostic tests \citep{Jaffe2009, Sehn2014}.
 
 \citet{Alizadeh2000} developed an important example of a biological sub-classification of lymphoma.
-On the basis of GEP analyses, DLBCL cases were assigned to categories of activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
+On the basis of GEP analyses, DLBCL cases were classified as activated B-cell phenotype (ABC) or germinal center B-cell phenotype (GCB) with different clinical outcomes.
 The validity of this classification and its prognostic importance have been confirmed in a number of later studies \citep{Rosenwald2002a,Hans2004,Poulsen2005,Lenz2008a,Monti2012a}.
-Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier \citep{DybkaerBoegsted2015} capable of classifying DLBCL samples into $5$ different B-cell subtypes:
-Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB).
-For example, the BAGS classifier stratifies the GCB subclass into a CC subtype with superior survival as compared to the CB subtype \citep{DybkaerBoegsted2015}, which opens up for considering different treatment regimes in the GCB class of patients.
-In another study \citep{Falgreen2015} we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
-Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O).
-However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients making them difficult to apply in a routine clinical setting.
+Recently, we have refined the ABC/GCB subclassification of DLBCL to include a B-cell Associated Gene Signature (BAGS) classifier capable of classifying DLBCL samples into $5$ different B-cell subtypes:
+Naive (N), Centrocyte (CC), Centroblast (CB), Memory (M), and Plasmablasts (PB) \citep{DybkaerBoegsted2015}.
+The BAGS classifier stratifies the GCB phenotype into CC and CB subtypes, with superior survival in the CC subtype. Thus, different treatment regimes could be considered in subsets of the GCB class of patients.
+In another study we developed classification based resistance gene signatures (REGS) for the most prominent drugs used in the treatment of DLBCL patients:
+Cyclophosphamide (C), Doxorubicin (H), and Vincristine (O) \citep{Falgreen2015}.
+However, these and most existing algorithms are only applicable in the presence of whole cohorts of patients, making them difficult to apply in a routine clinical setting.
 
 The traditional lymphoma staging and risk classification systems are based on the Ann Arbor classification for staging of lymphoma (extent of disease and extranodal involvement) and simple prognostic tools such as the international prognostic index (IPI, \citep{IPI}) for large cell lymphoma and the Follicular Lymphoma International Prognostic Index (FLIPI, \citep{FLIPI}), both derived from patient age, performance status, easy available blood tests, and disease stage.
 Due to the simplicity of these clinical risk stratification algorithms they are still the most widely used risk scoring systems today.
 Risk stratification according to these algorithms has been systematized and made easily accessible for desktop, online, and even smart-phone use.
-However, easily accessible molecular classification methods are lacking behind and thereby delaying the translation of new molecular findings into clinical practice.
-A few methods exist for cancer types other than lymphoma, including acute myeloid leukemia (AML) \citep{Huang2009}.
-To the best of our knowledge, quite surprisingly, no tools have been developed for use in the lymphoma field despite very early promising results in the molecular biomarker field.
-An accessible Windows based application has been published for ABC/GCB classification \citep{Care2013}.
-Although \citet{Care2013} develop a new ABC/GCB classifier which is stable across microarray technologies and trial centres, the ABC/GCB classifier is potentially biased towards classes which differentiate the prognosis and not biology.
-This bias arises as the ensemble of classifiers are chosen on basis of their ability to separate survival.
+\hl{Easily accessible molecular classification methods are, however, lagging behind, thereby delaying the translation of new molecular findings into clinical practice.
+A few methods exist for cancer types other than lymphoma, including acute myeloid leukemia (AML) \mbox{\citep{Huang2009}}, and for lymphoma \mbox{\citet{Care2013}} has developed an ABC/GCB classifier, which is stable across microarray technologies and trial centres. This ABC/GCB classifier is, however, potentially biased towards classes which differentiate the prognosis instead of biological classes, since the ensemble of classifiers were chosen based on their ability to separate survival.}
 
 In clinical settings, the methods need to be applicable for a single patient sample and straightforward to use.
-This prompted us to develop an easy accessible and flexible web-based tool for ABC/GCB, BAGS, and REGS classification which is capable of computing our recently developed classifiers for microarray data based on the Affymetrix's Human Genome U-133 Plus 2 arrays.
+This prompted us to develop a user-friendly and flexible web-based tool for ABC/GCB, BAGS, and REGS classification using our recently developed classifiers for microarray data based on the Affymetrix's Human Genome U-133 Plus 2 array.
 The classifications made by the web-based tool \hemaClass{} are compared to the existing state-of-the-art and approved ABC/GCB classifications of DLBCL.
 We believe that \hemaClass{} will provide a novel and user-friendly concept for bringing complex molecular classification of diseases more swiftly into daily clinical practice.
-As already delineated, this paper primarily describes developed classification schemes for DLBCL although MM classification is currently also featured on the website.
-A more extensive treatment of MM classification schemes is in preparation and will be implemented on \hemaClass{}.
 
 
 \section{Implementation}
-
 \subsection{Classification workflow}
-The analysis workflow of \hemaClass{} can be divided into four parts:
-(1) Three reference datasets which have been pre-processed and prepared offline are loaded upon server start,
-(2) a graphical user interface with upload and input facilities,
-(3) a server handling the online processing and classification of the user input, and
-(4) the resulting classifications available for download and inspection via the user interface.
-The workflow architecture is illustrated in Figure \ref{fig:webtooldiagram}.
+\hl{
+The workflow architecture of \hemaClass{} is illustrated in Figure \mbox{\ref{fig:webtooldiagram}}. The user is presented with a graphical interface for uploading data and adjusting settings. The user data is RMA pre-processed by the server (with an optional user one-by-one RMA reference), and subsequently processed by the classification algorithms. The results are then returned for download and inspection via the user interface.}
 
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.5\textwidth]{figures/figure1.pdf}
 \end{center}
-\caption{Diagram of the workflow architecture.}
+\caption{Diagram of the \hemaClass{} workflow architecture.}
 \label{fig:webtooldiagram}
 \end{figure}
 
@@ -118,32 +110,28 @@ The Shiny server handles the interaction between the front end web application a
 The back end is essentially the well-documented \pkg{hemaClass} package which can be utilized as a programmatical interface to the functionality of the website.
 However, the package also allows users to run a local instance of the website if one wishes to avoid uploading large files to our server.
 The development and latest version of \pkg{hemaClass} is open source and freely available at \url{https://github.com/oncoclass/hemaclass} for sharing, modification, and redistribution.
-All bug-reports, suggestions, and comments on the website or package are welcome following the latter link.
+All bug-reports, suggestions, and comments on the website or package are welcome and should be posted to the github page following the link above.
 The regular RMA pre-processing is carried out with the Bioconductor package \pkg{affy} \citep{Gautier2004}.
-Core functions for the one-by-one and reference based RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
-
-
-
+Core functions for the one-by-one RMA pre-processing are written in \textsf{C++} and imported to \R{} using \pkg{Rcpp} and \pkg{RcppArmadillo} \citep{Rcpp2013,Eddelbuettel2011,RcppArmadillo,Sanderson2010}.
 
 
 \subsection{Data overview}
 The seven gene expression datasets used in this paper are summarized in Table \ref{table:01}.
-All GEP data are on the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) \citep{Barrett2013} website (\url{http://www.ncbi.nlm.nih.gov/geo/}).
+All GEP data are from the Affymetrix GeneChip HG-U133 Plus 2.0 array and available at the Gene Expression Omnibus (GEO) \citep{Barrett2013} website (\url{http://www.ncbi.nlm.nih.gov/geo/}).
 To establish the classifiers the following datasets are used:
 \begin{enumerate}
   \item Gene expressions from $181$ CHOP treated DLBCL patients are used to establish the ABC/GCB classifier.
   This cohort will be referred to as the \emph{LLMPP CHOP} (Lymphoma/Leukemia Molecular Profiling Project CHOP) cohort \citep{Lenz2008a}.
-  The cohort is also used as a default reference set throughout the paper for normalization of arrays.
+  The cohort is also used as a default reference set throughout the paper for one-by-one RMA normalization of arrays.
   \item The BAGS classifier is based on gene expression data from eight human tonsils sorted in five B-cell subsets.
-  This dataset will be referred to as the \emph{Tonsil dataset} and it is also used for scaling of gene expression data for BAGS classification \citep{DybkaerBoegsted2015}.
+  This dataset is also used for scaling of gene expression data for BAGS classification, and will be referred to as the \emph{Tonsil dataset} \citep{DybkaerBoegsted2015}.
   \item The REGS classifiers are based on a panel of $12$ Multiple Myeloma (MM) and $14$ DLBCL cell lines.
   This panel will be referred to as \emph{BCELL26}.
-  The DLBCL part of the cell line panel is used for scaling of patient data and this part of the dataset will be referred to as   \emph{DLBCL14} \citep{Falgreen2015}.
+  The DLBCL part of the cell line panel is used for scaling of patient data and will be referred to as \emph{DLBCL14} \citep{Falgreen2015}.
 \end{enumerate}
 For validation the following four DLBCL cohorts are used:
 \begin{enumerate}
   \item[4.] The Aalborg OCT cohort (\emph{CHEPRETRO}) of $89$ Danish DLBCL patients undergoing first-line treatment at Aalborg University Hospital \citep{DybkaerBoegsted2015}.
-  The clinical dataset is as registered in the National Clinical Quality Database for Malignant Lymphoma (LYFO, \url{lymphoma.dk}) \citep{Gang2012}.
   \item[5.] The International DLBCL Rituximab-CHOP Consortium MD Anderson (\emph{IDRC}) cohort of $470$ DLBCL patients treated with R-CHOP first-line therapy \citep{Visco2012}.
   Note, that these samples are formalin-fixed, paraffin-embedded (FFPE).
   \item[6.] The Lymphoma/Leukemia Molecular Profiling Project R-CHOP (\emph{LLMPP R-CHOP}) cohort of $233$ DLBCL patients treated with R-CHOP first-line therapy \citep{Lenz2008a}.
@@ -154,132 +142,121 @@ The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \citep{D
 \input{tables/table1.tex}
 
 
-
 \subsection{One-by-one RMA normalization}
-Recall that robust multichip average (RMA) pre-processing consists of three steps in the order:
+Robust multichip average (RMA) pre-processing consists of three steps in the order:
 (1) Background correction,
 (2) quantile normalization, and
 (3) summarization of probes to probe-sets \citep{Irizarry2003,Irizarry2003b}.
 Confer \citet{Bolstad2004} for a comprehensive account on RMA.
-Both the quantile normalization and summarization procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme.
-As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of the RMA background corrected LLMPP CHOP reference data is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \citep{Bolstad2003}.
-To mimic the summarization procedure of RMA \citep{Irizarry2003b} the probe effects estimated by median polish for the LLMPP CHOP reference data is subtracted all probes of the user data.
-The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes.
-Finally, before classification the median of each probe-set in the LLMPP CHOP is subtracted from the corresponding probe-set in the user data.
-This ensures identical classification probabilities whether data is supplied as a cohort or one-by-one.
+Both the quantile normalization and summarization procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme. Previous approaches similar to the one-by-one normalization approach used by \hemaClass{} have been described by \mbox{\citet{Katz2006} and \citet{McCall2010}}
+As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of an RMA background corrected reference dataset is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \mbox{\citep{Bolstad2003}}.
+To mimic the summarization procedure of RMA \mbox{\citep{Irizarry2003b}} the probe effects estimated by median polish for the same reference data is subtracted all probes of the user data.
+The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes. For more detail on our one-by-one normalization approach see Supplementary Section \ref{supprma}. Finally, before classification the median of each probe-set in the RMA reference dataset is subtracted from the corresponding probe-set in the user data, since the classifiers were trained on median centered data. 
 
-To accommodate laboratory and sample preparation specific effects different from the LLMPP CHOP reference data, \hemaClass{} allows the user to upload an alternative dataset which is to be used in place of LLMPP CHOP as reference.
-In this paper the reference datasets consisted of $30$ randomly selected samples from a given study.
-The three pre-processing methods will be referred to as \emph{cohort}, \emph{one-by-one}, and \emph{reference based} normalization.
-
+The one-by-one normalization has the implicit assumption that the samples and reference follow the same distribution. This assumption might be violated by batch effects arising from differences in laboratory specific sample preparations and can cause severe bias in the normalization; to accomodate this \hemaClass{} allows users to upload their own RMA reference dataset prepared under similar conditions. In the current study a laboratory specific RMA reference is referred to as an InLab reference. InLab references were simulated by selecting a random subset of 30 samples from each cohort. Samples were also one-by-one RMA normalized using the LLMPP CHOP dataset as an external reference; this is referred to as ExLab reference normalization.
 
 \subsection{Classification methods}
 
 \subsubsection{Elastic nets}
-Logistic and multinomial regression are used in all classification methods available at \hemaClass{}.
+Logistic and multinomial regression were used in all classification methods available at \hemaClass{}.
 However, in GEP experiments, the number of probe-sets present on the microarray always outnumbers the sample size.
 Collinearity present among the features further aggravates the problem of identifying genes responsible for the underlying biological mechanism.
 Regression under these ill-posed circumstances is typically handled by so-called regularization.
-Here the elastic net penalty \citep{Friedman2010, Zou2005} is used which is a combination of the lasso \citep{Tibshirani1996} and ridge regression \citep{Hoerl1970}.
-Similar to the lasso, this penalty ensures simultaneous variable selection and model estimation by forcing small coefficients to be zero, yielding sparse solutions.
-In contrast to the lasso, the elastic net penalty is capable of selecting more variables than samples.
+Here the elastic net penalty \citep{Friedman2010, Zou2005}, which is a combination of the Lasso \citep{Tibshirani1996} and ridge regression \citep{Hoerl1970}, was used.
+Similar to the Lasso, this penalty ensures simultaneous variable selection and model estimation by forcing small coefficients to be zero, yielding sparse solutions,
+but contrary to the Lasso the elastic net penalty is capable of selecting more variables than samples.
 
 The elastic net penalty contains two parameters $\alpha$ and $\lambda$.
-The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the lasso penalty which corresponds to values of $0$ and $1$, respectively.
+The parameter $\alpha$ interpolates the elastic net penalty between the ridge and the Lasso penalty which corresponds to values of $0$ and $1$, respectively.
 The parameter $\lambda$ determines the amount of shrinkage of the coefficients with larger values inducing more shrinkage until no variables are contained in the model.
-Regularized logistic and multinomial regression are performed with the \R{}-package \pkg{glmnet} \citep{Friedman2010}.
+Regularized logistic and multinomial regression were performed with the \R{}-package \pkg{glmnet} \citep{Friedman2010}.
 
 \subsubsection{ABC/GCB classification}
-The ABC/GCB classifier is established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
+The ABC/GCB classifier was established using logistic regression with an elastic net penalty on the LLMPP CHOP cohort.
 Of the $181$ patients $74$ were ABC, $76$ were GCB, and $31$ were non-classified.
-Using the $150$ patients classified as either ABC or GCB the dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
+Using the $150$ patients classified as either ABC or GCB, a dichotomous classifier capable of assigning each sample an estimate of the probability of being ABC was established.
 
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
 The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
-The optimal combination of the parameters and thereby the number of probe-sets were found at the values minimising the deviance.
+The optimal combination of the parameters, and thereby the number of probe-sets, was found at the values minimizing the deviance.
 The results of the cross validations are shown in Supplementary Figure \ref{fig:crossval}.
-The minimum $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.41$ resulting in a gene expression classifier consisting of $381$ probe-sets.
+The minimum deviance of $0.13$ was attained at $\alpha = 0.15$ and \hl{$\log(\lambda) = -7.29$}. This resulted in a gene expression classifier consisting of $381$ probe-sets \hl{corresponding to 273 Ensembl Gene IDs}.
 
-When a tumour sample is classified according to the ABC/GCB classifier using one-by-one normalization the data is used directly when classifying. However, when a tumour sample is classified according to the ABC/GCB classifier using reference based normalization the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the user supplied reference data.
+When a tumour sample was classified according to the ABC/GCB classifier using \hl{cohort or} InLab one-by-one normalized data the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the \hl{cohort or} InLab reference data. For ExLab one-by-one normalization the data was used directly, since the training data for the ABC/GCB classifier was the same as the ExLab reference in the current study.
+
+\subsubsection{Wright ABC/GCB Classification}
+Standard GEP ABC/GCB classification is done using Wright's naive Bayes classifier. This method is not included on \hemaClass{}, but is used in the current study for comparison of results from our elastic net classifier.
+
+Bayesian compound covariate classification \citep{Wright2003} with probeset list, weights and prior probabilities as described by \citet{Lenz2008a} was used to perform ABC/GCB classification (specific details obtained by personal communication with George Wright). In addition to this the probesets were brought to the same scale as Lenz et al.'s \citep{Lenz2008a} probesets by a rescaling of the probeset-wise standard deviation.
+
 
 \subsubsection{REGS classification}
 \label{sec:regsmethods}
 In the paper by \citet{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
-The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier.
+The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier. \hl{The number of microarray probes and corresponding genes for each of the REGS classifiers is shown in Table \mbox{\ref{probeTable}}.}
 
-The probability of resistance to the combination therapy $p_{CHO}$ is estimated based on the probabilities of drug resistance toward each of the three drugs $P_C$, $P_H$, and $P_O$, respectively.
-This probability is calculated by a formula derived as the posterior probability of being resistance given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
-The formula is also known as Graham's formula,
+The probability of resistance to the combination therapy, $p_{CHO}$, was estimated based on the probabilities of drug resistance toward each of the three drugs: $P_C$, $P_H$, and $P_O$, respectively.
+This probability is calculated as the posterior probability of being resistant, given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
+The formula is also known as Graham's formula:
 \begin{equation*}
-  P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)},
+  P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)}.
 \end{equation*}
-and derived in Supplementary Section \ref{sec:graham}.
+Derivation of the formula is shown in Supplementary Section \ref{sec:graham}.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
 This appoach to resistance to the combination therapy was used in \citet{Falgreen2015}.
 
-When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the LLMPP CHOP dataset.
-Similarly to the other classifiers the LLMPP CHOP cohort is replaced by the user reference dataset, if supplied.
+When a tumour sample is classified according to the REGS classifiers the associated gene expressions are rescaled probe-set wise by the standard deviation of DLBCL14 divided by the standard deviation of the cohort, InLab, or Exlab RMA reference dataset.
 
-Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{} though established elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
-The Rituximab sensitivity classifier of \citet{Laursen2014} and \citet{Laursen2015} is based upon an elastic net approach, like above, however using three classes.
-The Melphalan sensitivity classifier of \citet{Boegsted2011} uses sparse partial least squares to assign the classes sensitive, intermediate, and resistant to samples.
-This classifier was developed for multiple myeloma (MM) patients and thus based on other data \citep{Boegsted2011}.
-A classifier for dexamethasone is still considered experimental and currently available only in the package.
+Resistance classifiers for other chemotherapeutic drugs and diseases are also available on \hemaClass{}, though established elsewhere \citep{Boegsted2011,Bogsted2013,Laursen2014}.
+The Rituximab sensitivity classifier of \citet{Laursen2014} and \citet{Laursen2015} uses an elastic net approach, as above, but with three classes.
+The Melphalan sensitivity classifier of \citet{Boegsted2011} uses sparse partial least squares to classify samples as either "sensitive", "intermediate" or "resistant". This classifier was developed for multiple myeloma (MM) patients and was thus based on other data \citep{Boegsted2011}.
 
 
 \subsubsection{BAGS classification}
 The BAGS classifier established by \citet{DybkaerBoegsted2015} was based on multinomial regression regularized by an elastic net penalty.
-The classifier was trained on the Tonsil dataset in a manner similar to the ABC/GCB classifier.
+The classifier was trained on the Tonsil dataset in a manner similar to the ABC/GCB classifier. \hl{The BAGS classifier uses 327 probes corresponding to 205 Ensembl Gene IDs.}
 
-When a tumour sample is classified according to the BAGS classifier the associated gene expressions are rescaled probe-set wise by the standard deviation of the Tonsil data divided by the standard deviation of the LLMPP CHOP dataset.
-If the user supplies a reference dataset this is used in place of LLMPP CHOP.
-The rescaling is performed to make the data comparable to the Tonsil dataset.
+When a tumour sample is classified according to the BAGS classifier the associated gene expressions are rescaled probe-set wise by the standard deviation of the Tonsil data divided by the standard deviation of the cohort, InLab, or ExLab one-by-one reference dataset. The rescaling is performed to make the data comparable to the Tonsil dataset.
 
 
 \subsection{Inter-method reproducibility assessments}
-To evaluate the reproducibility of the class probabilities obtained through cohort based normalization and one-by-one as well as reference based normalization, Pearson's correlation coefficient for the logit-transformed probabilities and $95\%$ confidence interval (CI) were calculated for each classifier and dataset.
+To evaluate the reproducibility of the class probabilities obtained through cohort or reference based RMA normalization, Pearson's correlation coefficient for the logit-transformed probabilities and $95\%$ confidence interval (CI) were calculated for each classifier and dataset.
 The identity and \emph{total} least square regression lines were compared to assess bias in the estimated probabilities \citep{CHEN1989}.
 Total least squares regression was used as errors are present in both classification probabilities.
 
 For each classifier the associated categories were obtained by thresholding the estimated probabilities.
-The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeds $0.9$, GCB when it is beneath $0.1$, and unclassified otherwise.
+The ABC/GCB classifier was thresholded by $0.1$ and $0.9$, i.e.\ a tumour sample was classified as ABC when the estimated probability exceeded $0.9$, GCB when it was below $0.1$, and unclassified otherwise.
 For the BAGS classifier a tumour was classified as the class N, CB, CC, M, or PB with the highest probablity, if the associated probability exceeded $0.5$ and unclassified when this threshold was not met for any subtype.
-For the REGS classifiers, C, H, O, and CHO combined, the threshold used were the $33\%$ and $66\%$ percentile of the estimated probabilities.
-The classifiers were applied to datasets using the cohort, one-by-one, and reference based RMA normalization.
-After thresholding the class probabilities confusion matrices were created.
-From these the rate of agreement (or accuracy), Cohen's weighted $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
-
+For the REGS classifiers, C, H, O, and CHO combined, the thresholds were the $33\%$ and $66\%$ percentile of the estimated probabilities.
+The classifiers were applied to datasets using cohort, InLab, and ExLab one-by-one RMA normalization.
+Confusion matrices tabulating classifications from cohort normalized data versus InLab or Exlab normalized data were created, and from these the Accuracy (percent with similar classification to cohort), Cohen's weighted $\kappa$, and corresponding $95\%$ CIs were computed to assess the agreement between the determined classes.
 
 \section{Results}
 \subsection{Using \hemaClass{}}
 The website is an easy-to-use, interactive interface for the \pkg{hemaClass} package with the desired RMA normalization and the classification methods selected by the user.
 The usage of the website is largely self-explanatory with context-dependent boxes aiding users with further information, warnings, or errors.
-A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}.
-Users upload patient samples which are normalized and classified depending on settings chosen by the users.
-A text summary of the results and a plot of the predicted progression free survival and overall survival is optionally provided for each patient sample.
-These predictions are based on the patient survival data from LLMPP - RCHOP , MDFCI, and IDRC, as combined in \citet{DybkaerBoegsted2015}, using a Cox proportional hazard's regression with predictors IPI, at levels $0,1,2,4,5$, and a factor combining the ABC/GCB and BAGS classes, at levels ABC, GCB, GCB-CC, GCB-CB, and NC.
-
+A comprehensive tutorial and guide to both the website and package is provided on the website or by running \texttt{vignette("howto")} in \R{}. Uploaded patient samples are normalized and classified depending on settings chosen by the user.
 
 
 \subsection{ABC/GCB classification}
 In order to classify patients as ABC/GCB based on the implemented one-by-one normalization method a classifier based on the regularised logistic regression was established.
-The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to the Wright's naive Bayes classifier \citep{Wright2003,Lenz2008a}.
-The rate of agreement between the two classifiers are shown in Table \ref{tab:ABCGCBclassifier}.
+The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to Wright's naive Bayes classifier \citep{DybkaerBoegsted2015,Wright2003,Lenz2008a}.
+\hl{The rates of agreement between the two classifiers based on cohort normalized data are shown in Table \mbox{\ref{tab:ABCGCBclassifier}}.}
 Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
-The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, were misclassifications involving the unclassified group are weighted by $1/2$.
+The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, where misclassifications involving the unclassified group are weighted by $1/2$. \hl{High agreement between the two classifiers are observed for CHEPRETRO and LLMPP R-CHOP, while the accuracy and Cohen's weighted $\kappa$ are lower for IDRC and MDFCI.}
 The accompanying confusion matrices are shown in the first rows of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
 
-The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the one-by-one based classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
-The probabilities estimated through the two methods are very similar.
-However, the probabilities estimated under one-by-one normalization are slightly uncalibrated (or biased) and skewed upwards, indicating that different cut points might be used for the classifications.
-By normalizing to a reference set of $30$ randomly selected samples from CHEPRETRO this error and bias is greatly minimised as shown in Figure \ref{fig:ABCGCBDrug}B.
+The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the ExLab one-by-one normalized classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
+The probabilities estimated through the two methods are very similar, but
+values from ExLab normalization are slightly uncalibrated (or biased) and skewed \hl{downwards}, indicating that different cut points might be used for the classifications.
+For InLab one-by-one normalization this error and bias is greatly minimized as shown in Figure \ref{fig:ABCGCBDrug}B.
 
 For both methods, patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
-In Table \ref{tab:classALL} the resulting classifications are compared in terms of accuracy and Cohen's weighted $\kappa$ for one-by-one normalization and four validation datasets normalized to 30 internally sampled reference samples.
-CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP all show a high Cohen's weighted $\kappa$ and good rate of agreement, considering that misclassifications involving unclassified samples count as errors.
-The reduced rate of agreement and Cohen's weighted $\kappa$ using one-by-one pre-processing in IDRC may be due to the samples being FFPE although this seems to be remedied by reference based pre-processing.
-The accompanying confusion matrices are shown in the lower part of Supplementary Table \ref{tab:confusionABCGCBHEMA}.
-Note, changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
+\hl{In Table \mbox{\ref{tab:classALL}} the resulting classifications for the four validation datasets are compared in terms of accuracy and Cohen's weighted $\kappa$ for cohort, using either Wrights Bayes classifier or the elastic net classifier, against InLab or ExLab RMA reference normalization.
+For ExLab normalization CHEPRETRO and LLMPP R-CHOP both show a high Cohen's weighted $\kappa$ and accuracy considering that misclassifications involving unclassified samples count as errors, while values are moderate for MDFCI and IDRC when comparing to cohort based classifications for both the elastic net and Wrights classifier. 
+The reduced rate of agreement and Cohen's weighted $\kappa$ using ExLab one-by-one normalization in IDRC may be due to the samples being FFPE although this seems to be remedied by InLab one-by-one normalization. Accuracy and Cohen's weighted $\kappa$ are very high when comparing InLab based classifications to cohort based classifications for the elastic net classifier, but values are still moderate for MDFCI when comparing against Wright classifications.
+The accompanying confusion matrices for the elastic net classifier are shown in the lower part of Supplementary Table \mbox{\ref{tab:confusionABCGCBHEMA}}.}
+Note that changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
 \input{tables/table2.tex}
@@ -289,9 +266,9 @@ Direct disagreements between the classifiers are seemingly rare and only occurs 
 \includegraphics[width=0.375\textwidth]{figures/figure2.pdf}
 \end{center}
 \caption{
-Comparison of logit probabilities for the ABC/GCB and REGS classifiers obtained through one-by-one and reference based normalization against cohort normalization.
-The areas marked with green indicate patients with similar classification between cohort based normalization and one-by-one normalization (A, C, E, G, I)  and reference based RMA normalization (B, D, F, H, J) .
-Contrary, the areas marked with red indicate complete misclassifications.
+Comparison of logit probabilities for the ABC/GCB and REGS classifiers obtained through InLab or Exlab one-by-one normalization against cohort normalization.
+The areas marked with green indicate patients with similar classification between cohort based normalization and ExLab one-by-one normalization (A, C, E, G, I), or InLab one-by-one normalization (B, D, F, H, J) .
+The areas marked with red indicate complete misclassifications.
 For ABC/GCB and REGS the white areas indicate unclassified and intermediate sensitivity, respectively, in at least one of the classifiers.
 The dashed and solid line show the identity and total least squares line, respectively.
 }
@@ -303,7 +280,7 @@ The dashed and solid line show the identity and total least squares line, respec
 \includegraphics[width=0.375\textwidth]{figures/figure3.pdf}
 \end{center}
 \caption{
-Comparison of logit probabilities for the BAGS classifier obtained through one-by-one and reference based normalization against cohort normalization.
+Comparison of logit probabilities for the BAGS classifier obtained through ExLab or InLab one-by-one normalization against cohort normalization.
 The coloured regions in the figure correspond to a threshold probability of $0.5$.
 The dashed and solid line show the identity and total least squares line, respectively.
 }
@@ -314,47 +291,45 @@ The dashed and solid line show the identity and total least squares line, respec
 
 
 \subsection{REGS classification}
-The probability of sensitivity towards each of the three drugs C, H, and O was estimated using \hemaClass{} both in terms of one-by-one and reference based normalization.
+The probability of sensitivity towards each of the three drugs C, H, and O was estimated using \hemaClass{} for both InLab and ExLab one-by-one normalization.
 The logit probabilities of sensitivity are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
-Panels C, E, G, and I show the plots based on one-by-one normalization and panels D, F, H, and J show the plots for the reference based normalization.
-The probabilities obtained by one-by-one and cohort based normalization are comparable. However, similar to the other classifiers the one-by-one normalization leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
-The probabilities obtained by the reference based normalization resembles the cohort based to a great extent indicating that similar well-calibrated probabilities are obtainable for different laboratories by supplying a reference set.
+Panels C, E, G, and I show the plots based on ExLab normalization and panels D, F, H, and J show the plots for the InLab based normalization.
+The probabilities obtained by Exlab and cohort based normalization are comparable, but similar to the other classifiers ExLab normalization leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
+The probabilities obtained by the InLab one-by-one normalization resembles the cohort based to a great extent, indicating that similar well-calibrated probabilities are obtainable for different laboratories by supplying an InLab reference set.
 
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
-The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$.
-The associated confusion matrices for one-by-one normalization and reference based normalization are shown in
+The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$. \hl{Low to moderate rates of agreement are observed for the ExLab normalized data, and again the InLab one-by-one approach yielded higher agreement with classifications obtained from cohort based normalization}
+The associated confusion matrices for InLab and Exlab one-by-one normalization are shown in
 Supplementary Table \ref{tab:confusiondrugonebyone} and
 Supplementary Table \ref{tab:confusiondrugreference}, respectively.
-Again, the reference based approach yields superior agreement with classifications using cohort based normalization.
+.
 
 
 \subsection{BAGS classification}
 The BAGS classifier was evaluated in a manner similar to the ABC/GCB classifier.
-The logit probability of a patient's tumour originating from one of the five subpopulations is again estimated by means of cohort, one-by-one, and reference based normalization.
-The logit probabilities estimated by the one-by-one normalization is plotted against that of the cohort based normalization in Figure \ref{fig:Bagscorr} panels A, C, E, G, and I for CHEPRETRO.
-The correlations between the logit probabilities are highly significant, although slightly skewed and biased.
-To accommodate for this, the data was also normalized using a reference dataset.
-The logit probabilities estimated by the reference based normalization is plotted against that estimated for the cohort based normalization in Figure \ref{fig:Bagscorr} panels B, D, F, H, and J for CHEPRETRO.
-The reference based normalization removes much of the aforementioned bias.
+The logit probability of a patient's tumour originating from one of the five subpopulations was estimated by means of cohort, InLab, and ExLab one-by-one normalization.
+The logit probabilities estimated by the ExLab normalization are plotted against logit probabilities from cohort based normalization in Figure \ref{fig:Bagscorr} panels A, C, E, G, and I for CHEPRETRO.
+The correlations between the logit probabilities are highly significant, but also skewed and biased.
+The logit probabilities estimated using InLab one-by-one normalization are plotted against logit probabilities for the cohort based normalization in Figure \ref{fig:Bagscorr} panels B, D, F, H, and J for CHEPRETRO.
+The InLab one-by-one normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
-The rate of agreement between the cohort based and one-by-one as well as reference based classifications is shown in Table \ref{tab:classALL} along with the Cohen's weighted $\kappa$.
+The rates of agreement between the cohort based, and InLab or ExLab based classifications are shown in Table \ref{tab:classALL} along with Cohen's weighted $\kappa$.\hl{For the BAGS classifier low rates of agreement were also found when comparing results from ExLab normalization with cohort normalization, while InLab normalization again led to improved agreement.}
 The associated confusion matrices are shown in Supplementary Table \ref{tab:BAGShemaclass}.
 
 \input{tables/table3.tex}
 
 
 \section{Discussion}
-Despite the enormous resources spent on developing molecular based cancer classification systems,
+Despite the enormous amount of resources spent on developing molecular based cancer classification systems,
 most of these are still not available in daily clinical practice.
-% there seems to be an inertial resistance to develop clinical applications.
-To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS as well as drug resistance classification on their own datasets.
+To allow for fast validation of our recent findings \citep{DybkaerBoegsted2015, Falgreen2015}, we have developed an easily accessible web application that permits other users to apply ABC/GCB, BAGS, and drug resistance classification to their own datasets. \hl{Since GEP classifiers rely on RMA normalized data, we also implemented a reference based RMA normalization that allows samples to be pre-processed one-by-one instead of in entire cohorts.}
+	 
+\hl{One-by-one normalization was done using both an external RMA reference (ExLab) and a mimicked laboratory specific reference (InLab). Classifications obtained through one-by-one pre-processing performed by \hemaClass{} were then compared to those obtained using cohort based normalization in four clinical cohorts. The results showed that a one-by-one array analysis approach is feasible and performs comparably with the whole cohort based method when an InLab reference is used, while differences between ExLab and cohort normalized classifications were too large to be satisfactory. Users are thus encouraged to supply their own reference for RMA pre-processing. It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects, and after suitable standardisation and calibration, even for clinical use.}
 
-The one-by-one and referece based classifications performed by \hemaClass{} were compared to those obtained using cohort based normalization in four clinical cohorts.
-Even though gene expression data for the four cohorts were obtained through varying preparation kits and sample storage methods, the results show that a one-by-one array analysis approach is feasible and performed comparably with the whole cohort based method.
-It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects and, after suitable standardisation and calibration, even for clinical use.
+\hl{The poor results for ExLab one-by-one normalization and classication is likely caused by bias in the normalization process. To check for bias in the normalization \hemaClass{} calculates the inter-quartile range (IQR) of the relative log expression (RLE) \mbox{\citep{Bolstad2004b}} across probes of one-by-one normalized arrays. Large values of the RLE IQR indicates bad arrays resulting from e.g. incorrect laboratory procedures for cohort normalized data, but can also indicate normalization against an improper reference for one-by-one normalized data, and can thus be used in cases with uncertainty of the validity of a user supplied reference. Based on the validation in Supplementary Section \mbox{\ref{sec_rle}}, we recommend removing samples from the analysis if the RLE IQR exceeds a value of $0.6$. Users are, however, still encouraged to take proper precautions when selecting an RMA reference.}
 
-The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for underlying tumour-biology \citep{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
+The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for the underlying tumour-biology \citep{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
 The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (Rituximab) \citep{Coiffier2002a}.
 Despite the addition of antibody therapy to conventional chemotherapy only $55\%$ of patients with poor risk disease achieve durable remission \citep{Ziepert2010}.
 Thus, the need for new therapeutic options in DLBCL is obvious.
@@ -366,21 +341,16 @@ Interestingly, the constitutive activation of the NF-$\kappa$B pathway is charac
 With the increasing number of new drugs likely to become available over the next years and the fact that their efficacy may vary between subsets of patients defined by gene expression profiles, the current treatment of patients based on disease stage and clinical information alone will not be sufficient.
 \hemaClass{} provides an example of fast processing of complex molecular information in a way that is simple and readily at hand for clinicians.
 
-An immediate limitation of the study is the need for a reference dataset established under the same conditions as the samples one wishes to classify.
-However, calibration of laboratory equipment is a well-known issue for many experimental techniques used in molecular biology like qPCR, mass spectrometry, immunohistochemistry, and flow cytometry.
-An important part of the calibration is that samples should be calibrated towards a dataset consisting of a representative set of tissue samples.
-For the microarray technology this could be solved by inventing a central tissue bank of e.g.\ B-cell cancer cell-lines of varying subtypes which could be used as reference set for each individual microarray platform.
+\hl{An immediate limitation of the study is the need for a reference dataset for one-by-one RMA pre-processing established under the same conditions as the samples one wishes to classify. In these types of analyses one has to trust that the right tissue has been extracted and handled correctly through all the steps in the laboratory ending up with a reference array data set of sufficient quality, since in these types of analyses it is not possible to expect that the validation data (i.e. GEP from patient data) represent the training data (i.e. GEP from sorted normal tissue), as the training data is based on very different tissue as well as subpopulations sorted and profiled under very well controlled conditions.
+However, calibration of laboratory equipment is a well-known issue for many experimental techniques used in molecular biology like qPCR, mass spectrometry, immunohistochemistry, and flow cytometry. An important part of the calibration is that samples should be calibrated towards a dataset consisting of a representative set of tissue samples. The latter could be ensured by having a central tissue bank with officially approved data by e.g the international medical consortia for the specific diseases. Our reference data have for instance been controlled by looking at the frequency of ABC/GCBs, survival curves, and through tissue control by experienced pathologists}
 
-The user reference dataset is important if one wish to use the conventionally used thresholds for classification.
-However, without a user reference set, the high correlation coefficients demonstrate that equally high classification accuracies can be achieved if laboratory specific thresholds are carefully chosen.
 
-Another limitation of the current web application is that it is only designed for one array type.
-The server works at the moment only on Affymetrix HG-U133 Plus 2.0 microarrays, but extensions to other high throughput platforms and cancers are planned.
-This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \citet{Care2013} or by re-annotated chip definition files as suggested by \citep{Dai2005}.
-At the moment we are working on extending the web application to other array types along these line of \citep{Dai2005}.
+\hl{Alternatively the frozen RMA (fRMA) approach suggested by \mbox{\citet{McCall2010}} could be used. This approach allows samples to be RMA normalized one-by-one against a frozen reference established across many different tissues and laboratories, taking the variation across laboratories and tissues for single probes into account. The current implementation of fRMA does not center and scale the data, so it cannot be used with the classifiers implemented in \hemaClass{}, but had the training data for the classifiers been normalized with fRMA this might eliminate the need for centering and scaling sample data.}
+
+Another limitation of the current web application is that \hemaClass{} only works with Affymetrix HG-U133 Plus 2.0 microarrays. This can, however, be circumvented by either re-annotation to HUGO Gene Nomenclature Committee (HGNC) approved symbols as suggested by \citet{Care2013} or by re-annotated chip definition files as suggested by \citet{Dai2005}. At the moment we are working on extending the web application to other array types along these lines. \hl{In the future, gene expressions will likely be measured using RNA-seq technology instead of microarrays. By summarizing the expression levels at gene-annotations rather than affymetrix probes and scaling the data it might also be possible to use microarray based classifiers with RNA-seq data. Alternatively the transcriptome, for the training data used for establishing the BAGS and REGS classifiers, would have to be measured with RNA-seq and the classifiers retrained.}
 
 Traditionally ABC/GCB classification has been achieved using the naive Bayes classifier of \citet{Wright2003} which is based on cohorts, MAS5.0 normalized arrays, and a Bayesian approach assuming an equal amount of ABC and GCB patients.
-However, a classifier based on logistic regression regularized by an elastic net penalty was implemented to make the classification more adaptable to RMA normalization, one-by-one processing, and stable towards varying amounts of ABC/GCB patients.
+However, a classifier based on logistic regression regularized by an elastic net penalty was implemented to make the classification more adaptable to RMA normalization and one-by-one processing.
 This classifier proved to be quite comparable with the naive Bayes classifier over the four studied datasets confirming the strong and stable signal of the ABC/GBC subclasses of DLBCL.
 
 Under the validation of the one-by-one method one should notice that the unclassified is treated as a class in its own right.
@@ -391,13 +361,13 @@ Given that an idealised approach is problematic to formulate, readers are encour
 
 ABC/GCB, BAGS, and REGS are only a part of the GEP-based armamentarium of methods for stratifying lymphoma patients into risk groups \citep{Shipp2002, Lossos2004a, Malumbres2008} and it would be interesting to extend the tool to include other classification systems.
 For a comprehensive review see \citep{Coutinho2013}.
-To our knowledge only a few other classification methods from other cancer types have been made easily accessible as either web or desktop applications.
+To our knowledge only a few other classification methods have been made easily accessible as either web or desktop applications.
 Hopefully, this research will inspire bioinformaticians and statisticians to make their cancer classification methods easily accessible for usage, speedy validation, critical reviews, and mutual inspiration.
 
 \section{Conclusion}
-Despite high throughput molecular biology has been around for almost two decades, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \citep{Chen2012a}.
+Although high throughput technologies in molecular biology have been around for almost two decades, only a few of the numerous biomarkers identified have undergone extensive validation and made it into the clinic \citep{Chen2012a}.
 It is our hope that making our own findings publicly available in this way will speed up validation and testing of BAGS and REGS by other researchers without having to delve into extensive bioinformatics implementations.
-Although \hemaClass{} is still separated from the clinic we believe a web based tool and suggestion for a clinical reference sample will bring cancer classification closer to the clinic.
+Although \hemaClass{} is still separated from the clinic we believe that a web based tool and suggestion for a clinical reference sample will bring cancer classification closer to the clinic.
 Hopefully, this work can also spawn interesting discussions on the clinical requirements of GEP based diagnostic and prognostic tools.
 
 All material for reproducing this paper and its results is found at \url{https://github.com/oncoclass/hemaclass-paper}.
@@ -408,7 +378,7 @@ Comments, suggestions, bug reports, and other issues are warmly welcome at \url{
 \section*{Acknowledgements}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
 SF is supported by a Mobility PhD fellowship at the Graduate School of Health, Faculty of Health Sciences, Aarhus University.
-The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as Karen Elise Jensen Fonden.
+The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6; CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as the Karen Elise Jensen Foundation.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
 
 

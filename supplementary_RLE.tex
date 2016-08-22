@@ -1,0 +1,69 @@
+\documentclass{article}
+\input{preamble.tex}
+
+\begin{document}
+
+\begin{center}
+{\huge SUPPLEMENTARY MATERIAL - RLE}\bigskip \\
+\end{center}
+
+\section{Model control of reference based RMA normalization}
+Given the large difference in misclassifications  between one-by-one and reference normalized samples, we would like to be able to distinguish between the two in a setting where we are unsure how closely the RMA reference resembles the samples.
+
+\subsection{Relative Log Expression}
+The relative log expression (RLE)	is a quality measure for microarrays introduced by \citet{Bolstad2004b}. If we define $\hat{\theta}_{ij}$ as the estimated log expression for probe $i$ on array $j$ following RMA normalization, the RLE is given by:
+\[
+\textrm{RLE}(\hat{\theta}_{ij}) = \hat{\theta}_{ij} - \textrm{median}_j(\hat{\theta}_{ij})
+\]
+i.e. the difference between the expression on a given array and the median expression in the cohort. A non-zero median RLE across probes for an array thus indicates differences in the number of up- and downregulated genes, while a large interquartile range (IQR) indicates that most genes on a given array are differentially expressed \citep{McCall2011}. Extreme values of these measures may be used to identify arrays with low-quality data. We propose that it may also be used to evaluate how well a sample resembles a given RMA reference following normalization (how well it has been normalized), by substituting the cohort median with the RMA reference median.
+
+\section{Results}
+For each of the five datasets used in the current study a random subset of 30 samples were extracted and set as a user reference. The remaining samples for each dataset where then RMA normalized as a cohort, against the randomly selected user reference (reference based) or against the four other datasets (one-by-one). RLE values were calculated in all six scenarios and summarized as the median and IQR for each sample. These values are shown in panel A and B in \cref{fig:chep_rle} to \cref{fig:mdfci_rle}. We find that the RLE values in the user reference scenarios more closely resemble the values calculated from cohort normalization than the values from one-by-one normalization. Furthermore differences between reference-based and on-by-one are more pronounced for the IQR of RLE than for the median. ROC curves showing the ability of the RLE median or IQR to distinguish between a user reference and a one-by-one reference were calculated and plotted using the pROC package version 1.8 \citep{Robin2011} in \R, as shown in panels C and D in \cref{fig:chep_rle} to \cref{fig:mdfci_rle}. The area under the curve (AUC) for the ROC curves confirm the superiority of the RLE IQR for distinguishing between a "correct" user reference and a "wrong" reference, i.e. in most cases we observe a higher AUC when using the IQR instead of the median RLE.\\\\
+Using Youden's index, which maximizes the sum of sensitivity and specificity, we calculated the optimal threshold for each ROC curve based on the RLE IQR as shown in table \ref{rleTable}. Calculating the median RLE IQR across all datasets and one-by-one RMA references gives a value of 0.615. By rounding of we set a conservative threshold of 0.6 for reference normalized samples, i.e. if the RLE IQR exceeds this value we advise not to include the sample in subsequent classifications. This does not remove all one-by-one normalized samples, but in most cases it prevents the user from getting poor classifications resulting from biased RMA normalization.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{figures/chep_rle.pdf}
+	\end{center}
+	\caption{Median and IQR RLE values for different RMA normalizations of the CHEPRETRO dataset and ROC curves}
+	\label{fig:chep_rle}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle.pdf}
+	\end{center}
+	\caption{Median and IQR RLE values for different RMA normalizations of the RCHOP dataset and ROC curves}
+	\label{fig:rchop_rle}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{figures/CHOP_rle.pdf}
+	\end{center}
+	\caption{Median and IQR RLE values for different RMA normalizations of the CHOP dataset and ROC curves}
+	\label{fig:chop_rle}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{figures/IDRC_rle.pdf}
+	\end{center}
+	\caption{Median and IQR RLE values for different RMA normalizations of the IDRC dataset and ROC curves}
+	\label{fig:idrc_rle}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{figures/MDFCI_rle.pdf}
+	\end{center}
+	\caption{Median and IQR RLE values for different RMA normalizations of the MDFCI dataset and ROC curves}
+	\label{fig:mdfci_rle}
+\end{figure}
+
+
+\input{figures/RLE_table.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
