@@ -6,14 +6,15 @@ library(pROC)
 library(xtable)
 
 ### Plot output
-tiff_out=FALSE
-outDir="H:/hema_temp/hemaClass-paper/figures"
-tableOut="H:/hema_temp/hemaClass-paper/tables"
+tiff_out=TRUE
+setwd("h:/hema_temp/hemaClass-paper")
+outDir="figures/"
+tableOut="tables/"
 
 ### Function for plotting RLE values
 plot_RLE=function(rma_data, statistic){
-  if(!statistic %in% c("mean", "median", "iqr","total")){
-    cat('error statistic must be "mean", "median" or "iqr"')
+  if(!statistic %in% c("mean", "median", "IQR","total")){
+    cat('error statistic must be "mean", "median" or "IQR"')
   } else{
       ## List references
       refs=names(rma_data)
@@ -22,7 +23,7 @@ plot_RLE=function(rma_data, statistic){
       ## Set column number in RLE.stats matrix
       if( statistic=="mean" ){ i=1 }
       if( statistic=="median" ){ i=2 }
-      if( statistic=="iqr" ){ i=3 }
+      if( statistic=="IQR" ){ i=3 }
       if( statistic=="total"){i=5
         for(ref in refs){
           rma_data[[ref]]$RLE.stats[,i]=abs(rma_data[[ref]]$RLE.stats[,2])+rma_data[[ref]]$RLE.stats[,3]
@@ -47,7 +48,7 @@ plot_RLE=function(rma_data, statistic){
           points(abs(rma_data[[refs[j]]]$RLE.stats[,i]), col=j, pch=16)
         }
       }
-      legend("top", refs, col=1:nRef, pch=rep(20,nRef), cex=0.8, pt.cex=1, bty="n", ncol=3)
+      legend("top", refs, col=1:nRef, pch=rep(20,nRef), cex=0.75, pt.cex=1, bty="n", ncol=3)
     }
 }
 
@@ -109,8 +110,7 @@ ABCGCB2=function(rma_data){
 ###################################
 #### Plots for CHEPRETRO ##########
 ###################################
-chep_rma=readRDS("h:/hema_temp/RLE/data/chep_rma.rds")
-names(chep_rma)[2]="InLab"
+chep_rma=readRDS("data/chep_rma.rds")
 
 ### Calculate ROC curves
 chep_roc_rle_median=calc_roc(chep_rma,"RLE",median)
@@ -126,7 +126,7 @@ par(mfcol=c(2,2))
 ### Scatter plots
 plot_RLE(chep_rma, "median")
 mtext("A", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
-plot_RLE(chep_rma, "iqr")
+plot_RLE(chep_rma, "IQR")
 mtext("B", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 
 ### Plot ROC curves
@@ -140,9 +140,7 @@ dev.off()
 #### Plots for RCHOP ##########
 ###############################
 
-RCHOP_rma=readRDS("h:/hema_temp/RLE/data/RCHOP_rma.rds")
-names(RCHOP_rma)[2]="InLab"
-names(RCHOP_rma)[4]="CHEPRETRO"
+RCHOP_rma=readRDS("data/RCHOP_rma.rds")
 
 ### Calculate ROC curves
 RCHOP_roc_rle_median=calc_roc(RCHOP_rma,"RLE",median)
@@ -157,7 +155,7 @@ par(mfcol=c(2,2))
 ### Scatter plots
 plot_RLE(RCHOP_rma, "median")
 mtext("A", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
-plot_RLE(RCHOP_rma, "iqr")
+plot_RLE(RCHOP_rma, "IQR")
 mtext("B", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 
 ### Plot ROC curves
@@ -171,9 +169,7 @@ dev.off()
 #### Plots for CHOP ##########
 ##############################
 
-CHOP_rma=readRDS("h:/hema_temp/RLE/data/CHOP_rma.rds")
-names(CHOP_rma)[2]="InLab"
-names(CHOP_rma)[4]="CHEPRETRO"
+CHOP_rma=readRDS("data/CHOP_rma.rds")
 
 ### Calculate ROC curves
 CHOP_roc_rle_median=calc_roc(CHOP_rma,"RLE",median)
@@ -189,7 +185,7 @@ par(mfcol=c(2,2))
 ### Scatter plots
 plot_RLE(CHOP_rma, "median")
 mtext("A", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
-plot_RLE(CHOP_rma, "iqr")
+plot_RLE(CHOP_rma, "IQR")
 mtext("B", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 
 ### Plot ROC curves
@@ -199,13 +195,13 @@ plot_roc(CHOP_roc_rle_iqr, "RLE IQR")
 mtext("D", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 dev.off()
 
+rm(CHOP_rma)
+
 ##############################
 #### Plots for IDRC ##########
 ##############################
 
-IDRC_rma=readRDS("h:/hema_temp/RLE/data/IDRC_rma.rds")
-names(IDRC_rma)[2]="InLab"
-names(IDRC_rma)[5]="CHEPRETRO"
+IDRC_rma=readRDS("data/IDRC_rma.rds")
 
 ### Calculate ROC curves
 IDRC_roc_rle_median=calc_roc(IDRC_rma,"RLE",median)
@@ -220,7 +216,7 @@ par(mfcol=c(2,2))
 ### Scatter plots
 plot_RLE(IDRC_rma, "median")
 mtext("A", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
-plot_RLE(IDRC_rma, "iqr")
+plot_RLE(IDRC_rma, "IQR")
 mtext("B", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 
 ### Plot ROC curves
@@ -236,9 +232,10 @@ rm(IDRC_rma)
 #### Plots for MDFCI##########
 ##############################
 
-MDFCI_rma=readRDS("h:/hema_temp/RLE/data/MDFCI_rma.rds")
-names(MDFCI_rma)[2]="InLab"
-names(MDFCI_rma)[5]="CHEPRETRO"
+MDFCI_rma=readRDS("data/MDFCI_rma.rds")
+#names(MDFCI_rma)[2]="InLab"
+#names(MDFCI_rma)[5]="CHEPRETRO"
+names(MDFCI_rma)=c("cohort", "InLab", "LLMPP CHOP", "LLMPP R-CHOP", "CHEPRETRO", "IDRC")
 
 ### Calculate ROC curves
 MDFCI_roc_rle_median=calc_roc(MDFCI_rma,"RLE",median)
@@ -254,7 +251,7 @@ par(mfcol=c(2,2))
 ### Scatter plots
 plot_RLE(MDFCI_rma, "median")
 mtext("A", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
-plot_RLE(MDFCI_rma, "iqr")
+plot_RLE(MDFCI_rma, "IQR")
 mtext("B", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 
 ### Plot ROC curves
@@ -263,6 +260,8 @@ mtext("C", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 plot_roc(MDFCI_roc_rle_iqr, "RLE IQR")
 mtext("D", font = 2, adj = -0.1, line = 2.5, cex = 1.2)
 dev.off()
+
+rm(MDFCI_rma)
 
 ################################################
 ### Calculate optimal thresholds for RLE IQR ###
@@ -275,7 +274,7 @@ IDRC_roc_rle_iqr_optimal=lapply(IDRC_roc_rle_iqr, optimize_roc)
 MDFCI_roc_rle_iqr_optimal=lapply(MDFCI_roc_rle_iqr, optimize_roc)
 
 ### Format as table
-dataset=c(rep("CHEPRETRO", 4), rep("RCHOP",4), rep("CHOP", 4), rep("IDRC", 4), rep("MDFCI", 4), "Median")
+dataset=c(rep("CHEPRETRO", 4), rep("LLMPP R-CHOP",4), rep("LLMPP CHOP", 4), rep("IDRC", 4), rep("MDFCI", 4), "Median")
 ref=c(names(chep_roc_rle_iqr), names(RCHOP_roc_rle_iqr), names(CHOP_roc_rle_iqr), names(IDRC_roc_rle_iqr), names(MDFCI_roc_rle_iqr), "-")
 
 x1=matrix(unlist(chep_roc_rle_iqr_optimal), ncol=3, byrow=T)
@@ -288,11 +287,10 @@ dat=round(rbind(dat,colMedians(dat)),2)
 
 optimal_threshold_rle=data.frame(dataset,ref,dat)
 names(optimal_threshold_rle)=c("Dataset", "RMA reference", "Threshold", "Sensitivity", "Specificity")
-optimal_threshold_rle[,2]=gsub("CHEP", "CHEPRETRO",optimal_threshold_rle[,2])
 optimal_threshold_rle
 
 ### Save table with results
-sink(file.path(tableOut,"RLE_table.tex"))
+sink(file.path(tableOut,"tableS6.tex"))
 print(xtable(optimal_threshold_rle,
              caption = "Optimal thresholds for RLE IQR",
              label="rleTable"),
@@ -302,7 +300,6 @@ sink()
 ############################################
 ### RLE IQR vs Classification: CHEPRETRO ###
 ############################################
-
 chep_REGS=lapply(chep_rma, REGS)
 chep_BAGS=lapply(chep_rma, BAGS2)
 chep_ABCGCB=lapply(chep_rma, ABCGCB2)
@@ -311,7 +308,7 @@ chep_ABCGCB=lapply(chep_rma, ABCGCB2)
 result_bags=list()
 threshold=seq(0.3,1, by=0.01)
 
-references=names(chep_rma)[-1]
+references=c("InLab","LLMPP R-CHOP","LLMPP CHOP")
 nSamples=ncol(chep_rma[["cohort"]]$exprs)
 
 for(ref in references){
@@ -325,13 +322,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_bags[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_bags[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS7.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -340,7 +330,7 @@ pdf(file.path(outDir,"chep_rle_classification_bags.pdf"), height=8.75, width=7.5
 }
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","RCHOP","CHOP")){
+for(ref in references){
   plot(threshold, result_bags[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -356,7 +346,6 @@ dev.off()
 result_abcgcb=list()
 threshold=seq(0.3,1, by=0.01)
 
-references=names(chep_rma)[-1]
 nSamples=ncol(chep_rma[["cohort"]]$exprs)
 
 for(ref in references){
@@ -370,13 +359,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_abcgcb[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_abcgcb[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS8.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -385,7 +367,7 @@ pdf(file.path(outDir,"chep_rle_classification_abcgcb.pdf"), height=8.75, width=7
 }
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","RCHOP","CHOP")){
+for(ref in references){
   plot(threshold, result_abcgcb[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -401,7 +383,6 @@ dev.off()
 result_regs=list()
 threshold=seq(0.3,1, by=0.01)
 
-references=names(chep_rma)[-1]
 nSamples=ncol(chep_rma[["cohort"]]$exprs)
 
 for(ref in references){
@@ -415,13 +396,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_regs[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_regs[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS9.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -430,7 +404,7 @@ pdf(file.path(outDir,"chep_rle_classification_regs.pdf"), height=8.75, width=7.5
 }
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","RCHOP","CHOP")){
+for(ref in references){
   plot(threshold, result_regs[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -453,7 +427,7 @@ RCHOP_ABCGCB=lapply(RCHOP_rma, ABCGCB2)
 result_bags=list()
 threshold=seq(0.3,1, by=0.01)
 
-references=names(RCHOP_rma)[-1]
+references=c("InLab","CHEPRETRO","LLMPP CHOP")
 nSamples=ncol(RCHOP_rma[["cohort"]]$exprs)
 
 for(ref in references){
@@ -467,13 +441,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_bags[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_bags[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS10.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -482,7 +449,7 @@ pdf(file.path(outDir,"RCHOP_rle_classification_bags.pdf"), height=8.75, width=7.
 }
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","CHEPRETRO","CHOP")){
+for(ref in references){
   plot(threshold, result_bags[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -498,7 +465,6 @@ dev.off()
 result_abcgcb=list()
 threshold=seq(0.3,1, by=0.01)
 
-references=names(RCHOP_rma)[-1]
 nSamples=ncol(RCHOP_rma[["cohort"]]$exprs)
 
 for(ref in references){
@@ -512,13 +478,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_abcgcb[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_abcgcb[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS11.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -527,7 +486,7 @@ pdf(file.path(outDir,"RCHOP_rle_classification_abcgcb.pdf"), height=8.75, width=
 }
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","CHEPRETRO","CHOP")){
+for(ref in references){
   plot(threshold, result_abcgcb[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -557,13 +516,6 @@ for(ref in references){
     i=i+1
   }
 }
-par(mfcol=c(2,5))
-for(ref in references){
-  plot(threshold, result_regs[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-  plot(threshold, result_regs[[ref]]$threshold_diag_prop, xlab="RLE IQR", ylab="Accuracy", main=ref, ylim=c(0,1))
-  abline(v=0.6, col="red")
-}
 
 if(tiff_out){
   tiff(file.path(outDir,"figureS12.tiff"), height=8.75, width=7.5, units="in", res=300, compression="lzw")
@@ -572,7 +524,7 @@ pdf(file.path(outDir,"RCHOP_rle_classification_regs.pdf"), height=8.75, width=7.
 }  
 par(mfrow=c(3,2))
 panel=1
-for(ref in c("InLab","CHEPRETRO","CHOP")){
+for(ref in references){
   plot(threshold, result_regs[[ref]]$threshold_total_prop, xlab="RLE IQR", ylab="% Samples", main=ref, ylim=c(0,1))
   abline(v=0.6, col="red")
   mtext(LETTERS[panel], font = 2, adj = -0.1, line = 2.5, cex = 1.2)
@@ -625,7 +577,7 @@ classGenes[["Combined Predictor"]]=rownames(readPredCoef())
 probeTable=t(sapply(classGenes,list_anno))
 probeTable2=data.frame("Classifier"=row.names(probeTable),probeTable)
 
-sink(file.path(tableOut,"probeTable.tex"))
+sink(file.path(tableOut,"tableS5.tex"))
 print(xtable(probeTable2,
              caption = "Number of probes used in the classifiers and the number of corresponding HGNC and Ensembl gene IDs",
              label="probeTable",

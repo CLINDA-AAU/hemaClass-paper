@@ -1,5 +1,6 @@
 %latex.default(table3, file = "tables/table3.tex", title = "",     rgroup = c("ABC/GCB (Wright)", gsub("ABCGCB", "ABC/GCB",         names(results))), cgroup = c("ExLab RMA pre-processing",         "InLab RMA pre-processing"), size = "scriptsize", label = "tab:classALL",     caption = caption)%
 \begin{table}[!tbp]
+\begin{adjustwidth}{-1in}{0in}
 {\scriptsize
 \caption{Comparison of classifications obtained using cohort based
 normalization against Exlab and InLab reference based normalization.
@@ -43,5 +44,5 @@ Wrights Bayes classifier and the elastic net classifier\label{tab:classALL}}
 ~~LLMPP R-CHOP&$.58~(.54, .61)$&$.50~(.46, .54)$&$.810~(.786, .831)$&&$.90~(.87, .92)$&$.89~(.85, .92)$&$.992~(.990, .993)$\tabularnewline
 \hline
 \end{tabular}\end{center}}
-
+\end{adjustwidth}
 \end{table}
