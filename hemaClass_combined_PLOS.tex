@@ -199,11 +199,11 @@
 \\
 Steffen Falgreen\textsuperscript{1,\ddag},
 Anders Ellern Bilgrau\textsuperscript{1,2,\ddag},
-Rasmus Froberg Br\o ndum\textsuperscript{1}
+Rasmus Froberg Br\o ndum\textsuperscript{1},
 Lasse Hjort Jakobsen\textsuperscript{1,2},
 Jonas Have\textsuperscript{1,2},
 Kasper Lindblad Nielsen\textsuperscript{1,2},
-Tarec Christoffer El-Galaly\textsuperscript{1},
+Tarec Christoffer El-Galaly\textsuperscript{1,2},
 Julie St{\o}ve B{\o}dker\textsuperscript{1},
 Alexander Schmitz\textsuperscript{1},
 Ken H. Young\textsuperscript{3},
@@ -212,11 +212,11 @@ Karen Dybk{\ae}r\textsuperscript{1,2},
 Martin B{\o}gsted\textsuperscript{1,2,*}
 \\
 \bigskip
-\bf{1} Department of Haematology, Aalborg University Hospital
+\bf{1} Department of Haematology, Aalborg University Hospital, Aalborg, Denmark
 \\
-\bf{2} Department of Clinical Medicine, Aalborg University
+\bf{2} Department of Clinical Medicine, Aalborg University, Aalborg, Denmark
 \\
-\bf{3} Department of Hematopathology, MD Anderson Cancer Center
+\bf{3} Department of Hematopathology, University of Texas MD Anderson Cancer Center, Houston, USA
 \\
 \bigskip
 
@@ -277,7 +277,7 @@ We believe that \hemaClass{} will provide a novel and user-friendly concept for 
  
 \section*{Methods}
 \subsection*{Classification workflow}
-The workflow architecture of \hemaClass{} is illustrated in Figure \mbox{\ref{fig:webtooldiagram}}. The user is presented with a graphical interface for uploading data and adjusting settings. The user data is RMA pre-processed by the server (with an optional user one-by-one RMA reference), and subsequently processed by the classification algorithms. The results are then returned for download and inspection via the user interface.
+The workflow architecture of \hemaClass{} is illustrated in Fig \mbox{\ref{fig:webtooldiagram}}. The user is presented with a graphical interface for uploading data and adjusting settings. The user data is RMA pre-processed by the server (with an optional user one-by-one RMA reference), and subsequently processed by the classification algorithms. The results are then returned for download and inspection via the user interface.
 
 \begin{figure}
 	\begin{center}
@@ -324,8 +324,34 @@ For validation the following four DLBCL cohorts are used:
 \end{enumerate}
 The GEO datasets were downloaded using the \R{}-package \pkg{DLBCLdata} \cite{DLBCLdata}.
 
-\input{tables/table1.tex}
-
+%\input{tables/table1.tex}
+\begin{table}%[htb]
+	\small
+	\caption{Overview of used datasets and GEO accession numbers.}
+	\label{table:01}%
+	\begin{center}
+		\begin{tabular}{rlclll}
+			\hline\hline
+			No. & Dataset & $n$ & Usage & GEO number & Ref.
+			\\
+			\hline
+			1. & LLMPP CHOP & 181 & Training & GSE10846 & \cite{Lenz2008a}
+			\\
+			2. & Tonsil & 33 & Training & GSE56315 & \cite{DybkaerBoegsted2015}
+			\\
+			3. & BCELL26 & 26 & Training & GSE53798 & \cite{Falgreen2015}
+			\\
+			4. & CHEPRETRO & 89 & Validation & GSE56315 & \cite{DybkaerBoegsted2015}
+			\\
+			5. & IDRC & 470 & Validation & GSE31312 & \cite{Visco2012}
+			\\
+			6. & LLMPP R-CHOP & 233 & Validation & GSE10846 & \cite{Lenz2008a}
+			\\
+			7. & MDFCI & 90 & Validation & GSE34171 & \cite{Monti2012a}\\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
 
 \subsection*{One-by-one RMA normalization}
 Robust multichip average (RMA) pre-processing consists of three steps in the order:
@@ -336,7 +362,7 @@ Confer \cite{Bolstad2004} for a comprehensive account on RMA.
 Both the quantile normalization and summarization procedures of RMA are cohort based and hence need to be altered to facilitate a one-by-one RMA pre-processing scheme. Previous approaches similar to the one-by-one normalization approach used by \hemaClass{} have been described by \mbox{\cite{Katz2006} and \cite{McCall2010}}
 As quantile normalizer, the empirical cumulative distribution function (ECDF) of the mean of the sample quantiles of an RMA background corrected reference dataset is used in place of the usually applied ECDF of the mean of the sample quantiles of the user supplied data \mbox{\cite{Bolstad2003}}.
 To mimic the summarization procedure of RMA \mbox{\cite{Irizarry2003b}} the probe effects estimated by median polish for the same reference data is subtracted all probes of the user data.
-The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes. For more detail on our one-by-one normalization approach see Supplementary Section \nameref{supprma}. Finally, before classification the median of each probe-set in the RMA reference dataset is subtracted from the corresponding probe-set in the user data, since the classifiers were trained on median centered data. 
+The RMA pre-processed expression value for each probe-set is then estimated as the median of the associated probes. For more detail on our one-by-one normalization approach see \nameref{supp:text} section S4. Finally, before classification the median of each probe-set in the RMA reference dataset is subtracted from the corresponding probe-set in the user data, since the classifiers were trained on median centered data. 
 
 The one-by-one normalization has the implicit assumption that the samples and reference follow the same distribution. This assumption might be violated by batch effects arising from differences in laboratory specific sample preparations and can cause severe bias in the normalization; to accomodate this \hemaClass{} allows users to upload their own RMA reference dataset prepared under similar conditions. In the this paper a laboratory specific RMA reference is referred to as an InLab reference. InLab references were simulated by selecting a random subset of 30 samples from each cohort. Samples were also one-by-one RMA normalized using the LLMPP CHOP dataset as an external reference; this is referred to as ExLab reference normalization.
 
@@ -386,7 +412,7 @@ The formula is also known as Graham's formula:
 \begin{equation*}
 P_{CHO} = \frac{P_C P_H P_O}{P_C P_H P_O + (1 - P_C)(1 - P_H)(1 - P_O)}.
 \end{equation*}
-Derivation of the formula is shown in Supplementary Section \nameref{sec:graham}.
+Derivation of the formula is shown in \nameref{supp:text} section S2.
 If a drug is left out in the combination therapy the drug is simply removed from the formula.
 This appoach to resistance to the combination therapy was used in \cite{Falgreen2015}.
 
@@ -431,10 +457,10 @@ The rates of agreement between the two classifiers based on cohort normalized da
 The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, where misclassifications involving the unclassified group are weighted by $1/2$. High agreement between the two classifiers are observed for CHEPRETRO and LLMPP R-CHOP, while the accuracy and Cohen's weighted $\kappa$ are lower for IDRC and MDFCI.
 The accompanying confusion matrices are shown in the first rows of Supplementary \nameref{tab:confusionABCGCBHEMA}.
 
-The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the ExLab one-by-one normalized classification scheme in Figure \ref{fig:ABCGCBDrug}A for CHEPRETRO.
+The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the ExLab one-by-one normalized classification scheme in Fig \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The probabilities estimated through the two methods are very similar, but
 values from ExLab normalization are slightly uncalibrated (or biased) and skewed downwards, indicating that different cut points might be used for the classifications.
-For InLab one-by-one normalization this error and bias is greatly minimized as shown in Figure \ref{fig:ABCGCBDrug}B.
+For InLab one-by-one normalization this error and bias is greatly minimized as shown in Fig \ref{fig:ABCGCBDrug}B.
 
 For both methods, patients are classified as ABC when the estimated probability exceeds $0.9$ and GCB when it is below $0.1$.
 In Table \mbox{\ref{tab:classALL}} the resulting classifications for the four validation datasets are compared in terms of accuracy and Cohen's weighted $\kappa$ for cohort, using either Wright's Bayes classifier or the elastic net classifier, against InLab or ExLab RMA reference normalization.
@@ -444,7 +470,28 @@ The accompanying confusion matrices for the elastic net classifier are shown in 
 Note that changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
-\input{tables/table2.tex}
+%\input{tables/table2.tex}
+\begin{table}[!tbp]
+	{\small
+		\caption{Comparison of ABC/GCB classification performed using Wright's naive
+			Bayes classifier \cite{Wright2003} and the established elastic net classifier
+			both based on cohort normalization.
+			The second column shows the accuracy of the
+			classifiers with $95\%$ CI. The third column shows the Cohen's weighted
+			$\kappa$ with $95\%$ CI.\label{tab:ABCGCBclassifier}} 
+		\begin{center}
+			\begin{tabular}{lll}
+				\hline\hline
+				\multicolumn{1}{l}{Dataset}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}\tabularnewline
+				\hline
+				CHEPRETRO&$0.94~(0.87, 0.98)$&$0.94~(0.88, 1.00)$\tabularnewline
+				MDFCI&$0.78~(0.68, 0.86)$&$0.77~(0.66, 0.88)$\tabularnewline
+				IDRC&$0.82~(0.79, 0.86)$&$0.80~(0.76, 0.85)$\tabularnewline
+				LLMPP R-CHOP&$0.91~(0.86, 0.94)$&$0.90~(0.85, 0.96)$\tabularnewline
+				\hline
+			\end{tabular}
+		\end{center}}
+\end{table}
 
 \begin{figure}
 	\begin{center}
@@ -477,7 +524,7 @@ Direct disagreements between the classifiers are seemingly rare and only occurs 
 
 \subsection*{REGS classification}
 The probability of sensitivity towards each of the three drugs C, H, and O was estimated using \hemaClass{} for both InLab and ExLab one-by-one normalization.
-The logit probabilities of sensitivity are plotted against those obtained by cohort based normalization in Figure \ref{fig:ABCGCBDrug} for CHEPRETRO data.
+The logit probabilities of sensitivity are plotted against those obtained by cohort based normalization in Fig \ref{fig:ABCGCBDrug} for CHEPRETRO data.
 Panels C, E, G, and I show the plots based on ExLab normalization and panels D, F, H, and J show the plots for the InLab based normalization.
 The probabilities obtained by ExLab and cohort based normalization are comparable, but similar to the other classifiers ExLab normalization leads to slightly skewed and biased probabilities, indicating that different cut points should be considered.
 The probabilities obtained by the InLab one-by-one normalization resembles the cohort based to a great extent, indicating that similar well-calibrated probabilities are obtainable for different laboratories by supplying an InLab reference set.
@@ -492,17 +539,64 @@ Supplementary \nameref{tab:confusiondrugreference}, respectively.
 \subsection*{BAGS classification}
 The BAGS classifier was evaluated in a manner similar to the ABC/GCB classifier.
 The logit probability of a patient's tumour originating from one of the five subpopulations was estimated by means of cohort, InLab, and ExLab one-by-one normalization.
-The logit probabilities estimated by the ExLab normalization are plotted against logit probabilities from cohort based normalization in Figure \ref{fig:Bagscorr} panels A, C, E, G, and I for CHEPRETRO.
+The logit probabilities estimated by the ExLab normalization are plotted against logit probabilities from cohort based normalization in Fig \ref{fig:Bagscorr} panels A, C, E, G, and I for CHEPRETRO.
 The correlations between the logit probabilities are highly significant, but also skewed and biased.
-The logit probabilities estimated using InLab one-by-one normalization are plotted against logit probabilities for the cohort based normalization in Figure \ref{fig:Bagscorr} panels B, D, F, H, and J for CHEPRETRO.
+The logit probabilities estimated using InLab one-by-one normalization are plotted against logit probabilities for the cohort based normalization in Fig \ref{fig:Bagscorr} panels B, D, F, H, and J for CHEPRETRO.
 The InLab one-by-one normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
 The rates of agreement between the cohort based, and InLab or ExLab based classifications are shown in Table \ref{tab:classALL} along with Cohen's weighted $\kappa$. For the BAGS classifier low rates of agreement were also found when comparing results from ExLab normalization with cohort normalization, while InLab normalization again led to improved agreement. 
-The associated confusion matrices are shown in Supplementary Table \nameref{tab:BAGShemaclass}.
+The associated confusion matrices are shown in Supplementary \nameref{tab:BAGShemaclass}.
 
-\input{tables/table3.tex}
-
+%\input{tables/table3.tex}
+\begin{table}[!tbp]
+	\begin{adjustwidth}{-1in}{0in}
+		{\scriptsize
+			\caption{Comparison of classifications obtained using cohort based
+				normalization against Exlab and InLab reference based normalization.
+				The classifications are compared in terms of accuracy,
+				Cohen's weighted $\kappa$, and Pearson's correlation coefficient $r$ all
+				supplied with $95\%$ CIs. The comparisons in the first and last three columns
+				are based on the ExLab and InLab reference based
+				normalization method, respectively. For ABC/GCB classification, results
+				from InLab or Exlab classification with the elasitic net classifier is 
+				compared against ABC/GCB classes for cohort normalized data obtained using both
+				Wrights Bayes classifier and the elastic net classifier\label{tab:classALL}} 
+			\begin{center}
+				\begin{tabular}{llllclll}
+					\hline\hline
+					\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries ExLab RMA pre-processing}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries InLab RMA pre-processing}\tabularnewline
+					\cline{2-4} \cline{6-8}
+					\multicolumn{1}{l}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}\tabularnewline
+					\hline
+					{\bfseries ABC/GCB (Wright)}&&&&&&&\tabularnewline
+					~~CHEPRETRO&$.89~(.80, .94)$&$.89~(.79, .98)$&-&&$.97~(.88, 1.)$&$.97~(.90, 1.)$&-\tabularnewline
+					~~MDFCI&$.63~(.52, .73)$&$.52~(.40, .64)$&-&&$.72~(.59, .83)$&$.71~(.55, .86)$&-\tabularnewline
+					~~IDRC&$.67~(.63, .71)$&$.62~(.56, .67)$&-&&$.84~(.80, .87)$&$.82~(.77, .86)$&-\tabularnewline
+					~~LLMPP R-CHOP&$.83~(.77, .87)$&$.82~(.74, .89)$&-&&$.88~(.83, .92)$&$.88~(.82, .93)$&-\tabularnewline
+					\hline
+					{\bfseries ABC/GCB}&&&&&&&\tabularnewline
+					~~CHEPRETRO&$.88~(.79, .94)$&$.87~(.78, .97)$&$.999~(.998, .999)$&&$.98~(.91, 1.)$&$.98~(.93, 1.)$&$1.~(.999, 1.)$\tabularnewline
+					~~MDFCI&$.69~(.59, .78)$&$.68~(.53, .82)$&$.998~(.998, .999)$&&$.98~(.91, 1.)$&$.98~(.85, 1.)$&$1.~(.999, 1.)$\tabularnewline
+					~~IDRC&$.65~(.61, .69)$&$.62~(.57, .68)$&$.986~(.983, .988)$&&$.93~(.91, .95)$&$.93~(.90, .96)$&$.993~(.991, .994)$\tabularnewline
+					~~LLMPP R-CHOP&$.82~(.77, .87)$&$.82~(.74, .89)$&$.999~(.999, .999)$&&$.94~(.90, .97)$&$.94~(.90, .98)$&$.991~(.988, .993)$\tabularnewline
+					\hline
+					{\bfseries BAGS}&&&&&&&\tabularnewline
+					~~CHEPRETRO&$.58~(.47, .69)$&$.56~(.28, .84)$&-&&$.78~(.65, .88)$&$.74~(.33, 1.)$&-\tabularnewline
+					~~MDFCI&$.54~(.43, .64)$&$.48~(.17, .79)$&-&&$.80~(.68, .89)$&$.83~(.30, 1.)$&-\tabularnewline
+					~~IDRC&$.52~(.47, .56)$&$.41~(.32, .50)$&-&&$.79~(.75, .83)$&$.79~(.62, .96)$&-\tabularnewline
+					~~LLMPP R-CHOP&$.56~(.49, .62)$&$.53~(.36, .70)$&-&&$.88~(.82, .92)$&$.88~(.60, 1.)$&-\tabularnewline
+					\hline
+					{\bfseries REGS}&&&&&&&\tabularnewline
+					~~CHEPRETRO&$.73~(.68, .78)$&$.71~(.64, .77)$&$.934~(.920, .946)$&&$.84~(.79, .88)$&$.83~(.76, .89)$&$.992~(.990, .994)$\tabularnewline
+					~~MDFCI&$.60~(.55, .65)$&$.55~(.48, .61)$&$.824~(.788, .855)$&&$.90~(.86, .94)$&$.89~(.83, .96)$&$.997~(.996, .997)$\tabularnewline
+					~~IDRC&$.52~(.49, .54)$&$.33~(.30, .36)$&$.660~(.635, .685)$&&$.85~(.84, .87)$&$.84~(.81, .86)$&$.981~(.979, .983)$\tabularnewline
+					~~LLMPP R-CHOP&$.58~(.54, .61)$&$.50~(.46, .54)$&$.810~(.786, .831)$&&$.90~(.87, .92)$&$.89~(.85, .92)$&$.992~(.990, .993)$\tabularnewline
+					\hline
+				\end{tabular}
+			\end{center}}
+		\end{adjustwidth}
+\end{table}
 
 \section*{Discussion}
 Despite the enormous amount of resources spent on developing molecular based cancer classification systems,
@@ -511,7 +605,7 @@ To allow for fast validation of our recent findings \cite{DybkaerBoegsted2015, F
 
 One-by-one normalization was done using both an external RMA reference (ExLab) and a mimicked laboratory specific reference (InLab). Classifications obtained through one-by-one pre-processing performed by \hemaClass{} were then compared to those obtained using cohort based normalization in four clinical cohorts. The results showed that a one-by-one array analysis approach is feasible and performs comparably with the whole cohort based method when an InLab reference is used, while differences between ExLab and cohort normalized classifications were too large to be satisfactory. Users are thus encouraged to supply their own reference for RMA pre-processing. It seems that this approach allows for a realistic application of microarray based lymphoma classification for research projects, and after suitable standardisation and calibration, even for clinical use.
 
-The poorer results for ExLab one-by-one normalization and classification is likely caused by not accounting for lab-specific batch effects in the normalization process. To check for incorrect normalization \hemaClass{} calculates the inter-quartile range (IQR) of the relative log expression (RLE) \mbox{\cite{Bolstad2004b}} across probe-sets of one-by-one normalized arrays. Large values of the RLE IQR indicates low-quality arrays resulting from e.g. incorrect laboratory procedures for cohort normalized data, but can also indicate normalization against an improper reference for one-by-one normalized data, and can thus be used in cases with uncertainty of the validity of a user supplied reference. Based on the validation in Supplementary Section \nameref{sec:rle} we recommend removing samples from the analysis if the RLE IQR exceeds a value of $0.6$. Users are, however, still encouraged to take proper precautions when selecting an RMA reference. For labs using a fixed InLab reference, the RLE IQR could also be used as a means of statistical process control. If RLE IQR values start to increase over time, this could indicate changes in laboratory procedures that might have to be adressed.
+The poorer results for ExLab one-by-one normalization and classification is likely caused by not accounting for lab-specific batch effects in the normalization process. To check for incorrect normalization \hemaClass{} calculates the inter-quartile range (IQR) of the relative log expression (RLE) \mbox{\cite{Bolstad2004b}} across probe-sets of one-by-one normalized arrays. Large values of the RLE IQR indicates low-quality arrays resulting from e.g. incorrect laboratory procedures for cohort normalized data, but can also indicate normalization against an improper reference for one-by-one normalized data, and can thus be used in cases with uncertainty of the validity of a user supplied reference. Based on the validation in \nameref{supp:text} section S6 we recommend removing samples from the analysis if the RLE IQR exceeds a value of $0.6$. Users are, however, still encouraged to take proper precautions when selecting an RMA reference. For labs using a fixed InLab reference, the RLE IQR could also be used as a means of statistical process control. If RLE IQR values start to increase over time, this could indicate changes in laboratory procedures that might have to be adressed.
 
 The present treatment algorithms for DLBCL are based on disease stage and clinical risk stratification without accounting for the underlying tumour-biology \cite{Schmoll2012} and does not routinely account for the enormous variations in tumor biology between patients.
 The CHOP combination therapy (cyclophosphamide, doxorubicin, vincristine, and prednisone) has been the backbone of DLBCL therapy for decades with the only significant improvement being the addition of monoclonal CD20 antibodies (Rituximab) \cite{Coiffier2002a}.
@@ -567,17 +661,8 @@ Comments, suggestions, bug reports, and other issues are warmly welcome at \url{
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thesection}{S\arabic{section}}
 
-\subsection*{Figure S1}
-\label{fig:crossval}
-\textbf{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.}
-In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
-In Panel C the regularization curves are shown.
-Black and grey curves represent selected and non-selected probe-sets, respectively.
-Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
-The red line indicates the model chosen through $10$ fold cross validation.
-The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.
-
-
+\subsection*{Supplementary text S1}\label{supp:text}
+All supplementary figures and tables, derivation of Grahams formula, detailed information on regular and one-by-one RMA normalization, and calculation of the RLE value and it's impact on classification accuracy. 
 
 \subsection*{Table S1}\label{tab:confusionABCGCBHEMA}
 \textbf{Confusion tables for the ABC/GCB classifiers.}
@@ -608,16 +693,53 @@ in this table.
 \subsection*{Table S5}\label{probeTable}
 \textbf{Number of probes used in the classifiers and the number of corresponding HGNC and Ensembl gene IDs.}
 
-\subsection*{S2}\label{sec:graham}
-{\bf Supplementary material on Graham's formula.}
+\subsection*{Table S6}\label{rleTable}
+\textbf{Optimal thresholds for RLE IQR}
 
-\subsection*{S3} \label{supprma}
-{\bf Supplementary material with more background on RMA normalization.}
 
-\subsection*{S6} \label{sec:rle}
-\label{sec:supp}
-{\bf Supplementary material on calculation of the RLE value, and it's impact on classification accuracy.}
 
+\subsection*{Figure S1}
+\label{fig:crossval}
+\textbf{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.}
+In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
+In Panel C the regularization curves are shown.
+Black and grey curves represent selected and non-selected probe-sets, respectively.
+Positive and negative coefficients indicate that high expression values for the associated gene are related to ABC and GCB, respectively.
+The red line indicates the model chosen through $10$ fold cross validation.
+The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.
+
+\subsection*{Figure S2} \label{fig:chep_rle}
+{\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the CHEPRETRO dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+
+\subsection*{Figure S3} \label{fig:rchop_rle}
+{\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP R-CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+
+\subsection*{Figure S4} \label{fig:chop_rle}
+{\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+
+\subsection*{Figure S5} \label{fig:idrc_rle}
+{\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the IDRC dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+
+\subsection*{Figure S6} \label{fig:mdfci_rle}
+{\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the MDFCI dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+
+\subsection*{Figure S7} \label{fig:chep_rle_clas_bags}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
+
+\subsection*{Figure S8} \label{fig:chep_rle_clas_abcgcb}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
+
+\subsection*{Figure S9} \label{fig:chep_rle_clas_regs}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
+
+\subsection*{Figure S10} \label{fig:RCHOP_rle_clas_bags}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
+
+\subsection*{Figure S11} \label{fig:RCHOP_rle_clas_abcgcb}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
+
+\subsection*{Figure S12} \label{fig:RCHOP_rle_clas_regs}
+{\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 
 \section*{Acknowledgments}
 We thank Mads Boye and Bo Nygaard Bai at IT Services, Aalborg University, for their assistance on deploying the public server.
@@ -625,19 +747,23 @@ SF is supported by a Mobility PhD fellowship at the Graduate School of Health, F
 The research is supported by MSCNET, a translational programme studying cancer stem cells in multiple myeloma supported by the EU FP6, CHEPRE, a programme studying chemo sensitivity in malignant lymphoma by genomic signatures supported by the Danish Agency for Science, Technology, and Innovation, and the National Experimental Therapy Partnership (NEXT), which is financed by a grant from Innovation Fund Denmark, as well as Karen Elise Jensen Fonden.
 The technical assistance from Ann-Maria Jensen, Louise Hvilsh{\o}j Madsen, and Helle H{\o}holt is greatly appreciated.
 
-%\section*{References}
-% Either type in your references using
-% \begin{thebibliography}{}
-% \bibitem{}
-% Text
-% \end{thebibliography}
-%
-% OR
-%
-% Compile your BiBTeX database using our plos2015.bst
-% style file and paste the contents of your .bbl file
-% here.
-% 
+\section*{Author Contributions}
+{\bf Conceptualization:} SFL AEB RFB MB.
+{\bf Methodology:} SFL AEB RFB LHJ MB.
+{\bf Software:} SFL AEB RFB LHJ JH MB.
+{\bf Validation:} SFL AEB RFB JB MB.
+{\bf Formal analysis:} SFL AEB RFB LHJ MB.
+{\bf Investigation:} SFL AEB RFB LHJ MB.
+{\bf Resources:} JSB AS KYH HEJ KD.
+{\bf Data curation:} SFL AEB RFB.
+{\bf Writing (original draft preparation):} SFL AEB RFB MB.
+{\bf Writing (review and editing):} SFL AEB RFB LHJ JH KLN TCE JSB AS KHY HEJ KD MB.
+{\bf Visualization:} SFL AEB RFB LHJ.
+{\bf Supervision:} MB.
+{\bf Project administration:} MB.
+{\bf Funding acquisition:} TCE HEJ KD MB.
+
+
 \begin{thebibliography}{10}
 
 \bibitem{Jaffe2009}
@@ -775,13 +901,6 @@ Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, et~al.
 \newblock {NCBI GEO}: {A}rchive for functional genomics data sets—update.
 \newblock Nucleic Acids Research. 2013;41(D1):D991--D995.
 
-\bibitem{Gang2012}
-Gang AO, Str{\o}m C, Pedersen M, D'Amore F, Pedersen LM, Bukh A, et~al.
-\newblock {R-CHOEP-14} Improves Overall Survival in Young High-Risk Patients
-  with Diffuse Large {B}-Cell Lymphoma Compared with {R-CHOP-14}. A
-  Population-Based Investigation from the Danish Lymphoma Group.
-\newblock Annals of Oncologi. 2012 Jan;23(1):147--153.
-
 \bibitem{Visco2012}
 Visco C, Li Y, Xu-Monette ZY, Miranda RN, Green TM, Li Y, et~al.
 \newblock Comprehensive Gene Expression Profiling and Immunohistochemical
@@ -814,6 +933,16 @@ Bolstad BM.
   Background, Normalization and Summarization.
 \newblock University of California, Berkeley; 2004.
 
+\bibitem{Katz2006}
+Katz S, Irizarry RA, Lin X, Tripputi M, Porter MW
+\newblock A summarization approach for Affymetrix GeneChip data using a reference training set from a large, biologically diverse database
+\newblock BMC bioinformatics. 2006;7:464
+
+\bibitem{McCall2010}
+McCall MN, Bolstad BM, Irizarry RA.
+\newblock Frozen robust multiarray analysis (fRMA)
+\newblock Biostatistics. 2010;11(2):242-253
+
 \bibitem{Bolstad2003}
 Bolstad BM, Irizarry RA, Astrand M, Speed TP.
 \newblock A Comparison of Normalization Methods for High Density
@@ -842,6 +971,13 @@ Tibshirani R.
 Hoerl AE, Kennard RW.
 \newblock Ridge Regression: Biased Estimation for Nonorthogonal Problems.
 \newblock Technometrics. 1970;12(1):55--67.
+
+\bibitem{Wright2003}
+Wright G, Tan B, Rosenwald A, Hurt EH, Wiestner A, Staudt LM.
+\newblock A Gene Expression-Based Method to Diagnose Clinically Distinct
+Subgroups of Diffuse Large {B} Cell Lymphoma.
+\newblock PNAS. 2003 Aug;100(17):9991--9996.
+
 
 \bibitem{Boegsted2011}
 B{\o}gsted M, Holst JM, Fogd K, Falgreen S, S{\o}rensen S, Schmitz A, et~al.
@@ -878,11 +1014,11 @@ Chen S, Billings SA, Luo W.
   System Identification.
 \newblock International Journal of Control. 1989 Nov;50(5):1873--1896.
 
-\bibitem{Wright2003}
-Wright G, Tan B, Rosenwald A, Hurt EH, Wiestner A, Staudt LM.
-\newblock A Gene Expression-Based Method to Diagnose Clinically Distinct
-  Subgroups of Diffuse Large {B} Cell Lymphoma.
-\newblock PNAS. 2003 Aug;100(17):9991--9996.
+\bibitem{Bolstad2004b}
+Experimental Design and Low-Level Analysis of Microarray Data
+\newblock Bolstad BM, Collin F, Simpson KM, Irizarry RA, Speed TP
+\newblock International Review of Neurobiology. 2004;60:25-58
+
 
 \bibitem{Schmoll2012}
 Schmoll HJ, {Van Cutsem} E, Stein A, Valentini V, Glimelius B, Haustermans K,
@@ -915,6 +1051,12 @@ Dunleavy K, Pittaluga S, Czuczman MS, Dave SS, Wright G, Grant N, et~al.
 \newblock Differential Efficacy of Bortezomib Plus Chemotherapy Within
   Molecular Subtypes of Diffuse Large {B}-Cell Lymphoma.
 \newblock Blood. 2009;113(24):6069--6076.
+
+\bibitem{McCall2014}
+The Gene Expression Barcode 3.0: Improved data processing and mining tools
+\newblock McCall MN, Jaffee HA, Zelisko SJ, Sinha N, Hooiveld G, Irizarry RA, Zilliox MJ
+\newblock Nucleic Acids Research. 2014;42:938-943
+
 
 \bibitem{Dai2005}
 Dai M, Wang P, Boyd AD, Kostov G, Athey B, Jones EG, et~al.
@@ -966,25 +1108,6 @@ Holder D, Raubertas RF, Pikounis VB, Svetnik V, Soper K.
 \newblock In: GeneLogic Workshop on Low Level Analysis of Affymetrix GeneChip
   Data; 2001. .
 
-\bibitem{McCall2010}
-McCall MN, Bolstad BM, Irizarry RA.
-\newblock Frozen robust multiarray analysis (fRMA)
-\newblock Biostatistics. 2010;11(2):242-253
-
-\bibitem{Katz2006}
-Katz S, Irizarry RA, Lin X, Tripputi M, Porter MW
-\newblock A summarization approach for Affymetrix GeneChip data using a reference training set from a large, biologically diverse database
-\newblock BMC bioinformatics. 2006;7:464
-
-\bibitem{Bolstad2004b}
-Experimental Design and Low-Level Analysis of Microarray Data
-\newblock Bolstad BM, Collin F, Simpson KM, Irizarry RA, Speed TP
-\newblock International Review of Neurobiology. 2004;60:25-58
-
-\bibitem{McCall2014}
-The Gene Expression Barcode 3.0: Improved data processing and mining tools
-\newblock McCall MN, Jaffee HA, Zelisko SJ, Sinha N, Hooiveld G, Irizarry RA, Zilliox MJ
-\newblock Nucleic Acids Research. 2014;42:938-943
 \end{thebibliography}
 
 \end{document}
