@@ -390,7 +390,7 @@ Using the $150$ patients classified as either ABC or GCB, a dichotomous classifi
 To avoid over-fitting and limit the number of noise contributing genes, the elastic net parameters $\alpha$ and $\lambda$ were chosen through $10$ fold cross-validation.
 The parameter $\alpha$ was varied between $0.1$ and $1$ with step size $0.025$ and $\log(\lambda)$ was varied between $-10$ and $2$ with step size $0.06$.
 The optimal combination of the parameters, and thereby the number of probe-sets, was found at the values minimizing the deviance.
-The results of the cross validations are shown in Supplementary \nameref{fig:crossval}.
+The results of the cross validations are shown in \nameref{fig:crossval}.
 The minimum deviance of $0.13$ was attained at $\alpha = 0.15$ and $\log(\lambda) = -7.29$. This resulted in a gene expression classifier consisting of $381$ probe-sets corresponding to 273 Ensembl Gene IDs.
 
 When a tumour sample was classified according to the ABC/GCB classifier using cohort or InLab one-by-one normalized data the associated gene expressions are rescaled probe-set wise by the standard deviation of the LLMPP CHOP data divided by the standard deviation of the cohort or InLab reference data. For ExLab one-by-one normalization the data was used directly, since the training data for the ABC/GCB classifier was the same as the ExLab reference in the current study.
@@ -404,7 +404,7 @@ Bayesian compound covariate classification \cite{Wright2003} with probeset list,
 \paragraph{REGS classification}
 \label{sec:regsmethods}
 In the paper by \cite{Falgreen2015} REGS classifiers were established for prediction of resistance to the drugs C, H, and O.
-The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier. The number of microarray probes and corresponding genes for each of the REGS classifiers is shown in Supplementary \nameref{probeTable}.
+The classifiers were established on BCELL26 using regularized logistic regression analogous to the procedure described for the aforementioned ABC/GCB classifier. The number of microarray probes and corresponding genes for each of the REGS classifiers is shown in \nameref{probeTable}.
 
 The probability of resistance to the combination therapy, $p_{CHO}$, was estimated based on the probabilities of drug resistance toward each of the three drugs: $P_C$, $P_H$, and $P_O$, respectively.
 This probability is calculated as the posterior probability of being resistant, given resistance towards each of the individual drugs under the assumption of conditional independence and uniform priors.
@@ -455,7 +455,7 @@ In order to classify patients as ABC/GCB based on the implemented one-by-one nor
 The classifications were evaluated in the four clinical cohorts CHEPRETRO, MDFCI, IDRC, and LLMPP R-CHOP, which have all been classified according to Wright's naive Bayes classifier \cite{DybkaerBoegsted2015,Wright2003,Lenz2008a}.
 The rates of agreement between the two classifiers based on cohort normalized data are shown in Table \ref{tab:ABCGCBclassifier}. Note that unclassified samples were included in the estimation of this rate i.e.\ a patient classified as ABC by one classifier but unclassified by the other is considered an error.
 The table also includes the alternative measure of agreement, Cohen's weighted $\kappa$, where misclassifications involving the unclassified group are weighted by $1/2$. High agreement between the two classifiers are observed for CHEPRETRO and LLMPP R-CHOP, while the accuracy and Cohen's weighted $\kappa$ are lower for IDRC and MDFCI.
-The accompanying confusion matrices are shown in the first rows of Supplementary \nameref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices are shown in the first rows of \nameref{tab:confusionABCGCBHEMA}.
 
 The logit probability of being ABC estimated using the established cohort-based classifier was compared to the corresponding estimate obtained through the ExLab one-by-one normalized classification scheme in Fig \ref{fig:ABCGCBDrug}A for CHEPRETRO.
 The probabilities estimated through the two methods are very similar, but
@@ -466,7 +466,7 @@ For both methods, patients are classified as ABC when the estimated probability 
 In Table \mbox{\ref{tab:classALL}} the resulting classifications for the four validation datasets are compared in terms of accuracy and Cohen's weighted $\kappa$ for cohort, using either Wright's Bayes classifier or the elastic net classifier, against InLab or ExLab RMA reference normalization.
 For ExLab normalization CHEPRETRO and LLMPP R-CHOP both show a high Cohen's weighted $\kappa$ and accuracy considering that misclassifications involving unclassified samples count as errors, while values are moderate for MDFCI and IDRC when comparing to cohort based classifications for both the elastic net and Wright's classifier. 
 The reduced rate of agreement and Cohen's weighted $\kappa$ using ExLab one-by-one normalization in IDRC may be due to the samples being FFPE although this seems to be remedied by InLab one-by-one normalization. Accuracy and Cohen's weighted $\kappa$ are very high when comparing InLab based classifications to cohort based classifications for the elastic net classifier, but values are still moderate for MDFCI when comparing against Wright classifications.
-The accompanying confusion matrices for the elastic net classifier are shown in the lower part of Supplementary \nameref{tab:confusionABCGCBHEMA}.
+The accompanying confusion matrices for the elastic net classifier are shown in the lower part of \nameref{tab:confusionABCGCBHEMA}.
 Note that changes in predicted classes are mainly due to shifts into NC from ABC or GCB.
 Direct disagreements between the classifiers are seemingly rare and only occurs in the IDRC dataset.
 
@@ -531,9 +531,7 @@ The probabilities obtained by the InLab one-by-one normalization resembles the c
 
 Based on the estimated probabilities, the patients were categorised as sensitive, intermediate, or resistant based on the thresholds specified in Section \ref{sec:regsmethods}.
 The classes obtained by \hemaClass{} are compared to those obtained by the cohort based approach in Table \ref{tab:classALL} in terms of rate of agreement and Cohen's weighted $\kappa$. Low to moderate rates of agreement are observed for the ExLab normalized data, and again the InLab one-by-one approach yielded higher agreement with classifications obtained from cohort based normalization. 
-The associated confusion matrices for InLab and ExLab one-by-one normalization are shown in
-Supplementary \nameref{tab:confusiondrugonebyone} and
-Supplementary \nameref{tab:confusiondrugreference}, respectively.
+The associated confusion matrices for InLab and ExLab one-by-one normalization are shown in S3 and S4 Tables, respectively.
 
 
 \subsection*{BAGS classification}
@@ -546,7 +544,7 @@ The InLab one-by-one normalization removes much of the aforementioned bias.
 
 Based on the probabilities estimated by means of each of the three normalization methods the patients of the four clinical cohorts are grouped into the BAGS.
 The rates of agreement between the cohort based, and InLab or ExLab based classifications are shown in Table \ref{tab:classALL} along with Cohen's weighted $\kappa$. For the BAGS classifier low rates of agreement were also found when comparing results from ExLab normalization with cohort normalization, while InLab normalization again led to improved agreement. 
-The associated confusion matrices are shown in Supplementary \nameref{tab:BAGShemaclass}.
+The associated confusion matrices are shown in \nameref{tab:BAGShemaclass}.
 
 %\input{tables/table3.tex}
 \begin{table}[!tbp]
@@ -661,10 +659,10 @@ Comments, suggestions, bug reports, and other issues are warmly welcome at \url{
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thesection}{S\arabic{section}}
 
-\subsection*{Supplementary text S1}\label{supp:text}
+\subsection*{S1 Text}\label{supp:text}
 All supplementary figures and tables, derivation of Grahams formula, detailed information on regular and one-by-one RMA normalization, and calculation of the RLE value and it's impact on classification accuracy. 
 
-\subsection*{Table S1}\label{tab:confusionABCGCBHEMA}
+\subsection*{S1 Table}\label{tab:confusionABCGCBHEMA}
 \textbf{Confusion tables for the ABC/GCB classifiers.}
 The columns represent cohort based normalisztion using the ABC/GCB classifier
 based on elastic net.
@@ -674,31 +672,31 @@ In the second and third part ExLab and InLab reference based normalization is
 compared to cohort based normalization using the ABC/GCB classifier based on
 elastic net.
 
-\subsection*{Table S2}\label{tab:BAGShemaclass}
+\subsection*{S2 Table}\label{tab:BAGShemaclass}
 \textbf{Confusion tables for the BAGS classifier.} ExLab and InLab reference
 based normalization are shown in the columns and cohort normalization in the
 rows.
 
-\subsection*{Table S3}\label{tab:confusiondrugonebyone}
+\subsection*{S3 Table}\label{tab:confusiondrugonebyone}
 \textbf{Confusion tables for the REGS classifiers.}
 ExLab normalization is shown in the rows and cohort normalization in the
 columns.
 
-\subsection*{Table S4}\label{tab:confusiondrugreference}
+\subsection*{S4 Table}\label{tab:confusiondrugreference}
 \textbf{Confusion tables for the REGS classifiers.}
 InLab normalization is shown in the rows and cohort normalization in
 the columns. Note, 30 samples were used as reference data and hence not present
 in this table.
 
-\subsection*{Table S5}\label{probeTable}
+\subsection*{S5 Table}\label{probeTable}
 \textbf{Number of probes used in the classifiers and the number of corresponding HGNC and Ensembl gene IDs.}
 
-\subsection*{Table S6}\label{rleTable}
+\subsection*{S6 Table}\label{rleTable}
 \textbf{Optimal thresholds for RLE IQR}
 
 
 
-\subsection*{Figure S1}
+\subsection*{S1 Fig}
 \label{fig:crossval}
 \textbf{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.}
 In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
@@ -708,37 +706,37 @@ Positive and negative coefficients indicate that high expression values for the 
 The red line indicates the model chosen through $10$ fold cross validation.
 The gene symbols for the $20$ probe-sets associated with the largest absolute coefficients in the chosen gene expression predictors are displayed in Panel C.
 
-\subsection*{Figure S2} \label{fig:chep_rle}
+\subsection*{S2 Fig} \label{fig:chep_rle}
 {\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the CHEPRETRO dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
 
-\subsection*{Figure S3} \label{fig:rchop_rle}
+\subsection*{S3 Fig} \label{fig:rchop_rle}
 {\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP R-CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
 
-\subsection*{Figure S4} \label{fig:chop_rle}
+\subsection*{S4 Fig} \label{fig:chop_rle}
 {\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
 
-\subsection*{Figure S5} \label{fig:idrc_rle}
+\subsection*{S5 Fig} \label{fig:idrc_rle}
 {\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the IDRC dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
 
-\subsection*{Figure S6} \label{fig:mdfci_rle}
+\subsection*{S6 Fig} \label{fig:mdfci_rle}
 {\bf Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the MDFCI dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
 
-\subsection*{Figure S7} \label{fig:chep_rle_clas_bags}
+\subsection*{S7 Fig} \label{fig:chep_rle_clas_bags}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 
-\subsection*{Figure S8} \label{fig:chep_rle_clas_abcgcb}
+\subsection*{S8 Fig} \label{fig:chep_rle_clas_abcgcb}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 
-\subsection*{Figure S9} \label{fig:chep_rle_clas_regs}
+\subsection*{S9 Fig} \label{fig:chep_rle_clas_regs}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 
-\subsection*{Figure S10} \label{fig:RCHOP_rle_clas_bags}
+\subsection*{S10 Fig} \label{fig:RCHOP_rle_clas_bags}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 
-\subsection*{Figure S11} \label{fig:RCHOP_rle_clas_abcgcb}
+\subsection*{S11 Fig} \label{fig:RCHOP_rle_clas_abcgcb}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 
-\subsection*{Figure S12} \label{fig:RCHOP_rle_clas_regs}
+\subsection*{S12 Fig} \label{fig:RCHOP_rle_clas_regs}
 {\bf Proportion of samples retained (A,C,E), and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 
 \section*{Acknowledgments}
@@ -1095,18 +1093,6 @@ Chen X, Andersson R, Cho WC, Christiani D, Coico R, Drazen J, et~al.
   Medicine: Report of the 1st International Conference of Translational
   Medicine {(ICTM)}.
 \newblock Clinical and Translational Medicine. 2012 Jan;1(1):1--15.
-
-\bibitem{Hyndman1996}
-Hyndman RJ, Fan Y.
-\newblock Sample Quantiles in Statistical Packages.
-\newblock The American Statistician. 1996;50(4):361--365.
-
-\bibitem{Holder2001}
-Holder D, Raubertas RF, Pikounis VB, Svetnik V, Soper K.
-\newblock Statistical Analysis of High Density Oligonucleotide Arrays: A SAFER
-  Approach.
-\newblock In: GeneLogic Workshop on Low Level Analysis of Affymetrix GeneChip
-  Data; 2001. .
 
 \end{thebibliography}
 
