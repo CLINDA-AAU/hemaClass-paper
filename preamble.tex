@@ -9,7 +9,8 @@
 \usepackage{graphicx}
 \usepackage[numbers,sort]{natbib}
 \usepackage{cite} % Make references as [1-4], not [1,2,3,4]
-
+\usepackage{soul} % enable \hl for highlighting changes
+\usepackage{cleveref}
 % To do notes
 \usepackage[
 %  disable, %turn off todonotes
@@ -23,6 +24,7 @@
 \newcommand{\R}{\textsf{R}}
 \newcommand{\pkg}[1]{\textbf{#1}}
 \newcommand{\parttitle}[1]{\noindent\textbf{#1}~~}
+%\newcommand{\hl}[1]{#1} %include this line to remove highlights from text
 
 \DeclareMathOperator*{\median}{median}
 \DeclareMathOperator*{\sd}{sd}

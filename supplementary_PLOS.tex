@@ -1,5 +1,20 @@
-%\input{preamble}
-%\begin{document}
+\documentclass{article}
+\input{preamble}
+% Prefix S to figures, tables, etc
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+% reset counters
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+
+\begin{document}
 
 \phantomsection
 \addcontentsline{toc}{section}{Supplementary Material}
@@ -8,12 +23,12 @@
 {\bf \hemaClassTitle{}}
 \end{center}
 
-\section{Supplementary figures and tables}
+\section*{S1 Supplementary figures and tables}
 %This section holds the supplementary figures and tables.
 
 \begin{figure*}[htb]
 \begin{center}
-%\includegraphics[width=1\textwidth]{figures/figureS1.pdf}
+\includegraphics[width=1\textwidth]{figures/figureS1.pdf}
 \end{center}
 \caption{Ten fold cross validation for the parameters $\alpha$ and $\lambda$ in a logistic regression regularized by elastic net.
 In panels A and B the deviance is plotted against the model parameter $\alpha$ and regularization parameter $\lambda$, respectively.
@@ -35,7 +50,7 @@ The gene symbols for the $20$ probe-sets associated with the largest absolute co
 
 
 
-\section{Graham's formula}
+\section*{S2 Graham's formula}
 \label{sec:graham}
 This section derives Graham's formula which, in our context, yields the posterior probability of resistance to the combination of multiple drugs, given resistance to the individual drugs.
 For simplicity, the formula is derived for two drugs.
@@ -95,15 +110,15 @@ which is the two-drug equivalent to the used formula.
 
 
 
-\section{RMA normalization} \label{supprma}
+\section*{S3 RMA normalization} \label{supprma}
 Recall that ordinary robust multichip average (RMA) pre-processing consists of three steps: (1) Background adjustment, (2) quantile normalization, and (3) summarization of probes to probe-sets, see e.g.\ \citep{Irizarry2003, Irizarry2003b}. For completeness we review ordinary cohort based RMA normalization.
 
-\subsection{Background correction}
+\subsection*{Background correction}
 In order to produce background adjusted probe intensities we will use the within array normal-exponential de-convolution scheme as implemented by the \texttt{rma.background.correct} command in the Bioconductor package \texttt{preprocessCores}, see
 \citep{Irizarry2003b,Bolstad2004}.
 
 
-\subsection{Quantile normalization}
+\subsection*{Quantile normalization}
 Let $x_{ijk}$ be the $\log_2$-transformed and background adjusted cohort data, where $i = 1,\dots,I$ index the arrays of the cohort data, $j=1,\dots,J$  index the probe-sets, and $k=1,\dots,K_j$ index the probes nested within probe-sets.
 
 Furthermore, let $G_i$ denote the empirical cumulative distribution function (ECDF) of the probes $\{x_{ijk}\}_{jk}$ on the $i$'th cohort array and $F$ the ECDF of the across array averaged sample quantiles $\{\bar{x}_{\cdot (jk)}\}_{ij}$, where $\{x_{i(jk)}\}_{jk}$ is the order statistic of all probes on the $i$'th cohort array based on the lexicographic ordering of the indices $\{jk\}$. Then each data point is quantile normalized in the following way
@@ -113,7 +128,7 @@ Furthermore, let $G_i$ denote the empirical cumulative distribution function (EC
 where $F^{-1}$ is calculated as the quantiles of type 2 \citep{Hyndman1996}.
 This step is performed by the \texttt{RMA\_norm} function with option \texttt{generateQuan} equal to one in the \pkg{hemaClass} package.
 
-\subsection{Summarization}
+\subsection*{Summarization}
 
 For each probe-set $j$ we let $\mu_{ij}$ represent the $\log_2$-scale expression level for array $i$ and probeset $j$, $\alpha_{jk}$ the probe affinity effect, and the $\epsilon_{ijk}$'s are independent identically distributed  error terms with mean 0 and formulate the following linear additive model
 \begin{equation*}
@@ -130,13 +145,13 @@ This step is performed by the \texttt{RMA\_sum} function in the \hemaClass{} pac
 
 
 
-\section{One-by-one RMA normalization of user supplied data}
-\subsection{Background correction}
+\section*{S4 One-by-one RMA normalization of user supplied data}
+\subsection*{Background correction}
 
 The background correction in one-by-one RMA normalization is unaltered as it is already works in a one-by-one fashion.
 
 
-\subsection{Quantile normalization}
+\subsection*{Quantile normalization}
 
 Let $x_{ijk}$ be the $\log_2$-transformed and background corrected reference data, where $i = 1,\dots,I_R$ index the arrays of the reference data, $j=1,\dots,J$ index the probe-sets, and $k=1,\dots,K_j$ index the probes.
 Assume $x_{ijk}$ has been RMA normalized as described above.
@@ -150,7 +165,7 @@ As quantile normalizer the ECDF of the background corrected reference data is us
 This step is performed by the \texttt{RMA\_norm} function with options \texttt{generateQuan} equal to zero and \texttt{quantile} equal to the quantiles of the reference data in the \pkg{hemaClass} package.
 
 
-\subsection{Summarization}
+\subsection*{Summarization}
 
 To mimic the RMA summarization the probe effects estimated by median polish on the reference data is subtracted all probes of the user data
 \begin{equation*}
@@ -162,7 +177,7 @@ The pre-processed expression value for each probe-set is then estimated as the m
 \end{equation*}
 
 
-\section{Classification}
+\section*{S5 Classification}
 To ensure identical classification probabilities whether data is supplied as a cohort or one-by-one, we finally subtract the median of each probe-set in the reference from the corresponding probe-set and scale by the standard deviation of each probe-set in the reference data
 \begin{equation*}
   (\hat{y}_{ij} - \hat{x}_{\cdot j})/s_{\cdot j},
@@ -172,67 +187,25 @@ $\hat{x}_{\cdot j} = \median_{i \in \{1,\dots,I_R \}} \{\hat{x}_{ij}\}$ and
 $s_{\cdot j} = \sd_{i \in \{1,\dots,I_R\}} \{\hat{x}_{ij}\}$.
 
 
-\section{Model control of one-by-one RMA normalization} \label{sec_rle}
+\section*{S6 Model control of one-by-one RMA normalization} \label{sec:rle}
 The one-by-one RMA normalization of samples might result in biased data if the lab specific batch effects in samples are different from those in the reference. In this section we investigate the quality of data following normalization and subsequent impact on classification accuracy with the aim of validating the suitability of a chosen reference for one-by-one normalization.
 %Given the large difference in misclassifications  between InLab and ExLab one-by-one normalized samples, we would like to be able to distinguish between the two in a setting where we are unsure how closely the RMA reference resembles the samples.
 
-\subsection{Relative Log Expression} 
+\subsection*{Relative Log Expression} 
 The relative log expression (RLE)	is a quality measure for microarrays introduced by \mbox{\citet{Bolstad2004b}}. Using the notation from above we define the RLE for probe-set $j$ on array $i$ following cohort RMA normalization as:
 \[
 	\textrm{RLE}(\hat{y}_{ij}) = \hat{y}_{ij} - \hat{x}_{\cdot j}
 \]
 i.e. the difference between the estimated expression for probe-set $j$ on array $i$ and the median expression for probe-set $j$ in the cohort. A non-zero median RLE across probe-sets for an array thus indicates differences in the number of up- and downregulated genes, while a large interquartile range (IQR) indicates that most genes on a given array are differentially expressed \mbox{\citep{McCall2011}}. Extreme values of these measures may be used to identify arrays with low-quality data. We propose that they may also be used to evaluate how well a sample resembles a given RMA reference following one-by-one normalization (how well it has been normalized), by substituting the cohort median with the RMA reference median.
 
-\subsection{RLE for separation of InLab and ExLab RMA references} \label{rle_sepa}
-For each of the five datasets used in the current study a random subset of 30 samples were extracted and set as an InLab reference. The remaining samples for each dataset were then RMA normalized as a cohort, or one-by-one against the randomly selected InLab reference or against the four other ExLab datasets. RLE values were calculated in all six scenarios and summarized as the absolute value of the median and IQR for each sample. These values are shown in panel A and B in Figure \ref{fig:chep_rle} to Figure \ref{fig:mdfci_rle}. We find that the RLE values in the InLab one-by-one scenarios more closely resemble the values calculated from cohort normalization than the values from ExLab one-by-one normalization. Furthermore differences between InLab and ExLab RLE values are more pronounced for the IQR of RLE than for the median. This suggests that we can aim for a method that effectively distinguishes between InLab and ExLab reference datasets. ROC curves showing the ability of the RLE median or IQR to distinguish between an InLab or ExLab reference were calculated and plotted using the pROC package version 1.8 \citep{Robin2011} in \R, as shown in panels C and D in Figure \ref{fig:chep_rle} to Figure \ref{fig:mdfci_rle}. The area under the curve (AUC) for the ROC curves confirm the superiority of the RLE IQR for distinguishing between a "correct" reference and a "wrong" reference, i.e. in most cases we observe a higher AUC when using the IQR instead of the median RLE. However, for CHEPRETRO the RLE IQR values for the LLMPP R-CHOP and MDFCI reference are not as clearly separated from the InLab values as IDRC and LLMPP CHOP (Figure \ref{fig:chep_rle}D).\\\\
-Using Youden's index, which maximizes the sum of sensitivity and specificity, we calculated the optimal threshold for each ROC curve based on the RLE IQR as shown in Table \ref{rleTable}. Calculating the median RLE IQR across all datasets and one-by-one RMA references gives a value of 0.62. By rounding of we set a conservative threshold of 0.6 for reference normalized samples, i.e. if the RLE IQR exceeds this value the array is expected to have been normalized incorrectly.
+\subsection*{RLE for separation of InLab and ExLab RMA references} \label{rle_sepa}
+For each of the five datasets used in the current study a random subset of 30 samples were extracted and set as an InLab reference. The remaining samples for each dataset were then RMA normalized as a cohort, or one-by-one against the randomly selected InLab reference or against the four other ExLab datasets. RLE values were calculated in all six scenarios and summarized as the absolute value of the median and IQR for each sample. These values are shown in panel A and B in Figs \ref{fig:chep_rle} to  \ref{fig:mdfci_rle}. We find that the RLE values in the InLab one-by-one scenarios more closely resemble the values calculated from cohort normalization than the values from ExLab one-by-one normalization. Furthermore differences between InLab and ExLab RLE values are more pronounced for the IQR of RLE than for the median. This suggests that we can aim for a method that effectively distinguishes between InLab and ExLab reference datasets. ROC curves showing the ability of the RLE median or IQR to distinguish between an InLab or ExLab reference were calculated and plotted using the pROC package version 1.8 \citep{Robin2011} in \R, as shown in panels C and D in Figs \ref{fig:chep_rle} to \ref{fig:mdfci_rle}. The area under the curve (AUC) for the ROC curves confirm the superiority of the RLE IQR for distinguishing between a "correct" reference and a "wrong" reference, i.e. in most cases we observe a higher AUC when using the IQR instead of the median RLE. However, for CHEPRETRO the RLE IQR values for the LLMPP R-CHOP and MDFCI reference are not as clearly separated from the InLab values as IDRC and LLMPP CHOP (Fig \ref{fig:chep_rle}D).\\\\
+Using Youden's index \citet{Youden1950}, which maximizes the sum of sensitivity and specificity, we calculated the optimal threshold for each ROC curve based on the RLE IQR as shown in Table \ref{rleTable}. Calculating the median RLE IQR across all datasets and one-by-one RMA references gives a value of 0.62. By rounding we set a conservative threshold of 0.6 for reference normalized samples, i.e. if the RLE IQR exceeds this value the array is expected to have been normalized incorrectly.
 
-\begin{figure}[!h]
-	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/chep_rle.pdf}
-	\end{center}
-	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the CHEPRETRO dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
-	\label{fig:chep_rle}
-\end{figure}
-
-\begin{figure}[!h]
-	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle.pdf}
-	\end{center}
-	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP R-CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
-	\label{fig:rchop_rle}
-\end{figure}
-
-\begin{figure}[!h]
-	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/CHOP_rle.pdf}
-	\end{center}
-	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
-	\label{fig:chop_rle}
-\end{figure}
-
-\begin{figure}[!h]
-	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/IDRC_rle.pdf}
-	\end{center}
-	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the IDRC dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
-	\label{fig:idrc_rle}
-\end{figure}
-
-\begin{figure}[!h]
-	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/MDFCI_rle.pdf}
-	\end{center}
-	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the MDFCI dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
-	\label{fig:mdfci_rle}
-\end{figure}
-
-\input{tables/tableS6.tex}
-
-\subsection{RLE IQR vs Classification accuracy}
+\subsection*{RLE IQR vs Classification accuracy}
 The results in Supplementary Section \ref{rle_sepa} showed that the RLE IQR can be used to determine if samples have been normalized against an Inlab or ExLab reference. In this section we compare the RLE IQR to the classification accuracy, to see if samples with higher RLE IQR values result in a higher proportion of misclassifications when compared to cohort normalized data. 
 
-The CHEPRETRO dataset was one-by-one normalized against an InLab reference, the LLMPP CHOP reference, and the LLMPP R-CHOP reference, and the LLMPP R-CHOP dataset was one-by-one normalized against an InLab reference, the LLMPP CHOP reference, and the CHEPRETREO reference. RLE IQR values were calculated and the proportion of samples below a given threshold and the accuracy (proportion of samples with similar classification in cohort normalized data) were calculated for increasing values of the RLE IQR. This was done for ABC/GCB, BAGS and REGS (CHO) classification. Results are shown in Figure \ref{fig:chep_rle_clas_bags} to Figure \ref{fig:RCHOP_rle_clas_regs}. 
+The CHEPRETRO dataset was one-by-one normalized against an InLab reference, the LLMPP CHOP reference, and the LLMPP R-CHOP reference, and the LLMPP R-CHOP dataset was one-by-one normalized against an InLab reference, the LLMPP CHOP reference, and the CHEPRETRO reference. RLE IQR values were calculated and the proportion of samples below a given threshold and the accuracy (proportion of samples with similar classification in cohort normalized data) were calculated for increasing values of the RLE IQR. This was done for ABC/GCB, BAGS and REGS classification. Results are shown in Figs \ref{fig:chep_rle_clas_bags} to \ref{fig:RCHOP_rle_clas_regs}. 
 
 For CHEPRETRO we saw that most samples were retained at the suggested RLE IQR value of 0.6 when samples were normalized against the InLab reference, and a tendency towards higher classification accuracy for samples with low RLE IQR. When normalizing CHEPRETRO against LLMPP R-CHOP the RLE IQR value of 0.6 only excludes a small proportion of the samples and no clear differences in the accuracy is observed when including samples with higher RLE IQR. For LLMPP CHOP normalization most samples are removed at the suggested value, and a high accuracy for the few remaining samples are seen for BAGS and ABC/GCB classification while an accuracy of zero is seen for REGS. Comparing the overall classification accuracy for CHEPRETRO samples normalized against either the LLMPP CHOP or LLMPP R-CHOP reference the accuracy is higher, and closer to the InLab level, in the LLMPP R-CHOP scenario where RLE IQR values on average are lower
 
@@ -240,9 +213,51 @@ For the LLMPP R-CHOP dataset most InLab reference normalized samples were retain
 
 Looking at the results as a whole, a low IQR in itself does not guarantee a higher classification accuracy, but we notice that excluding samples with an RLE IQR value above 0.6 ensures that we either exclude most samples normalized against an ExLab reference or retain a classification accuracy at almost the same level as for the InLab reference. We therefore recommend removing samples from the analysis if the RLE IQR exceeds a value of 0.6.
 
+\begin{figure}[!h]
+	\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/chep_rle.pdf}
+	\end{center}
+	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the CHEPRETRO dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+	\label{fig:chep_rle}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle.pdf}
+	\end{center}
+	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP R-CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+	\label{fig:rchop_rle}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/CHOP_rle.pdf}
+	\end{center}
+	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the LLMPP CHOP dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+	\label{fig:chop_rle}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/IDRC_rle.pdf}
+	\end{center}
+	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the IDRC dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+	\label{fig:idrc_rle}
+\end{figure}
+
+\begin{figure}[!h]
+	\begin{center}
+			\includegraphics[width=0.8\textwidth]{figures/MDFCI_rle.pdf}
+	\end{center}
+	\caption{Absolute value of the median (A) and IQR (B) RLE values for different RMA normalizations of the MDFCI dataset and ROC curves for using these values to separate between an InLab and Exlab RMA reference (C,D)}
+	\label{fig:mdfci_rle}
+\end{figure}
+
+\input{tables/tableS6.tex}
+
 \begin{figure}
 	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_bags.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_bags.pdf}
 	\end{center}
 	\caption{Proportion samples retained (A,C,E) and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:chep_rle_clas_bags}
@@ -250,7 +265,7 @@ Looking at the results as a whole, a low IQR in itself does not guarantee a high
 
 \begin{figure}
 	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_abcgcb.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_abcgcb.pdf}
 	\end{center}
 	\caption{Proportion samples retained (A,C,E)and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:chep_rle_clas_abcgcb}
@@ -258,7 +273,7 @@ Looking at the results as a whole, a low IQR in itself does not guarantee a high
 
 \begin{figure}
 	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_regs.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/chep_rle_classification_regs.pdf}
 	\end{center}
 	\caption{Proportion samples retained (A,C,E) and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in CHEPRETRO. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:chep_rle_clas_regs}
@@ -266,7 +281,7 @@ Looking at the results as a whole, a low IQR in itself does not guarantee a high
 
 \begin{figure}
 	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle_classification_bags.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle_classification_bags.pdf}
 	\end{center}
 	\caption{Proportion samples retained (A,C,E) and accuracy (B,D,F) of BAGS classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:RCHOP_rle_clas_bags}
@@ -274,7 +289,7 @@ Looking at the results as a whole, a low IQR in itself does not guarantee a high
 
 \begin{figure}
 	\begin{center}
-	%	\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle_classification_abcgcb.pdf}
+		\includegraphics[width=0.8\textwidth]{figures/RCHOP_rle_classification_abcgcb.pdf}
 	\end{center}
 	\caption{Proportion samples retained (A,C,E) and accuracy (B,D,F) of ABC/GCB classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:RCHOP_rle_clas_abcgcb}
@@ -287,3 +302,8 @@ Looking at the results as a whole, a low IQR in itself does not guarantee a high
 	\caption{Proportion samples retained (A,C,E) and accuracy (B,D,F) of REGS(combined) classification (percent similar with cohort based) against increasing RLE IQR thresholds for different references in LLMPP R-CHOP. The vertical line marks the suggested threshold of 0.6}
 	\label{fig:RCHOP_rle_clas_regs}
 \end{figure}
+
+\clearpage
+\bibliographystyle{plainnat} %abbrvnat
+\bibliography{references}
+\end{document}

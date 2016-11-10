@@ -1,32 +1,41 @@
-%latex.default(table3, file = "tables/table3.tex", title = "",     rgroup = gsub("ABCGCB", "ABC/GCB", names(results)), cgroup = c("One-by-one pre-processing",         "Reference based pre-processing"), size = "scriptsize",     label = "tab:classALL", caption = caption)%
+%latex.default(table3, file = "tables/table3.tex", title = "",     rgroup = c("ABC/GCB (Wright)", gsub("ABCGCB", "ABC/GCB",         names(results))), cgroup = c("ExLab RMA pre-processing",         "InLab RMA pre-processing"), size = "scriptsize", label = "tab:classALL",     caption = caption)%
 \begin{table}[!tbp]
+\begin{adjustwidth}{-1in}{0in}
 {\scriptsize
 \caption{Comparison of classifications obtained using cohort based
-normalization and one-by-one normalization as well as reference based
-normalization.
-The classifications are compared in terms of rate of argreement (accuracy),
+normalization against Exlab and InLab reference based normalization.
+The classifications are compared in terms of accuracy,
 Cohen's weighted $\kappa$, and Pearson's correlation coefficient $r$ all
 supplied with $95\%$ CIs. The comparisons in the first and last three columns
-are based on the one-by-one normalization method and the reference based
-normalization method, respectively.\label{tab:classALL}} 
+are based on the ExLab and InLab reference based
+normalization method, respectively. For ABC/GCB classification, results
+from InLab or Exlab classification with the elasitic net classifier is 
+compared against ABC/GCB classes for cohort normalized data obtained using both
+Wrights Bayes classifier and the elastic net classifier\label{tab:classALL}} 
 \begin{center}
 \begin{tabular}{llllclll}
 \hline\hline
-\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries One-by-one pre-processing}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries Reference based pre-processing}\tabularnewline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries ExLab RMA pre-processing}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries InLab RMA pre-processing}\tabularnewline
 \cline{2-4} \cline{6-8}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{Agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Agreement}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}\tabularnewline
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Accuracy}&\multicolumn{1}{c}{Cohen's $\kappa$}&\multicolumn{1}{c}{Pearson's $r$}\tabularnewline
+\hline
+{\bfseries ABC/GCB (Wright)}&&&&&&&\tabularnewline
+~~CHEPRETRO&$.89~(.80, .94)$&$.89~(.79, .98)$&-&&$.97~(.88, 1.)$&$.97~(.90, 1.)$&-\tabularnewline
+~~MDFCI&$.63~(.52, .73)$&$.52~(.40, .64)$&-&&$.72~(.59, .83)$&$.71~(.55, .86)$&-\tabularnewline
+~~IDRC&$.67~(.63, .71)$&$.62~(.56, .67)$&-&&$.84~(.80, .87)$&$.82~(.77, .86)$&-\tabularnewline
+~~LLMPP R-CHOP&$.83~(.77, .87)$&$.82~(.74, .89)$&-&&$.88~(.83, .92)$&$.88~(.82, .93)$&-\tabularnewline
 \hline
 {\bfseries ABC/GCB}&&&&&&&\tabularnewline
-~~CHEPRETRO&$.88~(.79, .94)$&$.87~(.78, .97)$&$.999~(.998, .999)$&&$.98~(.91, 1.0)$&$.98~(.93, 1.0)$&$1.00~(.999, 1.00)$\tabularnewline
-~~MDFCI&$.69~(.59, .78)$&$.68~(.53, .82)$&$.998~(.998, .999)$&&$.98~(.91, 1.0)$&$.98~(.85, 1.0)$&$1.00~(.999, 1.00)$\tabularnewline
+~~CHEPRETRO&$.88~(.79, .94)$&$.87~(.78, .97)$&$.999~(.998, .999)$&&$.98~(.91, 1.)$&$.98~(.93, 1.)$&$1.~(.999, 1.)$\tabularnewline
+~~MDFCI&$.69~(.59, .78)$&$.68~(.53, .82)$&$.998~(.998, .999)$&&$.98~(.91, 1.)$&$.98~(.85, 1.)$&$1.~(.999, 1.)$\tabularnewline
 ~~IDRC&$.65~(.61, .69)$&$.62~(.57, .68)$&$.986~(.983, .988)$&&$.93~(.91, .95)$&$.93~(.90, .96)$&$.993~(.991, .994)$\tabularnewline
 ~~LLMPP R-CHOP&$.82~(.77, .87)$&$.82~(.74, .89)$&$.999~(.999, .999)$&&$.94~(.90, .97)$&$.94~(.90, .98)$&$.991~(.988, .993)$\tabularnewline
 \hline
 {\bfseries BAGS}&&&&&&&\tabularnewline
-~~CHEPRETRO&$.58~(.47, .69)$&$.56~(.28, .84)$&-&&$.78~(.65, .88)$&$.74~(.33, 1.0)$&-\tabularnewline
-~~MDFCI&$.54~(.43, .64)$&$.48~(.17, .79)$&-&&$.80~(.68, .89)$&$.83~(.30, 1.0)$&-\tabularnewline
+~~CHEPRETRO&$.58~(.47, .69)$&$.56~(.28, .84)$&-&&$.78~(.65, .88)$&$.74~(.33, 1.)$&-\tabularnewline
+~~MDFCI&$.54~(.43, .64)$&$.48~(.17, .79)$&-&&$.80~(.68, .89)$&$.83~(.30, 1.)$&-\tabularnewline
 ~~IDRC&$.52~(.47, .56)$&$.41~(.32, .50)$&-&&$.79~(.75, .83)$&$.79~(.62, .96)$&-\tabularnewline
-~~LLMPP R-CHOP&$.56~(.49, .62)$&$.53~(.36, .70)$&-&&$.88~(.82, .92)$&$.88~(.60, 1.0)$&-\tabularnewline
+~~LLMPP R-CHOP&$.56~(.49, .62)$&$.53~(.36, .70)$&-&&$.88~(.82, .92)$&$.88~(.60, 1.)$&-\tabularnewline
 \hline
 {\bfseries REGS}&&&&&&&\tabularnewline
 ~~CHEPRETRO&$.73~(.68, .78)$&$.71~(.64, .77)$&$.934~(.920, .946)$&&$.84~(.79, .88)$&$.83~(.76, .89)$&$.992~(.990, .994)$\tabularnewline
@@ -35,5 +44,5 @@ normalization method, respectively.\label{tab:classALL}}
 ~~LLMPP R-CHOP&$.58~(.54, .61)$&$.50~(.46, .54)$&$.810~(.786, .831)$&&$.90~(.87, .92)$&$.89~(.85, .92)$&$.992~(.990, .993)$\tabularnewline
 \hline
 \end{tabular}\end{center}}
-
+\end{adjustwidth}
 \end{table}

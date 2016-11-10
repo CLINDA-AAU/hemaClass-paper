@@ -1,11 +1,11 @@
 .Rproj.user
 .Rhistory
 .RData
+*.pdf
 *.aux
 *.bbl
 *.blg
 *.log
-*.pdf
 *.out
 *.synctex.gz
 *.synctex
